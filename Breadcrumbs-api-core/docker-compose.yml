@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  breadcrumbs-api-core-database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=Breadcrumbs_api_core_development
+    ports:
+      - "6004:5432"
+    restart: always
+  breadcrumbs-api-core:
+    build: .
+    entrypoint: ["/app/lib/entrypoint.sh"]
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - breadcrumbs-api-core-database

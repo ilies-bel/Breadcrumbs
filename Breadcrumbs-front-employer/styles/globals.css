@@ -1,0 +1,47 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: row;
+  margin-top: 110px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  padding-left: 30%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header li {
+  list-style-type: none
+}
+header ul {
+  display: inline;
+}
+header {
+  width: 100%;
+  height: 110px;
+  border: 1px solid #C0C3C7;
+
+  position: fixed;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+  
+  background: #FFFFFF;
+  box-shadow: inset 0px -1px 0px #C0C3C7;
+}
