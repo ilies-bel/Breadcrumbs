@@ -24,14 +24,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-header li {
+header.appBar  li {
   list-style-type: none
 }
-header ul {
+header.appBar  ul {
   display: inline;
 }
-header {
+header.appBar  {
   width: 100%;
   height: 110px;
   border: 1px solid #C0C3C7;
@@ -44,4 +43,13 @@ header {
   
   background: #FFFFFF;
   box-shadow: inset 0px -1px 0px #C0C3C7;
+}
+
+.MuiToolbar-root {
+display: flex;
+justify-content: space-between;
+}
+.profile {
+display: flex;
+align-items: center;
 }

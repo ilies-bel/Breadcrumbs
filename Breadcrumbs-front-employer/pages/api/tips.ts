@@ -1,3 +1,5 @@
+import { redirect } from "next/dist/next-server/server/api-utils"
+
 const tipsList =  [
     {
         ranking: 5,
@@ -21,6 +23,12 @@ const tipsList =  [
     },
 ]
 
-export default (req, res) => {
+
+export default (req: any, res) => {
+    if(req.method === 'GET'){
     res.status(200).json(tipsList)
-}
+    }
+    if(req.method === 'POST'){
+        res.redirect('/candidates')
+    }
+  }

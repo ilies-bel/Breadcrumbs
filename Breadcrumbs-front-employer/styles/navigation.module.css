@@ -1,0 +1,29 @@
+header.appBar  li {
+    list-style-type: none
+  }
+  header.appBar  ul {
+    display: inline;
+  }
+  header.appBar  {
+    width: 100%;
+    height: 110px;
+    border: 1px solid #C0C3C7;
+
+    position: fixed;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    
+    background: #FFFFFF;
+    box-shadow: inset 0px -1px 0px #C0C3C7;
+  }
+
+.toolbar {
+  display: flex;
+}
+.profile {
+  display: flex;
+  align-items: center;
+  float: left;
+}

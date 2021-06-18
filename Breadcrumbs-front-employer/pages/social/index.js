@@ -10,16 +10,9 @@ export default function Ambassadors() {
 
     return (
         <>
-        <Header></Header>
-
-        <BottomNav/>
-
-        <main>
             <h2>Social</h2>
             <Label>est</Label>
             <h3>Hiring process</h3>
-
-        </main>
 
         </>
     );

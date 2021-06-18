@@ -9,8 +9,8 @@ export  const theme = {
       default: '#EBEBEB',
     },
     label: {
-        main: '#A1A4AB',
-        selected: 'white'
+      main: '#A1A4AB',
+      selected: 'white'
     }
  };
 

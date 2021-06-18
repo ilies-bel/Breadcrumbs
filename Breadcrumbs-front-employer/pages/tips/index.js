@@ -1,29 +1,5 @@
 import React from 'react';
-import { BottomNav } from "../../components/Layout/DrawerLeft"
-
-const tipsList =  [
-    {
-        ranking: 5,
-        title: "Bien serrer la main",
-        description: "Serrer très fort"
-    },
-    {
-        ranking: 2,
-        title: "Se tenir droit",
-        description: "Ne pas voûter le dos"
-    },
-    {
-        ranking: 15,
-        title: "Prendre des notes",
-        description: "Prévoir un bloc-note"
-    },
-    {
-        ranking: 15,
-        title: "Porter une Chemise",
-        description: "Prévoir un bloc-note"
-    },
-]
-
+import axios from 'axios';
 const style = {
     num: {
         display: 'inline-block',
@@ -49,19 +25,36 @@ const style = {
     }
 }
 
-function Tips() {
+axios.defaults.baseURL = 'http://localhost:3000';
+const fetchData = async () => await
+    axios.get('/api/tips')
+        .then(res => ({
+            error: false,
+            tipsList: res.data,
+        }))
+        .catch(() => ({
+                error: true,
+                tipsList: null,
+            }),
+        );
+
+const Tips = ({tipsList, error}) => {
 
     return (
         <>
         <div>
+        {error && <div>There was an error.</div>}
             <ol>
                 {
-                tipsList.map((tips, index) => 
-                <li key={index} style={style.list}>
-                    <span style={style.num}>{index}</span> {tips.title}
-                    <li><span style={style.nested}>{tips.description}</span></li>
-                </li>
+                    !error && tipsList && (
+                        tipsList.map((tips, index) => 
+                        
+                        <li key={index} style={style.list}>
+                            <span style={style.num}>{index}</span> {tips.title}
+                            <span style={style.nested}>{tips.description}</span>
+                        </li>
                     )
+                        )
                 }
 
             </ol>
@@ -69,6 +62,13 @@ function Tips() {
         </>
 
     );
+}
+
+export const getServerSideProps = async () => {
+    const data = await fetchData();
+    return {
+        props: data,
+    };
 }
 
 export default Tips;

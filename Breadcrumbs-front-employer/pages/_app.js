@@ -1,16 +1,24 @@
 import '../styles/globals.css'
 import Header from '../components/Layout/Header';
 import BottomNav from '../components/Layout/BottomNavigation';
-import DrawerLeft from "../components/Layout/DrawerLeft";
+
+import { Provider, getSession } from 'next-auth/client';
+import RestrictedPages from "./pagesAuthentified";
+
+import 'tailwindcss/tailwind.css'
 
 function MyApp({ Component, pageProps }) {
+
   return (
     <>
-    <Header/>
+    
     <div className="container">
-    <DrawerLeft/>
-      <main>
-        <Component {...pageProps} />
+    <BottomNav/>
+        <Header />
+        <main>
+        <Provider >
+            <RestrictedPages children={ <Component {...pageProps} /> } />
+        </Provider>
       </main>
     </div>
     </>
