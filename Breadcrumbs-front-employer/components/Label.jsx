@@ -6,7 +6,7 @@ const style = {
         fontSize: '16px',
         lineHeight: '20px',
         fontFamily: 'Roboto',
-        display: 'block',
+        display: 'inline',
     }
 }
 
