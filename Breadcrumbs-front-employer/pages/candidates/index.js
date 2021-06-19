@@ -76,18 +76,18 @@ const Candidates = ({users, error}) => {
                                                         <div
                                                             className="text-sm font-medium text-gray-900">{person.first_name} {person.last_name}</div>
                                                         <Link href={`mailto:${person?.mail}`}>
-                                                            <div
-                                                                className={`text-sm text-gray-500 ${person?.mail && 'hover:text-gray-700 cursor-pointer '}`}>{person.mail}</div>
+                                                            <a
+                                                                className={`text-sm text-gray-500 ${person?.mail && 'hover:text-gray-700 cursor-pointer '}`}>{person.mail}</a>
                                                         </Link>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <Link href={`tel:${person?.phone_number}`}>
-                                                    <div
+                                                    <a
                                                         className={`text-sm text-gray-500 ${person?.phone_number && 'hover:text-gray-700 cursor-pointer '}`}>
                                                         {person?.phone_number ?? "unknown"}
-                                                    </div>
+                                                    </a>
                                                 </Link>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
