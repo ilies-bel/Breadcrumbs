@@ -1,5 +1,6 @@
 import React from 'react';
 import {theme} from '../utils/themes'
+import Link from 'next/link';
 
 
 class BottomLink extends React.Component {
@@ -18,19 +19,21 @@ class BottomLink extends React.Component {
             console.log("clicked")
             this.props.onChange(this.props.index)
         }
+        this.href=this.props.href
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.props.selected !== prevProps.selected && this.setState({selected: this.props.selected})
     }
 
     render (){
+        const href = this.href;
         return(
+            <Link href={this.href}>
         <span onClick={this.handleClick} className={this.state.selected ? 'selected' : 'unactive'}>
             {this.props.children}
             <style jsx>
                 {`
                 span {
-                    height: 50px;
                     display: inline-block;
                     padding: 30px;
                     justify-content: center;
@@ -55,6 +58,7 @@ class BottomLink extends React.Component {
                 `}
             </style>
         </span>
+        </Link>
         )
     }
 }

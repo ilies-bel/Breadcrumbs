@@ -11,6 +11,7 @@ import {
     SETTINGS_LABEL, SOCIAL, SOCIAL_LABEL, TIPS, TIPS_LABEL
 } from "../../constants/routes";
 import {getSession} from "next-auth/client";
+import {Building, ClipboardList, InfoCircle, Social, School} from 'tabler-icons-react';
 
 class BottomNav extends React.Component {
     constructor(props) {
@@ -45,13 +46,43 @@ class BottomNav extends React.Component {
         return(
         <div className="bar">
             {/*//TODO: refactoring avec un arary.map()*/}
-            <BottomLink selected={selectedTab[0]} index={0} onChange={handleChange}><Link href={CANDIDATES}>{CANDIDATES_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[1]} index={1} onChange={handleChange}><Link href={HIRING_PROCESS}>{HIRING_PROCESS_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[2]} index={2} onChange={handleChange}><Link href={TIPS}>{TIPS_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[3]} index={3} onChange={handleChange}><Link href={OFFICE}>{OFFICE_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[4]} index={4} onChange={handleChange}><Link href={AMBASSADORS}>{AMBASSADORS_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[5]} index={4} onChange={handleChange}><Link href={SOCIAL}>{SOCIAL_LABEL}</Link> </BottomLink>
-            <BottomLink selected={selectedTab[6]} index={4} onChange={handleChange}><Link href={INSIGHT}>{INSIGHT_LABEL}</Link> </BottomLink>
+            <BottomLink selected={selectedTab[0]} index={0} onChange={handleChange} href={CANDIDATES}>
+
+                    <span className='spanLink'>
+                        <ClipboardList size={30} strokeWidth={1} color={!selectedTab[0] ? 'royalblue' : 'white'} className="ml-14"/>
+                        {CANDIDATES_LABEL}
+                    </span>
+
+            </BottomLink>
+            <BottomLink selected={selectedTab[1]} index={1} onChange={handleChange} href={HIRING_PROCESS}>
+
+                    <div className='spanLink'>
+                        <ClipboardList size={30} strokeWidth={1} color={!selectedTab[1] ? 'royalblue' : 'white'} className="ml-14" />
+                        {HIRING_PROCESS_LABEL}
+                    </div>
+            </BottomLink>
+            <BottomLink selected={selectedTab[2]} index={2} onChange={handleChange} href={TIPS}>
+                    <span className='spanLink'>
+                        <InfoCircle size={30} strokeWidth={1} color={!selectedTab[2] ? 'royalblue' : 'white'} className="ml-14" />
+                        {TIPS_LABEL}
+                    </span>
+            </BottomLink>
+            <BottomLink selected={selectedTab[3]} index={3} onChange={handleChange} href={OFFICE}>
+                    <span className='spanLink'>
+                        <Building size={30} strokeWidth={1} color={!selectedTab[3] ? 'royalblue' : 'white'} className="ml-14" />
+                        {OFFICE_LABEL}
+                    </span>
+            </BottomLink>
+            <BottomLink selected={selectedTab[4]} index={4} onChange={handleChange} href={AMBASSADORS}>
+
+                    <span className='spanLink'>
+                <School size={30} strokeWidth={1} color={!selectedTab[4] ? 'royalblue' : 'white'} className="ml-14" />
+                    {AMBASSADORS_LABEL}
+                    </span>
+
+            </BottomLink>
+            <BottomLink selected={selectedTab[5]} index={4} onChange={handleChange} href={SOCIAL}>{SOCIAL_LABEL} </BottomLink>
+            <BottomLink selected={selectedTab[6]} index={4} onChange={handleChange} href={INSIGHT}>{INSIGHT_LABEL} </BottomLink>
 
             <style jsx>{`
                 .bar {
@@ -60,7 +91,7 @@ class BottomNav extends React.Component {
                     flex-direction: column;
                     height: 100%;
                     left: -0.15%;
-                }            
+                }
             `}</style>
         </div>
         )}
