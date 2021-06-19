@@ -2,18 +2,12 @@ import React from 'react';
 import {theme} from '../utils/themes'
 import Link from 'next/link';
 
-
 class BottomLink extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: this.props.selected,
             hover: false
-        }
-        this.mouse = () => {
-            this.setState((state) => {
-                state.hover = true
-            })
         }
         this.handleClick = () => {
             console.log("clicked")
@@ -26,39 +20,43 @@ class BottomLink extends React.Component {
     }
 
     render (){
-        const href = this.href;
         return(
             <Link href={this.href}>
-        <span onClick={this.handleClick} className={this.state.selected ? 'selected' : 'unactive'}>
-            {this.props.children}
-            <style jsx>
-                {`
-                span {
-                    display: inline-block;
-                    padding: 30px;
-                    justify-content: center;
-                    text-align: center;
-                    }
-                    `}
-            </style>
-            <style jsx>
-                {`
-                span:hover {
-                    background: ${theme.background.default};
-                    border-style: ${this.state.hover ? 'solid' : 'none'};
-                    border-width: 4px;
-                    color: ${theme.label.main};
-                    }
-                span.selected {
-                    background: ${theme.primary.main};
-                    border-style: 'none';
-                    border-width: 4px;
-                    color: ${theme.label.selected};
-                }
-                `}
-            </style>
-        </span>
-        </Link>
+               <a onClick={this.handleClick} className={this.state.selected ? 'selected' : 'unactive'}>
+                     {this.props.children}
+                    <style jsx>
+                        {`
+                        a {
+                            width: 100%;
+                            display: inline-block;
+                            padding: 30px;
+                            justify-content: center;
+                            text-align: center;
+                            }
+                            a {
+                                outline-color: blue;
+                            }
+                            `}
+                    </style>
+                    <style jsx>
+                        {`
+                        a:hover, a:focus {
+                            background: ${theme.background.default};
+                            border-style: ${this.state.hover ? 'solid' : 'none'};
+                            border-width: 4px;
+                            color: ${theme.label.main};
+                            outline-color: royalblue;
+                            }
+                        a.selected {
+                            background: ${theme.primary.main};
+                            border-style: none;
+                            border-width: 4px;
+                            color: ${theme.label.selected};
+                        }
+                        `}
+                    </style>
+                </a>
+            </Link>
         )
     }
 }

@@ -91,6 +91,7 @@ class BottomNav extends React.Component {
                     flex-direction: column;
                     height: 100%;
                     left: -0.15%;
+                    top: 65px;
                 }
             `}</style>
         </div>
