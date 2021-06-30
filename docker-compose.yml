@@ -32,17 +32,6 @@ services:
       - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
     depends_on:
       - traefik
-  breadcrumbs-api-core-database:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=Breadcrumbs_api_core_development
-    expose:
-      - 5432
-    networks:
-      - traefik-global-proxy
-    restart: always
   
   employer:
     build: $EMPLOYER_DIR
@@ -94,7 +83,7 @@ services:
       context: ./breadcrumbs-quarkus
       dockerfile: src/main/docker/Dockerfile.jvm
     expose:
-       - 8080
+       - $QUARKUS_PORT
     depends_on:
       - breadcrumbs-api-core-database
     networks:
