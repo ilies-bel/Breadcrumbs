@@ -10,10 +10,14 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+
 import {useGetTips} from 'utils/axios';
+import { useGetTips2 } from '../../utils/axios2';
+
 import {PageDescription} from "../Navigation";
 import {Grid} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
+
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -46,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Tips = () => {
-    const [{data, loading, error}, refetch] = useGetTips();
+    const [{data, loading, error}, refetch] = useGetTips2();
     const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();
