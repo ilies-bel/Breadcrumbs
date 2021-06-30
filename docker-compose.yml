@@ -95,8 +95,6 @@ services:
       - "traefik.http.routers.quarkus.service=quarkusservice"
       - "traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT"
 
-
-
 # this is the network that every container should connect to, in order to communicate with Traefik. We give it a nice name to type it easier.
 networks:
   traefik-global-proxy:
