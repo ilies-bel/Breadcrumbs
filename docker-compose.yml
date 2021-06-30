@@ -13,6 +13,7 @@ services:
       - 443:443
     networks:
       - traefik-global-proxy
+
   pwa:
     build: $PWA_DIR
     environment:
@@ -30,6 +31,7 @@ services:
       - traefik.http.routers.pwa.tls=true
       - "traefik.http.routers.pwa.service=pwaservice"
       - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
+      - traefik.http.routers.pwa.middlewares=errorpage@file
     depends_on:
       - traefik
   
@@ -78,6 +80,17 @@ services:
       - traefik.http.routers.apicore.tls=true
       - "traefik.http.routers.apicore.service=apiservice"
       - "traefik.http.services.apiservice.loadbalancer.server.port=$API_PORT"
+  breadcrumbs-api-core-database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=Breadcrumbs_api_core_development
+    expose:
+      - 5432
+    networks:
+      - traefik-global-proxy
+    restart: always
   quarkus:
     build:
       context: ./breadcrumbs-quarkus
@@ -85,15 +98,18 @@ services:
     expose:
        - $QUARKUS_PORT
     depends_on:
+      - traefik
       - breadcrumbs-api-core-database
     networks:
       - traefik-global-proxy
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && Path($API_PATHS)"
       - traefik.http.routers.quarkus.tls=true
       - "traefik.http.routers.quarkus.service=quarkusservice"
       - "traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT"
+      - traefik.http.routers.quarkus.middlewares=errorpage@file
 
 # this is the network that every container should connect to, in order to communicate with Traefik. We give it a nice name to type it easier.
 networks:

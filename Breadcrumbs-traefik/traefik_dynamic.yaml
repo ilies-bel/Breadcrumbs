@@ -6,26 +6,15 @@ http:
       service: api@internal
       tls:
         certResolver: letsencrypt
-    employer:
-      rule: Host(`breadcrumb.employer.com`)
-      entrypoints:
-        - websecure
-      tls:
-        certResolver: letsencrypt
-      service: employerservice
-    apicore:
-      entrypoints:
-        - websecure
-      rule: "Host(`$PWA_HOST`) && Path(`/api`)"
-      tls:
-        certResolver: letsencrypt
-    quarkus:
-      entrypoints:
-        - websecure
-      tls:
-        certResolver: letsencrypt
   services:
-    employerservice:
+    errorService:
       loadbalancer:
         server:
-          port: 3001
+          port: 8080
+  middlewares:
+    errorpage:
+      errors:
+        status:
+          - "400-550"
+        service: quarkusservice@docker
+        query: "/api/error/{status}"
