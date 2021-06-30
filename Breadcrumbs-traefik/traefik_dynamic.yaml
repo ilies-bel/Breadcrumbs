@@ -19,10 +19,9 @@ http:
       rule: "Host(`$PWA_HOST`) && Path(`/api`)"
       tls:
         certResolver: letsencrypt
-    quar:
+    quarkus:
       entrypoints:
         - websecure
-      rule: "Host(`$PWA_HOST`) && Path(`/quar`)"
       tls:
         certResolver: letsencrypt
   services:
