@@ -80,6 +80,7 @@ services:
       - traefik.http.routers.apicore.tls=true
       - "traefik.http.routers.apicore.service=apiservice"
       - "traefik.http.services.apiservice.loadbalancer.server.port=$API_PORT"
+  
   breadcrumbs-api-core-database:
     image: postgres
     environment:
