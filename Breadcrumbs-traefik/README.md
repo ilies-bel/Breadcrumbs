@@ -24,10 +24,15 @@ Dans le fichier .env attribuer aux variables PWA_HOST et EMPLOYER_HOST les noms 
 L'API ruby on rails n'est pas inclu dans ce reverse proxy, par conséquent il est nécessaire de le mettre en marche avant de lancer le reverse proxy.
 Il faut aussi s'assurer que le serveur ruby accepte les requêtes CORS, car il est possible que cela soit source d'erreur.
 
+### API Quarkus
+Il faut faire un build du projet quarkus avant de son image docker.
+Poru cela il faut se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
+- >./gradlew build
+
 ## Lancer le projet traefik
 1. Modifier les variables d'environnements comme indiqués ci-dessus
 1. se placer à la racine de ce projet.
-2. Lancer la commande :
-    - > docker-compose up
+    - Lancer la commande :
+        - > docker-compose up
 3. Se rendre à l'adresse de la PWA définit dans le fichier .env.
     - Dans cet exemple, ce rendre à [breadcrumb.pwa.fr](https://breadcrumb.pwa.fr)
