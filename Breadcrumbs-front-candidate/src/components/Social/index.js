@@ -63,8 +63,7 @@ const SocialPage = () => {
         setValue(newValue);
     };
     const {path, url} = useRouteMatch();
-    if( !authContext.token ) return <NotFound />
-    if( authContext.token ) return (
+    return (
         <Router>
             <Redirect to='/hiring'/>
             <TitleSource>{SOCIAL_TITLE}</TitleSource>

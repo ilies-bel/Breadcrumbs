@@ -44,8 +44,7 @@ const BottomNav = () => {
         setValue(newValue);
     };
 
-    if(!context.token) return <div>No token provided</div>
-    if(context.token) return (
+    return (
             <BottomNavigation
                 className={classes.BottomNavigation}
                 value={value}
