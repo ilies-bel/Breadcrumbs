@@ -9,9 +9,7 @@ import java.util.Date;
 
 @Entity
 public class availability extends PanacheEntity {
-    private Date startTime;
-    private Date endTime;
+    public Date startTime;
+    public Date endTime;
 
-    public availability() {}
-    public availability(Date start, Date end) {}
 }
