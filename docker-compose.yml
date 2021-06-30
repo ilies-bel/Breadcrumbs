@@ -89,6 +89,22 @@ services:
       - traefik.http.routers.apicore.tls=true
       - "traefik.http.routers.apicore.service=apiservice"
       - "traefik.http.services.apiservice.loadbalancer.server.port=$API_PORT"
+  quarkus:
+    build:
+      context: ./breadcrumbs-quarkus
+      dockerfile: src/main/docker/Dockerfile.jvm
+    expose:
+       - 8080
+    depends_on:
+      - breadcrumbs-api-core-database
+    networks:
+      - traefik-global-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && Path($API_PATHS)"
+      - traefik.http.routers.quarkus.tls=true
+      - "traefik.http.routers.quarkus.service=quarkusservice"
+      - "traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT"
 
 
 
