@@ -15,6 +15,8 @@ public class tipsRessource {
     public List<interview_tips> getTips() {
         return interview_tips.getTips();
     }
+
+
     @Path("/post")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

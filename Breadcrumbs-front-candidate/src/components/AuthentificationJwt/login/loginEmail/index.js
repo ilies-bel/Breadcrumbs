@@ -60,6 +60,7 @@ const LoginEmailPage = () => {
 
 
 const BASE_API_URL = process.env.AXIOS_BASE_URL
+const BASE_API_URL2 = "breadcrumbs.auth.com"
 
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
@@ -67,22 +68,26 @@ const Login = () => {
     const onSubmit = handleSubmit((data) => {
 
         console.log(data);
-        const url = `${BASE_API_URL}/users/login`;
-        console.log(url);
+        const url = `${BASE_API_URL2}/auth/jwt/login`;
+        console.log(url);console.log("/url");
 
-        axios
-            .post(url, {"user": {"email": data.email, "password": data.password}})
+        const authInstance  = axios.create({baseURL: "https://breadcrumbs.auth.com", method: "post"});
+        authInstance({
+            url: "/auth/jwt/login",
+            data: {"email": data.email, "password": data.password}
+        })
             .then((response) => {
                 const res = response.data;
-                console.log(res);
+                console.log("response");console.log(response.data);console.log("/response");
                 // handle server responses
-                if (res.json.token) {
+                if (res.token) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("login successfully");
 
-                    localStorage.setItem("token", res.json.token);
-                    localStorage.setItem("user", res.json.user.first_name);
-                    //context.setData(res.token, res.json.user.first_name + ' ' + res.json.user?.last_name)
+                    //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
+                    localStorage.setItem("token", res.token);
+                    localStorage.setItem("user", res.user.first_name);
+                    //context.setData(res.token, res.user.first_name + ' ' + res.user?.last_name)
 
                 } else if (res.status === "unprocessable_entity") {
                     console.log("mail or password invalid");

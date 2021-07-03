@@ -13,6 +13,7 @@ import java.util.Date;
 public class availability extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id_availability;
     public Date startTime;
     public Date endTime;
 }

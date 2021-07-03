@@ -31,7 +31,6 @@ services:
       - traefik.http.routers.pwa.tls=true
       - "traefik.http.routers.pwa.service=pwaservice"
       - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
-      - traefik.http.routers.pwa.middlewares=errorpage@file
     depends_on:
       - traefik
   
@@ -53,17 +52,8 @@ services:
       - traefik.http.routers.employer.tls=true
     depends_on:
       - traefik
-  breadcrumbs-api-core-database:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=Breadcrumbs_api_core_development
-    expose:
-      - 5432
-    networks:
-      - traefik-global-proxy
-    restart: always
+
+  
   breadcrumbs-api-core:
     build: $API_DIR
     entrypoint: ["/app/lib/entrypoint.sh"]
@@ -92,6 +82,7 @@ services:
     networks:
       - traefik-global-proxy
     restart: always
+    
   quarkus:
     build:
       context: ./breadcrumbs-quarkus
@@ -111,6 +102,25 @@ services:
       - "traefik.http.routers.quarkus.service=quarkusservice"
       - "traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT"
       - traefik.http.routers.quarkus.middlewares=errorpage@file
+
+  quarkus-auth:
+    build:
+      context: ./quarkus-auth2
+      dockerfile: src/main/docker/Dockerfile.jvm
+    expose:
+        - 8081
+    depends_on:
+      - traefik
+      - breadcrumbs-api-core-database
+    networks:
+      - traefik-global-proxy
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth-router.rule=Host(`$AUTH_HOST`)"
+      - traefik.http.routers.auth-router.tls=true
+      - "traefik.http.routers.auth-router.service=authservice"
+      - "traefik.http.services.authservice.loadbalancer.server.port=8081"
 
 # this is the network that every container should connect to, in order to communicate with Traefik. We give it a nice name to type it easier.
 networks:

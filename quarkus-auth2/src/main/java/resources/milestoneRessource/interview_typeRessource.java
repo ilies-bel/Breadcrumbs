@@ -1,4 +1,4 @@
-package apicore.resources.milestoneRessource;
+package resources.milestoneRessource;
 
 public class interview_typeRessource {
 }

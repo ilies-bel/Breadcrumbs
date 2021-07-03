@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Entity
-public class User extends PanacheEntityBase {
+public class Users extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_user;
@@ -21,6 +21,4 @@ public class User extends PanacheEntityBase {
     public String password;
     public String role;
 
-    private boolean push_notification=true;
-    private boolean mail_notification=true;
 }
