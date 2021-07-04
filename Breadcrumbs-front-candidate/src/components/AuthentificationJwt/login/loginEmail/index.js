@@ -59,17 +59,36 @@ const LoginEmailPage = () => {
 }
 
 const BASE_AUTH_URL = process.env.AUTH_HOST
+const jwtValidation = (token) => {
+    let payload = null;
+    let error = null;
 
+    const publicKeyInstance  = axios.create({baseURL: BASE_AUTH_URL, url:"/key/public", method: "get"});
+    publicKeyInstance.get("/auth/key/public").then((res) => {
+        let payload;
+        let publicKey = res.data//.replace("BQIDAQAB", "BQIDRPAB");
+
+        verify(token, publicKey, function(err, decoded) {
+            !err ? payload = decoded : error = err;
+        });
+        console.log("payload");console.log(payload);console.log("/payload");
+    })
+        .catch((e) => {
+            console.error("Public Key not loaded")
+            console.error(e);
+        });
+    return {payload, error}
+}
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
-    const {payload, setPayload} = usePayload({});
+    const context = useAuthContext();
 
     const onSubmit = handleSubmit((data) => {
 
         console.log(data);
 
         const authInstance  = axios.create({baseURL: BASE_AUTH_URL, method: "post"});
-        const publicKeyInstance  = axios.create({baseURL: BASE_AUTH_URL, url:"/key/public", method: "get"});
+
         authInstance({
             url: "/auth/jwt/login",
             data: {"email": data.email, "password": data.password}
@@ -78,33 +97,16 @@ const Login = () => {
                 const res = response.data;
                 console.log("response");console.log(response.data);console.log("/response");
                 // handle server responses
-                if (res.token) {
+                const {payload, error} = jwtValidation(res.token);
+                error && console.error(error)
+                if (res.status==="Success") {
                     localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("login successfully");
+                    //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
+                    !error && localStorage.setItem("user", data.user.first_name);
+                    !error && localStorage.setItem("token", data.token);
 
-                    publicKeyInstance.get("/auth/key/public").then((res2) => {
-                        let payload;
-                        let publicKey = res2.data//.replace("BQIDAQAB", "BQIDRPAB");
-                        console.log("public insatn");
-                        console.log(res.token);console.log("/Insaide public instance res.token");
-
-                        payload = verify(res.token, publicKey, function(err, decoded) {
-                            //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                            !err && localStorage.setItem("token", res.token);
-                            !err && localStorage.setItem("user", res.user.first_name);
-
-                            !err && setPayload(decoded);
-                            //context.setData(res.token, res.user.first_name + ' ' + res.user?.last_name)
-                        });
-                        console.log("payload");console.log(payload);console.log("/payload");
-                    })
-                    .catch((e) => {
-                        console.error(e);
-                    });
-                    
-
-
-                } else if (res.status === "unprocessable_entity") {
+                } else if (res.status === "Connection_Failure_Wrong_Password") {
                     console.log("mail or password invalid");
 
                     setError("all", {

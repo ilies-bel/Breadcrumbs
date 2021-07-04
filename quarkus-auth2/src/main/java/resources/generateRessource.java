@@ -31,11 +31,21 @@ public class generateRessource {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            token = GenerateToken.generateUserToken(user);
-            TokenResponse response = new TokenResponse(token, user);
+            String requestedPassword = user.password;
+            String storedPassword = user.findPasswordByEmail(user.email);
 
-            String json = mapper.writeValueAsString(response);
-            return Response.ok(response).build();
+
+            if( storedPassword.equals(requestedPassword) ) {
+                token = GenerateToken.generateUserToken(user);
+                TokenResponse response = new TokenResponse(token, user);
+
+                String json = mapper.writeValueAsString(response);
+                return Response.ok(response).header("Set-Cookie", "jwt="+token + "; Secure ; HttpOnly").build();
+            }
+            else {
+                TokenResponse response = new TokenResponse(token, user, "Connection_Failure_Wrong_Password");
+                return Response.ok(response).status(401).build();
+            }
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
