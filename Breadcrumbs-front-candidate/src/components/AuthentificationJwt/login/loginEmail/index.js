@@ -4,6 +4,7 @@ import {useHistory, Link} from "react-router-dom";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import { decode, verify } from "jsonwebtoken";
 
 
 const LoginEmailPage = () => {
@@ -57,21 +58,18 @@ const LoginEmailPage = () => {
     )
 }
 
-
-
-const BASE_API_URL = process.env.AXIOS_BASE_URL
-const BASE_API_URL2 = "breadcrumbs.auth.com"
+const BASE_AUTH_URL = process.env.AUTH_HOST
 
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
+    const {payload, setPayload} = usePayload({});
 
     const onSubmit = handleSubmit((data) => {
 
         console.log(data);
-        const url = `${BASE_API_URL2}/auth/jwt/login`;
-        console.log(url);console.log("/url");
 
-        const authInstance  = axios.create({baseURL: "https://breadcrumbs.auth.com", method: "post"});
+        const authInstance  = axios.create({baseURL: BASE_AUTH_URL, method: "post"});
+        const publicKeyInstance  = axios.create({baseURL: BASE_AUTH_URL, url:"/key/public", method: "get"});
         authInstance({
             url: "/auth/jwt/login",
             data: {"email": data.email, "password": data.password}
@@ -84,10 +82,27 @@ const Login = () => {
                     localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("login successfully");
 
-                    //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                    localStorage.setItem("token", res.token);
-                    localStorage.setItem("user", res.user.first_name);
-                    //context.setData(res.token, res.user.first_name + ' ' + res.user?.last_name)
+                    publicKeyInstance.get("/auth/key/public").then((res2) => {
+                        let payload;
+                        let publicKey = res2.data//.replace("BQIDAQAB", "BQIDRPAB");
+                        console.log("public insatn");
+                        console.log(res.token);console.log("/Insaide public instance res.token");
+
+                        payload = verify(res.token, publicKey, function(err, decoded) {
+                            //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
+                            !err && localStorage.setItem("token", res.token);
+                            !err && localStorage.setItem("user", res.user.first_name);
+
+                            !err && setPayload(decoded);
+                            //context.setData(res.token, res.user.first_name + ' ' + res.user?.last_name)
+                        });
+                        console.log("payload");console.log(payload);console.log("/payload");
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+                    
+
 
                 } else if (res.status === "unprocessable_entity") {
                     console.log("mail or password invalid");

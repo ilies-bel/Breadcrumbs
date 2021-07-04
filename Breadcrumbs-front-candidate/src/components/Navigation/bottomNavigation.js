@@ -44,7 +44,8 @@ const BottomNav = () => {
         setValue(newValue);
     };
 
-    return (
+    if(!context.token) return ( <p>No access</p>)
+    if(context.token) return (
             <BottomNavigation
                 className={classes.BottomNavigation}
                 value={value}

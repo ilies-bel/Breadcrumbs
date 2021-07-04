@@ -3,6 +3,7 @@ package resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.vertx.web.Header;
+import io.smallrye.jwt.util.ResourceUtils;
 import org.hibernate.annotations.Parameter;
 import org.jboss.resteasy.annotations.Body;
 import user.GenerateToken;
@@ -21,35 +22,24 @@ import java.util.Map;
 public class generateRessource {
     private String token;
 
-    @GET
-    public String gene() throws IOException {
-        token = GenerateToken.generate(Arrays.asList("supervisor", "collaborator"));
-        return token;
-    }
-
-    @Path("/loginn")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String loginn(Users user) {
-        token = GenerateToken.generateUserToken(user);
-
-        return token;
-    }
 
     @Path("/login")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String login(Users user) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    public Response login(Users user) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
 
-        token = GenerateToken.generateUserToken(user);
-        TokenResponse response = new TokenResponse(token, user);
+            token = GenerateToken.generateUserToken(user);
+            TokenResponse response = new TokenResponse(token, user);
 
-        String user_json = mapper.writeValueAsString(user);
-
-        String json = mapper.writeValueAsString(response);
-        return json;
+            String json = mapper.writeValueAsString(response);
+            return Response.ok(response).build();
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Response.ok(e).status(520).build();
+        }
     }
 }

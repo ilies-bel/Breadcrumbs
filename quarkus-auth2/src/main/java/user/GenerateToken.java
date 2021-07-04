@@ -14,13 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GenerateToken {
-    public static String generate(List arrayList) throws IOException {
-        //Path path = Paths.get("C:\\Users\\vouivre\\Documents\\Breadcrumbs\\quarkus-auth2\\src\\main\\resources\\privateKey.pem");
+    public static String generate(List arrayList) {
         String token =
                 Jwt.issuer("https://breadcrumb.pwa.fr/auth/users")
                         .upn("https://breadcrumb.pwa.fr/auth/users")
                         .groups(new HashSet<>(arrayList))
-                        .sign();
+                        .innerSign()
+                        .encrypt();
         System.out.println("by group");
         System.out.println(token);
         return token;
@@ -32,10 +32,10 @@ public class GenerateToken {
 
         String token =
                 Jwt.issuer("https://breadcrumbs.auth.com/auth/jwt")
-                .subject(param).groups(role)
-                .sign();
-        System.out.println("by users");
-        System.out.println(token);
+                        .upn("https://breadcrumb.pwa.fr/auth/users")
+                        .groups(role)
+                        .sign();
+
         return token;
     }
 }
