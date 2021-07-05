@@ -25,11 +25,13 @@ public class Users extends PanacheEntityBase {
     public String role;
 
     @Transactional
-    public static void seed(@Observes StartupEvent ev) {
+    public static void seed() {
         Users user = new Users();
-        Users.add("another.candidate@breadcrumbs.com", "password", "Another", "Candidate", "candidate");
-        Users.add("another.collaborator@breadcrumbs.com", "password", "Another", "collaborator", "collaborator");
-        Users.add("another.supervisor@breadcrumbs.com", "password", "Another", "supervisor", "supervisor");
+        Users.add("another.candidate@breadcrumbs.com", "password", "candidate", "Candidate", "candidate");
+        Users.add("another.collaborator@breadcrumbs.com", "password", "collaborator", "collaborator", "collaborator");
+        Users.add("another.supervisor@breadcrumbs.com", "password", "supervisor", "supervisor", "supervisor");
+        Users.add("tenor.dubarreau@breadcrumbs.com", "password", "supervisor", "Tenor", "Dubarrea");
+        Users.add("collaborat@breadcrumbs.com", "password", "collaborator", "collabo", "rat");
     }
 
     public static void add(String email, String password, String role, String first_name, String last_name) {
@@ -44,13 +46,13 @@ public class Users extends PanacheEntityBase {
     }
     public void add(String email, String password, String role) {
         Users user = new Users();
-        String cryptedPassword = BcryptUtil.bcryptHash(password);
-        user.add(email, cryptedPassword, role, "Unknown", "Unknown");
+        //String cryptedPassword = BcryptUtil.bcryptHash(password);
+        user.add(email, password, role, "Unknown", "Unknown");
     }
     public static void add(String email, String password) {
         Users user = new Users();
-        String cryptedPassword = BcryptUtil.bcryptHash(password);
-        user.add(email, cryptedPassword, "candidate");
+        //String cryptedPassword = BcryptUtil.bcryptHash(password);
+        user.add(email, password, "candidate");
     }
     public static String findRoleByQuery(String queryParam, String value) {
         Users a = Users.find(queryParam, value).firstResult();

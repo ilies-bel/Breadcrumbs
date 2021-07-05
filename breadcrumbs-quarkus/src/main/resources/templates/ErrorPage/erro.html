@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <title>Erreur {status}</title>
     <style>
+        body {
+            background-image: url("https://i.stack.imgur.com/nq623.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
         div, h1 {
             font-family: Roboto;
             font-size: 50px;
@@ -15,6 +20,8 @@
             border-radius: 5px;
             border-width: 1px;
             color: royalblue;
+            background-color: white;
+            opacity: 50%;
         }
         h1 {
             font-weight: bold;
@@ -34,8 +41,9 @@
 <body>
 <div class="banner"></div>
 <h2>Breadcrumbs - Traefik</h2>
-<h1>Erreur <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status/{status}">{status}</a> </h1>
+
 <div>
+    <h1>Erreur <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status/{status}">{status}</a> </h1>
     <p>This page doesn't exist</p>
     <p>Are you lost ?</p>
 </div>
