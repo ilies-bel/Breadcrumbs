@@ -76,7 +76,7 @@
     "start": "webpack-dev-server --config ./webpack.config.js",
     "build": "npx webpack --config ./webpack.config.js --progress --mode=production",
     "serve": "npx serve -s ./dist -l 5000",
-    "ssl-serve": "npx serve -s ./dist -l 8000 --ssl-cert C:/Users/mmze/Documents/dock/node/domain.crt --ssl-key C:/Users/mmze/Documents/dock/node/domain.key",
+    "ssl-serve": "npx serve -s ./dist -l 8000 --ssl-cert C:/Users/vouivre/Documents/Breadcrumbs/Breadcrumbs-traefik/domain.crt --ssl-key C:/Users/vouivre/Documents/Breadcrumbs/Breadcrumbs-traefik/domain.key",
     "ssl-serve-arch": "npx serve -s ./dist -l 8000 --ssl-cert /home/mdo/Documents/breadcrumbs2/Breadcrumbs/Breadcrumbs-traefik/domain.crt --ssl-key /home/mdo/Documents/breadcrumbs2/Breadcrumbs/Breadcrumbs-traefik/domain.key",
     "lint": "npx eslint",
     "lint:fix": "npx eslint src --fix"
