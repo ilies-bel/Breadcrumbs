@@ -103,8 +103,9 @@ const Login = () => {
                     localStorage.setItem("user", JSON.stringify(response.data));
                     console.log("login successfully");
                     //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                    !error && localStorage.setItem("user", data.user.first_name);
-                    !error && localStorage.setItem("token", data.token);
+                    !error && localStorage.setItem("user", res.user.first_name);
+                    !error && localStorage.setItem("token", res.token);
+                    !error && context.setData("token", res.token);
 
                 } else if (res.status === "Connection_Failure_Wrong_Password") {
                     console.log("mail or password invalid");
