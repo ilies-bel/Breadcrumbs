@@ -34,7 +34,6 @@ public class generateRessource {
             String requestedPassword = user.password;
             String storedPassword = user.findPasswordByEmail(user.email);
 
-
             if( storedPassword.equals(requestedPassword) ) {
                 token = GenerateToken.generateUserToken(user);
                 TokenResponse response = new TokenResponse(token, user);
@@ -44,7 +43,7 @@ public class generateRessource {
             }
             else {
                 TokenResponse response = new TokenResponse(token, user, "Connection_Failure_Wrong_Password");
-                return Response.ok(response).status(401).build();
+                return Response.ok(response).build();
             }
         }
         catch (JsonProcessingException e) {
