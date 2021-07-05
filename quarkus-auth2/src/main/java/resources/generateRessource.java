@@ -33,7 +33,8 @@ public class generateRessource {
 
             String requestedPassword = user.password;
             String storedPassword = user.findPasswordByEmail(user.email);
-
+            System.out.println("requested password");System.out.println(requestedPassword);System.out.println("requested password");
+            System.out.println("stored password");System.out.println(storedPassword);System.out.println("stored password");
             if( storedPassword.equals(requestedPassword) ) {
                 token = GenerateToken.generateUserToken(user);
                 TokenResponse response = new TokenResponse(token, user);

@@ -25,13 +25,13 @@ public class Users extends PanacheEntityBase {
     public String role;
 
     @Transactional
-    public static void seed() {
+    public static void seed(@Observes StartupEvent ev) {
         Users user = new Users();
         Users.add("another.candidate@breadcrumbs.com", "password", "candidate", "Candidate", "candidate");
         Users.add("another.collaborator@breadcrumbs.com", "password", "collaborator", "collaborator", "collaborator");
         Users.add("another.supervisor@breadcrumbs.com", "password", "supervisor", "supervisor", "supervisor");
-        Users.add("tenor.dubarreau@breadcrumbs.com", "password", "supervisor", "Tenor", "Dubarrea");
-        Users.add("collaborat@breadcrumbs.com", "password", "collaborator", "collabo", "rat");
+        Users.add("tenor.dubarreau@breadcrumbs.com", "gura_gura", "supervisor", "Tenor", "Dubarrea");
+        Users.add("collaborat@breadcrumbs.com", "beau_rat", "collaborator", "collabo", "rat");
     }
 
     public static void add(String email, String password, String role, String first_name, String last_name) {
@@ -74,12 +74,7 @@ public class Users extends PanacheEntityBase {
 
     public static Users findByEmail(String email) {
         Users a = Users.find("email", email).firstResult();
-        if(a == null) {
-            return null;
-        }
-        else {
-            return a;
-        }
+        return a;
     }
     public String findPasswordByEmail(String email) {
         Users a = findByEmail(email);

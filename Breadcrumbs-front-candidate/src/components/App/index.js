@@ -38,7 +38,7 @@ const App = () => {
         <div>
             <Router>
                 <AuthContext.Provider value={ { token: token, userName: user, setData: setData } } >
-                { !token && <Redirect to="/login/email"/>}
+                {/* { !token && <Redirect to="/login/email"/>} */}
                     <TopNav/>
                     <MainNav>
                         <TitleSource>Breadcrumbs</TitleSource>

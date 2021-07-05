@@ -154,7 +154,7 @@ module.exports = (env, argv) => {
                  parallel: true,
                     terserOptions: {
                      compress: {
-                         drop_console: true
+                         drop_console: false
                      }
                     }
              })
