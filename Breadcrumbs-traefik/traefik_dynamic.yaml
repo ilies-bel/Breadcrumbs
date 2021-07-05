@@ -18,6 +18,6 @@ http:
         query: "/api/error/{status}"
 
 tls:
-    certificates:
-        - certFile: ./domain.crt
-          keyFile: ./domain.key
+  certificates:
+    - certFile: ./domain.crt
+      keyFile: ./domain.key

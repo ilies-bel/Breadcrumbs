@@ -17,7 +17,7 @@ const useEventSource = (url) => {
     return data;
 }
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = process.env.BASE_API_URL;
 const fetchData = async () => await
     axios.get('/facet.json')
         .then(res => ({

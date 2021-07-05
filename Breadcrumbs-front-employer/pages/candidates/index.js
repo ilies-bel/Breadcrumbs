@@ -3,7 +3,7 @@ import Link from 'next/link';
 import axios from 'axios';
 
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = process.env.BASE_API_URL;
 
 
 const fetchData = async () => await
