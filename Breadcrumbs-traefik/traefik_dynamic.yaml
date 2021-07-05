@@ -4,8 +4,6 @@ http:
       entrypoints:
         - websecure
       service: api@internal
-      tls:
-        certResolver: letsencrypt
   services:
     errorService:
       loadbalancer:
@@ -18,3 +16,8 @@ http:
           - "400-550"
         service: quarkusservice@docker
         query: "/api/error/{status}"
+
+tls:
+    certificates:
+        - certFile: ./domain.crt
+          keyFile: ./domain.key

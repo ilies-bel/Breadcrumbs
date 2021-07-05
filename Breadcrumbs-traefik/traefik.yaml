@@ -15,12 +15,6 @@ entryPoints:
         entryPoint:
           to: websecure
           scheme: https
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: o@bread.com
-      storage: ./letsencrypt/acme.json
-      tlsChallenge: {}
 api:
   dashboard: true
 providers:

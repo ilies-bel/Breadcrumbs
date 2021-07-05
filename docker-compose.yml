@@ -8,6 +8,8 @@ services:
       - $TRAEFIK_DIR/traefik.yaml:/traefik.yaml
       - $TRAEFIK_DIR/traefik_dynamic.yaml:/traefik_dynamic.yaml
       - $TRAEFIK_DIR/acme.json:/acme.json
+      - $TRAEFIK_DIR/domain.crt:/domain.crt
+      - $TRAEFIK_DIR/domain.key:/domain.key
     ports:
       - 80:80
       - 443:443
