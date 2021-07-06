@@ -16,8 +16,7 @@ services:
       - traefik-global-proxy
 
   pwa:
-    image: node:latest
-    command: "bash -c 'npm run build && npm run serve'"
+    build: $PWA_DIR
     environment:
         HOST: 0.0.0.0
         PORT: $PWA_PORT
@@ -29,12 +28,12 @@ services:
     networks:
       - traefik-global-proxy
     labels:
-      - "traefik.enable=true"
+      - traefik.enable=true
       - traefik.http.routers.pwa.rule=Host(`$PWA_HOST`)
       - traefik.http.routers.pwa.tls=true
-      - "traefik.http.routers.pwa.service=pwaservice"
+      - traefik.http.routers.pwa.service=pwaservice
       - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
-      - "traefik.http.routers.pwa.middlewares=errorpage@file"
+      - traefik.http.routers.pwa.middlewares=errorpage@file
     depends_on:
       - traefik
 
@@ -51,10 +50,10 @@ services:
     networks:
       - traefik-global-proxy
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)"
+      - traefik.enable=true
+      - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
       - traefik.http.routers.employer.tls=true
-      - "traefik.http.routers.employer.middlewares=errorpage@file"
+      - traefik.http.routers.employer.middlewares=errorpage@file
     depends_on:
       - traefik
 
@@ -101,12 +100,12 @@ services:
       - traefik-global-proxy
     restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && Path($API_PATHS)"
+      - traefik.enable=true
+      - traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && Path($API_PATHS)
       - traefik.http.routers.quarkus.tls=true
-      - "traefik.http.routers.quarkus.service=quarkusservice"
-      - "traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT"
-      - "traefik.http.routers.quarkus.middlewares=errorpage@file"
+      - traefik.http.routers.quarkus.service=quarkusservice
+      - traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT
+      - traefik.http.routers.quarkus.middlewares=errorpage@file
 
   quarkus-auth:
     build:
@@ -121,12 +120,12 @@ services:
       - traefik-global-proxy
     restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.auth-router.rule=Host(`$AUTH_HOST`)"
+      - traefik.enable=true
+      - traefik.http.routers.auth-router.rule=Host(`$AUTH_HOST`)
       - traefik.http.routers.auth-router.tls=true
-      - "traefik.http.routers.auth-router.service=authservice"
-      - "traefik.http.services.authservice.loadbalancer.server.port=8081"
-      - "traefik.http.routers.auth-router.middlewares=errorpage@file"
+      - traefik.http.routers.auth-router.service=authservice
+      - traefik.http.services.authservice.loadbalancer.server.port=8081
+      - traefik.http.routers.auth-router.middlewares=errorpage@file
 
 # this is the network that every container should connect to, in order to communicate with Traefik. We give it a nice name to type it easier.
 networks:
