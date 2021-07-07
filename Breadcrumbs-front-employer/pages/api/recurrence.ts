@@ -1,10 +1,9 @@
 const recurrenceAppointments = [{
     title: 'Phone call with Peter Smith',
-    startDate: new Date(2021, 5, 25, 9, 15),
-    endDate: new Date(2021, 5, 25, 11, 30),
+    startDate: new Date(1622185391853),
+    endDate: new Date(1624870991853),
     id: 100,
     rRule: 'FREQ=DAILY;COUNT=3',
-    exDate: '20210628T063500Z,20210626T061500Z',
   }, {
     title: 'Technical test with',
     startDate: new Date(2021, 5, 25, 12, 11),

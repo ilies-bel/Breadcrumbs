@@ -2,6 +2,7 @@ package apicore.resources;
 
 import apicore.entit.tips.interview_tips;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -12,6 +13,7 @@ import java.util.List;
 public class tipsRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"collaborator", "supervisor"})
     public List<interview_tips> getTips() {
         return interview_tips.getTips();
     }

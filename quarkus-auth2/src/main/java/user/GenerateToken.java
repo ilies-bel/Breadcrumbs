@@ -30,10 +30,16 @@ public class GenerateToken {
         String param = user.email;
         String role = Users.findRoleByEmail(param);
 
+        if(!role.isEmpty()) {
+            System.out.println("GenerateToken : generateUserToken :");System.out.println(role);System.out.println("GenerateToken : generateUserToken :");
+        }
+        else {
+            System.out.println("Role non trouvé");
+        }
         String token =
                 Jwt.issuer("https://breadcrumbs.auth.com/auth/jwt")
                         .upn("https://breadcrumb.pwa.fr/auth/users")
-                        .groups(role)
+                        .groups(role).audience("breadcrumbs.pwa.fr")
                         .sign();
 
         return token;

@@ -20,13 +20,10 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class userRessource {
-    @Inject
-    JsonWebToken jwt;
-
     @RolesAllowed("collaborator")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Users> getAll(@Context SecurityContext ctx) {
+    public List<Users> getAll() {
         return Users.listAll();
     }
 

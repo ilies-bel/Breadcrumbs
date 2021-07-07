@@ -28,28 +28,21 @@ public class generateRessource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Users user) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
+        String requestedPassword = user.password;
+        String storedPassword = user.findPasswordByEmail(user.email);
 
-            String requestedPassword = user.password;
-            String storedPassword = user.findPasswordByEmail(user.email);
-            System.out.println("requested password");System.out.println(requestedPassword);System.out.println("requested password");
-            System.out.println("stored password");System.out.println(storedPassword);System.out.println("stored password");
-            if( storedPassword.equals(requestedPassword) ) {
-                token = GenerateToken.generateUserToken(user);
-                TokenResponse response = new TokenResponse(token, user);
+        System.out.println("requested password");System.out.println(requestedPassword);System.out.println("requested password");
+        System.out.println("stored password");System.out.println(storedPassword);System.out.println("stored password");
 
-                String json = mapper.writeValueAsString(response);
-                return Response.ok(response).header("Set-Cookie", "jwt="+token + "; Secure ; HttpOnly").build();
-            }
-            else {
-                TokenResponse response = new TokenResponse(token, user, "Connection_Failure_Wrong_Password");
-                return Response.ok(response).build();
-            }
+        if( storedPassword.equals(requestedPassword) ) {
+            token = GenerateToken.generateUserToken(user);
+            TokenResponse response = new TokenResponse(token, user);
+
+            return Response.ok(response).header("Set-Cookie", "jwt="+token + "; Secure ; HttpOnly").build();
         }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return Response.ok(e).status(520).build();
+        else {
+            TokenResponse response = new TokenResponse(token, user, "Connection_Failure_Wrong_Password");
+            return Response.ok(response).build();
         }
     }
 }

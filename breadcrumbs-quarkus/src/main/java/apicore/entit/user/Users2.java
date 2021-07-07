@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Entity
-public class Users extends PanacheEntityBase {
+public class Users2 extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_user;

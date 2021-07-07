@@ -30,8 +30,9 @@ export default NextAuth({
             },
             async authorize(credentials) {
                 let data = null;
-                const c = await axios.post(`http://localhost:3000/users/login`, {"user":{"email":credentials.email, "password":credentials.password}})
-                    .then(res => data = res.data.json )
+                let url = process.env.BASE_API_URL;
+                const c = await axios.post(url, {"email":credentials.email, "password":credentials.password})
+                    .then(res => data = res.data )
                 if(data.token) {
                     const token = data.token
                     const dataUser = data.user;
