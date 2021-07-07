@@ -101,31 +101,31 @@ services:
     restart: always
     labels:
       - traefik.enable=true
-      - traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && Path($API_PATHS)
+      - traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && PathPrefix(`/api/`, `/auth/`)
       - traefik.http.routers.quarkus.tls=true
       - traefik.http.routers.quarkus.service=quarkusservice
       - traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT
       - traefik.http.routers.quarkus.middlewares=errorpage@file
 
-  quarkus-auth:
-    build:
-      context: ./quarkus-auth2
-      dockerfile: src/main/docker/Dockerfile.jvm
-    expose:
-        - 8081
-    depends_on:
-      - traefik
-      - breadcrumbs-api-core-database
-    networks:
-      - traefik-global-proxy
-    restart: always
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.auth-router.rule=Host(`$AUTH_HOST`)
-      - traefik.http.routers.auth-router.tls=true
-      - traefik.http.routers.auth-router.service=authservice
-      - traefik.http.services.authservice.loadbalancer.server.port=8081
-      - traefik.http.routers.auth-router.middlewares=errorpage@file
+  # quarkus-auth:
+  #   build:
+  #     context: ./quarkus-auth2
+  #     dockerfile: src/main/docker/Dockerfile.jvm
+  #   expose:
+  #       - 8081
+  #   depends_on:
+  #     - traefik
+  #     - breadcrumbs-api-core-database
+  #   networks:
+  #     - traefik-global-proxy
+  #   restart: always
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.auth-router.rule=Host(`$AUTH_HOST`)
+  #     - traefik.http.routers.auth-router.tls=true
+  #     - traefik.http.routers.auth-router.service=authservice
+  #     - traefik.http.services.authservice.loadbalancer.server.port=8081
+  #     - traefik.http.routers.auth-router.middlewares=errorpage@file
 
 # this is the network that every container should connect to, in order to communicate with Traefik. We give it a nice name to type it easier.
 networks:

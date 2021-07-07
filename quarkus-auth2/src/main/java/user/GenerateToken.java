@@ -39,7 +39,7 @@ public class GenerateToken {
         String token =
                 Jwt.issuer("https://breadcrumbs.auth.com/auth/jwt")
                         .upn("https://breadcrumb.pwa.fr/auth/users")
-                        .groups(role).audience("breadcrumbs.pwa.fr")
+                        .groups(role).audience(new HashSet<>(Arrays.asList("https://breadcrumbs.pwa.fr", "https://breadcrumbs.employer.com", "https://breadcrumbs.pwa.fr/api", "https://breadcrumbs.pwa.fr/api/tips")))
                         .sign();
 
         return token;

@@ -12,7 +12,7 @@ import java.util.List;
 @Path("/milestone")
 public class interview_milestoneResource {
     private static void generate() throws IOException {
-        GenerateToken.generate();
+
     }
 
     @GET

@@ -59,12 +59,13 @@ const LoginEmailPage = () => {
 }
 
 const BASE_AUTH_URL = process.env.AUTH_HOST
+const BASE_API_URL = process.env.BASE_API_URL
 const jwtValidation = (token) => {
     let payload = null;
     let error = null;
 
-    const publicKeyInstance  = axios.create({baseURL: BASE_AUTH_URL, url:"/key/public", method: "get"});
-    publicKeyInstance.get("/auth/key/public").then((res) => {
+    const publicKeyInstance  = axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
+    publicKeyInstance.get("/key/public").then((res) => {
         let payload;
         let publicKey = res.data//.replace("BQIDAQAB", "BQIDRPAB");
 
@@ -90,7 +91,7 @@ const Login = () => {
         const authInstance  = axios.create({baseURL: BASE_AUTH_URL, method: "post"});
 
         authInstance({
-            url: "/auth/jwt/login",
+            url: "/login",
             data: {"email": data.email, "password": data.password}
         })
             .then((response) => {
