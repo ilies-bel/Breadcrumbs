@@ -1,6 +1,7 @@
 Set-PSReadLineKeyHandler -Function MenuComplete -Key Tab
 Set-PSReadLineKeyHandler -Function HistorySearchBackward -Key UpArrow
 Set-PSReadLineKeyHandler -Function HistorySearchForward -Key DownArrow
+Set-PSReadLineOption -PredictionSource History
 
 Set-PoshPrompt ys
 
