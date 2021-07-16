@@ -14,6 +14,18 @@ public class availability extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_availability;
-    public Date startTime;
-    public Date endTime;
+    public String startDate;
+    public String endDate;
+    public String title;
+
+    public static void add(String startTime, String endTime, String title) {
+        availability a = new availability();
+        a.startDate = startTime;
+        a.endDate = endTime;
+        a.title = title;
+        a.persist();
+    }
+    public static void add(String startTime, String endTime) {
+        availability.add(startTime, endTime, "Avalability");
+    }
 }
