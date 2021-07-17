@@ -1,5 +1,6 @@
 package apicore.entit.user;
 
+import apicore.entit.Appointment;
 import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -7,12 +8,10 @@ import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.event.Observes;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
 
 @Entity
@@ -27,6 +26,9 @@ public class Users extends PanacheEntityBase {
     public String email;
     public String password;
     public String role;
+
+    @OneToMany(mappedBy = "interviewer")
+    public List<Appointment> appointments;
 
     @Transactional
     @Startup
@@ -66,7 +68,6 @@ public class Users extends PanacheEntityBase {
         else {
             return a.role;
         }
-
     }
     public static String findRoleByFirstName(String first_name) {
         return findRoleByQuery("first_name", first_name);
@@ -87,5 +88,18 @@ public class Users extends PanacheEntityBase {
         else {
             return a.password;
         }
+    }
+    public static Users findUserByQuery(String queryParam, String value) {
+        Users a = Users.find(queryParam, value).firstResult();
+        if(a.first_name.isEmpty()) {
+            System.out.println("First name not found");
+            return null;
+        }
+        else {
+            return a;
+        }
+    }
+    public static Users findUserByEmail(String email) {
+        return findUserByQuery("email", email);
     }
 }

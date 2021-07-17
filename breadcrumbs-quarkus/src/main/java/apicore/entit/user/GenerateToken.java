@@ -2,6 +2,7 @@ package apicore.entit.user;
 
 import apicore.entit.user.Users;
 import io.smallrye.jwt.build.Jwt;
+import io.smallrye.jwt.util.ResourceUtils;
 import org.eclipse.microprofile.jwt.Claims;
 
 import java.io.IOException;
@@ -42,12 +43,11 @@ public class GenerateToken {
             System.out.println("Role non trouvé");
         }
         String token =
-                Jwt.issuer("https://breadcrumbs.auth.com/auth/jwt")
-                        .upn("https://breadcrumb.pwa.fr/auth/users")
+                Jwt.issuer("https://breadcrumbs.pwa.fr")
+                        .upn("https://breadcrumb.pwa.fr/api/auth/users")
                         .groups(role)
                         .audience(new HashSet<>(Arrays.asList("https://breadcrumbs.pwa.fr", "https://breadcrumbs.employer.com", "https://breadcrumbs.pwa.fr/api", "https://breadcrumbs.pwa.fr/api/tips")))
-                        .sign();
-
+                        .sign("privateKey.pem");
         return token;
     }
 }

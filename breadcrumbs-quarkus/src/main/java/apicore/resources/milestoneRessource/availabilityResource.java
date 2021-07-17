@@ -1,5 +1,7 @@
 package apicore.resources.milestoneRessource;
 import apicore.entit.availability.availability;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -41,7 +43,14 @@ public class availabilityResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAvailability() {
+        ObjectMapper mapper = new ObjectMapper();
         List<availability> avaiList = availability.listAll();
-        return Response.ok(avaiList).build();
+        try {
+            String response = mapper.writeValueAsString(avaiList);
+            return Response.ok(response).build();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Response.ok("Parsing Error").build();
+        }
     }
 }

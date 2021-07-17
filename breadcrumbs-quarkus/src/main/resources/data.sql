@@ -6,10 +6,10 @@ insert into interview_tips ("id", ranking, title, description) values (5, 2, 'Ga
 insert into interview_tips ("id", ranking, title, description) values (6, 2, 'Anticipate', '---');
 insert into interview_tips ("id", ranking, title, description) values (7, 2, 'Get in positive mindset', '---');
 
-insert into interview_milestones (interview_processes, interview_type, milestone_name) values ('Process', 'Phone Call', 'Step 1');
-insert into interview_milestones (interview_processes, interview_type, milestone_name) values ('Process', 'Motivation interview', 'Step 2');
-insert into interview_milestones (interview_processes, interview_type, milestone_name) values ('Process', 'Technical test', 'Step 3');
-insert into interview_milestones (interview_processes, interview_type, milestone_name) values ('Process', 'Ambition test', 'Step 4');
+insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Phone Call', 'Step 1', 'inProgress');
+insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Motivation interview', 'Step 2', 'pending');
+insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Technical test', 'Step 3', 'pending');
+insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Ambition test', 'Step 4', 'pending');
 
 insert into interview_type (title, description, time_length, field) values ('Phone Call', 'A quick call to give you the opportunity to give your opinion', 15, 'HR coordinator');
 insert into interview_type (title, description, time_length, field) values ('Motivation interview', 'The first meeting.', 15, 'Marketing manager');

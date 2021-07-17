@@ -1,30 +1,34 @@
 package apicore.entit.availability;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 public class availability extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonProperty("id") @JsonAlias("id")
     public Integer id_availability;
+
     public String startDate;
     public String endDate;
     public String title;
 
+    public availability() {}
+    public availability(String startTime, String endTime, String title) {
+        this.startDate = startTime;
+        this.endDate = endTime;
+        this.title = title;
+    }
     /** Ajoute une availability dans la table de la base de données */
     public static void add(String startTime, String endTime, String title) {
-        availability a = new availability();
-        a.startDate = startTime;
-        a.endDate = endTime;
-        a.title = title;
+        availability a = new availability(startTime, endTime, title);
         a.persist();
     }
     public static void add(String startTime, String endTime) {
