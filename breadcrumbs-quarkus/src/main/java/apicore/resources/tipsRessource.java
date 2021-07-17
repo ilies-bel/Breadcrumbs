@@ -19,7 +19,6 @@ public class tipsRessource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
     public List<interview_tips> getTips(@HeaderParam("Authorization") String jjr) {
         try {
             System.out.println("jjr dans try-catch tips");System.out.println(jjr);System.out.println("/tips");

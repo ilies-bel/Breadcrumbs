@@ -18,15 +18,22 @@ import {
 import axios from 'axios';
 
 //Requête à effectuer à chaque changement dans le calendrier
-  axios.defaults.baseURL = process.env.BASE_API_URL;
-  const fetchData = async (changedData) => await
-      axios.post(`/api/tips?data`, changedData)
-          .then(res => (console.log(res.data)))
-          .catch(() => ({
-                  error: true,
-                  tipsList: null,
-              }),
-          );
+  axios.baseURL = "https://breadcrumbs.pwa.fr";
+  const fetchData = async (changedData) => {
+    const firstData = changedData[0];
+    const dataToSend = {
+      "title": firstData.title,
+      "startDate": firstData?.startDate.toString() ?? "No start date",
+      "endDate": firstData?.endDate?.toString() ?? "No endDate"
+    }
+    console.log("dataToSend");console.log(changedData);console.log("/dataToSend");
+    await axios.put("https://breadcrumbs.pwa.fr/api/availability/list", changedData)
+            .then(res => (console.log(res.data)))
+            .catch(e => {
+                  console.log(e);
+                }
+            )
+  };
 
 const Appointment = ({
   children, style, ...restProps
@@ -156,4 +163,3 @@ const Appointment = ({
   }
     }
   }
-  

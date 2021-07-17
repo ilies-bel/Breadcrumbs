@@ -23,15 +23,4 @@ public class interview_milestoneResource {
         generate();
         return interview_milestones.listAll();
     }
-
-    @POST
-    @Transactional
-    @Path("/ava")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response addAvailability(availability a) {
-        System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
-        availability.add(a.startDate, a.endDate, a.title);
-        return Response.ok("Bien reçu : milestone / ava").build();
-    }
 }
