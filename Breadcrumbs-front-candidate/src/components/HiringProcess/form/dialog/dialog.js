@@ -15,8 +15,8 @@ import axios from 'axios';
 const optionsCalendar = ['Google calendar','Outlook',]
 
 const openCalendarLink = (goo, outl) => {
-  outl && window.open('https://outlook.office.com/calendar/0/deeplink/compose?enddt=2021-06-15T08%3A45%3A00%2B00%3A00&location=Our%20office&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2021-06-15T08%3A15%3A00%2B00%3A00&subject=Phone%20call');
-  goo && window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20210615T081500Z%2F20210615T084500Z&location=Our%20office&text=Phone%20call')
+  outl && window.open('https://outlook.office.com/calendar/0/deeplink/compose?enddt=2021-06-15T08%3A45%3A00%2B00%3A00&location=Ouroffice&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2021-06-15T08%3A15%3A00%2B00%3A00&subject=Phone call');
+  goo && window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20210615T081500Z%2F20210615T084500Z&location=Ouroffice&text=Phone call')
 }
 
 export default function ConfirmationDialogRaw(props) {

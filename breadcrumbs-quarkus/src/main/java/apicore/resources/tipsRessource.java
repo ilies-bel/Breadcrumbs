@@ -4,8 +4,10 @@ import apicore.entit.tips.interview_tips;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -13,13 +15,20 @@ import java.util.List;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import javax.ws.rs.core.SecurityContext;
+
+@RequestScoped
 @Path("/tips")
 public class tipsRessource {
     @Inject JWTParser parser;
+    @Inject JsonWebToken jwt;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<interview_tips> getTips(@HeaderParam("Authorization") String jjr) {
+    @RolesAllowed({"candidate", "collaborator"})
+    public List<interview_tips> getTips(@HeaderParam("Authorization") String jjr, @Context SecurityContext ctx) {
+        String principal = jwt.getClaim("name").toString();
+        System.out.println(principal);
         try {
             System.out.println("jjr dans try-catch tips");System.out.println(jjr);System.out.println("/tips");
             JsonWebToken jt = parser.parse(jjr);

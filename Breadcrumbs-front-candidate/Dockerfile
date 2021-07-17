@@ -1,11 +1,11 @@
 FROM node:latest
 
-WORKDIR /usr/src/app
+#WORKDIR /usr/src/app
 COPY package.json .
 
 #RUN npm install --force
 
-COPY . .
+#COPY . .
 
 CMD npm run build && npm run serve
-
+#CMD npm run start

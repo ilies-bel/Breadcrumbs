@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {TitleSource} from 'Navigation/titleContext'
 import {TitleDescriptionSource} from 'Navigation/descriptionContext';
 import {TIPS_TITLE} from "constants/routes";
@@ -12,7 +12,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {useGetTips} from 'utils/axios';
-import { useGetTips2 } from '../../utils/axios2';
 
 import {PageDescription} from "../Navigation";
 import {Grid} from "@material-ui/core";
@@ -50,7 +49,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Tips = () => {
-    const [{data, loading, error}, refetch] = useGetTips2();
+    const context = useContext;
+    const token = window.localStorage.getItem("token");
+    console.log(token);console.log("/token");
+    const [{data, loading, error}, refetch] = useGetTips({'Authorization': `Bearer ${token}`});
     const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();

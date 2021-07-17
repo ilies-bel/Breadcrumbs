@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router, NavLink, Route, useRouteMatch, useHistory, Link} from 'react-router-dom';
 import useAxios from 'axios-hooks'
 import Moment from 'moment'; //TODO: essayer Luxon
@@ -18,6 +18,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import {FlashyButton} from "littleComponents";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { useCreateAppointment } from '../../../utils/axios';
 
 const useStyles = makeStyles(theme => ({
     dispoInput: theme.element.button.big,
@@ -42,37 +43,49 @@ const DispoInput = (props) => {
 const datesTab = [
     {
         day: "23 November 2021",
-        startTime: "13:15",
-        endTime: "14:00"
+        startDate: "13:15",
+        endDate: "14:00"
     },
     {
         day: "23 November 2021",
-        startTime: "14:15",
-        endTime: "15:00"
+        startDate: "14:15",
+        endDate: "15:00"
     },
     {
         day: "23 November 2021",
-        startTime: "15:15",
-        endTime: "16:00"
+        startDate: "15:15",
+        endDate: "16:00"
     },
     {
         day: "24 November 2021",
-        startTime: "10:11",
-        endTime: "11:00"
+        startDate: "10:11",
+        endDate: "11:00"
     },
     {
         day: "23 November 2021",
-        startTime: "11:15",
-        endTime: "12:00"
+        startDate: "11:15",
+        endDate: "12:00"
     }
 ]
 const DateItem = (props) => {
     const history = useHistory();
-    if (!(props.day && props.startTime && props.endTime)) {
+    const context = useContext();
+    const [{data, loading, error}, execute] = useCreateAppointment({
+        startDate: props.startDate,
+        endDate: props.endDate,
+        interviewer: 'collaborator',
+        candidate_email: context.email
+    });
+    
+    const handleConfirm = (startDate, endDate) => {
+        execute();
+        history.push(CONFIRM)
+    }
+    if (!(props.startDate && props.endDate)) {
         return (
             <Accordion>
                 <AccordionSummary>
-                    Error. No appointment Found <ExpandMore/>
+                    Error. Bad ressource <ExpandMore/>
                 </AccordionSummary>
             </Accordion>
         )
@@ -81,14 +94,14 @@ const DateItem = (props) => {
         return (
             <Accordion>
                 <AccordionSummary>
-                    {props.day} | {props.startTime} to {props.endTime} <ExpandMore/>
+                    {props.startDate} to {props.endDate} <ExpandMore/>
                 </AccordionSummary>
                 <AccordionDetails className="appointmentDetails">
                     <div>
                     You’re about to book an appointment for your phone interview.<br/>
 
                     Do you confirm this time slot?</div>
-                    <FlashyButton onClick={() => history.push(CONFIRM)} > Confirm Appointment </FlashyButton>
+                    <FlashyButton onClick={(startDate, endDate) => handleConfirm(startDate, endDate)} > Confirm appointment </FlashyButton>
                 </AccordionDetails>
             </Accordion>
         )
@@ -96,22 +109,24 @@ const DateItem = (props) => {
 }
 const SelectDate = () => {
     const [open, setOpen] = useState(false);
-    const [{ data, loading, error }, refetch] = useGetDisponibilities();
-    const history = useHistory();
+    const [{ data, loading, error }] = useGetDisponibilities();
+    
 
     function handleModal() {
         setOpen(!open);
     }
 
+    if (loading) return <CircularProgress />
+    if(error) return <strong>Error. No data found</strong>
+
     return (
         <>
         <PageDescription>Book your appointment</PageDescription>
             {
-                datesTab.map((appointment, index) =>
+                data.map((avalability, index) =>
                     <DateItem key={index}
-                        day={appointment.day}
-                    startTime={appointment.startTime}
-                    endTime={appointment.endTime}
+                    startDate={avalability.startDate}
+                    endDate={avalability.endDate}
                     />
                 )
             }

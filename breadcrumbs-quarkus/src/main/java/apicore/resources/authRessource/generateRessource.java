@@ -44,7 +44,7 @@ public class generateRessource {
 
             try {
                 String response = mapper.writeValueAsString(t_response);
-                return Response.ok(response).header("Set-Cookie", "jwt="+token + "; Secure ; HttpOnly").build();
+                return Response.ok(response)/*.header("Set-Cookie", "jwt="+token + "; Secure ; HttpOnly")*/.build();
             }
             catch (JsonProcessingException e) {
                 e.printStackTrace();

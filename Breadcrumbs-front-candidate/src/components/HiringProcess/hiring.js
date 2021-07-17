@@ -9,44 +9,25 @@ import {HIRING_DESCRIPTION} from "../../constants/description";
 import {TitleDescriptionSource} from "../Navigation/descriptionContext"
 import { PageDescription } from 'littleComponents';
 
-import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { makeStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import InsertInvitationOutlinedIcon from '@material-ui/icons/InsertInvitationOutlined';
 import './hiring.scss';
-import { useGetProcess } from '../../utils/axios';
+import { useGetProcess, useGetMilestone } from 'utils/axios';
 import {HelpOutline} from "@material-ui/icons";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 
-const useStyles = makeStyles(theme => ({
-    button: {
-        height: '50px',
-        width: '100%',
-        borderStyle: 'Solid',
-        borderColor: '#3572F1',
-        borderWidth: '2px',
-        borderRadius: '5px',
-        padding: '50px',
-        background: '#EBF1FE',
-        color: '#3572F1',
-        fontFamily: 'Roboto',
-        fontStyle: 'normal',
-        fontWeight: 300,
-        fontSize: '20px',
-        lineHeight: '23px',
-        letterSpacing: '-0.01em'
-    },
-    link: theme.element.link.secondary,
-}))
-
 const HiringProcess = () => {
     const history = useHistory();
-    const {path, url} = useRouteMatch();
-    const classes = useStyles();
-    const [{ data, loading, error }, refetch] = useGetProcess();
+    
+    const [{ data, loading, error }, refetch] = useGetMilestone();
     const context = useAuthContext();
+
+    const handleButtonClick = (status) => {
+        status !== 'pending' && history.push(`milestone/${process?.milestone_name}`)
+    }
 
     if (loading) return <CircularProgress />
     if (error) return <strong>Error. No data found</strong>
@@ -55,13 +36,13 @@ const HiringProcess = () => {
         <>
             <PageDescription>{HIRING_DESCRIPTION.PROCESS}</PageDescription>
             <ol className="timeline">
-                {data.map((process, i) =>
-                <li key={i} >
-                    <ButtonBase className={classes.button} onClick={() => history.push(`milestone/${process?.milestone_name}`)} >
-                        <div className="buttonTitle">Due to 2{i} november</div>
-                        <a className={classes.label} >
-                                { process?.milestone_name }
-                        </a>
+                {data && data.map((process, i) =>
+                <li key={i} className={process?.status} >
+                    <ButtonBase onClick={() => handleButtonClick(process?.status) } >
+                        <div className="buttonTitle">Due to 2{i} november - {process?.status}</div>
+                            
+                            { process?.milestone_name } - { process?.interview_type }
+
                         <HelpOutline color="primary" />
                         <Link to={`${DISPO}`}>
                             <InsertInvitationOutlinedIcon color="primary" />

@@ -44,8 +44,9 @@ public class GenerateToken {
         }
         String token =
                 Jwt.issuer("https://breadcrumbs.pwa.fr")
-                        .upn("https://breadcrumb.pwa.fr/api/auth/users")
-                        .groups(role)
+                        .upn("https://breadcrumb.pwa.fr/api/tips")
+                        .groups(new HashSet<>(Arrays.asList("candidate", "collaboratorPrincipalGénéré avec token")))
+                        .claim("name", "collaborator")
                         .audience(new HashSet<>(Arrays.asList("https://breadcrumbs.pwa.fr", "https://breadcrumbs.employer.com", "https://breadcrumbs.pwa.fr/api", "https://breadcrumbs.pwa.fr/api/tips")))
                         .sign("privateKey.pem");
         return token;

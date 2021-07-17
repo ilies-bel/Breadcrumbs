@@ -4,16 +4,17 @@ const BASE_API_URL = process.env.AXIOS_BASE_URL
 const AVAILABILITY = process.env.AVAILABILITY_API;
 const tips = process.env.TIPS_API
 const AMBASSADOR = process.env.AMBASSADOR_API;
-const PROCESS = process.env.PROCESS_API
+const PROCESS = process.env.PROCESS_MILESTONE_API
 const APPOINTMENT = process.env.APPOINTMENT_API
 const INTERVIEW_TYPE = process.env.INTERVIEW_TYPE;
 const CANDIDATE_API_URL = process.env.CANDIDATE_API_URL
 
 
-export const useAPI = (path='') => {
+export const useAPI = (path='', header={}) => {
     return useAxios({
         baseURL: BASE_API_URL,
-        url: path
+        url: path,
+        headers: header
     })
 }
 
@@ -24,13 +25,16 @@ export const useGetAccount = () => {
 export const useGetDisponibilities = () => {
     return useAPI(AVAILABILITY)
 }
-export const useGetTips = () => {
-    return useAPI(tips);
+export const useGetTips = (header) => {
+    return useAPI(tips, header);
 }
 export const useGetAmbassador = () => {
     return useAPI(AMBASSADOR);
 }
 export const useGetProcess = () => {
+    return useAPI(PROCESS);
+}
+export const useGetMilestone = () => {
     return useAPI(PROCESS);
 }
 export const useInterviewType = (id='') => {
@@ -39,17 +43,17 @@ export const useInterviewType = (id='') => {
 
 
 //TODO: Fonctions à compléter en fonctions de l'API mis en place
-export const useAppointmentAPI = (path='', data={}, method='get') => {
+export const useAppointmentAPI = (path='', data={}, method='get', manual=false) => {
     return useAxios({
         baseURL: `${BASE_API_URL}/${APPOINTMENT}`,
         method: method,
         url: path,
         data: data
-    });
+    }, {manual: manual});
 }
 
 export const useCreateAppointment = (data={}) => {
-    return useAppointmentAPI(data, 'post')
+    return useAppointmentAPI('', data, 'post', true)
 }
 export const useEditAppointment = (id, data={}) => {
     return useAppointmentAPI(`/${id}`, data, 'put')

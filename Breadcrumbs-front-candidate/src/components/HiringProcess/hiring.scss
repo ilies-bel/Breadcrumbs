@@ -15,13 +15,57 @@ h2 {
         margin: 0;
         padding-bottom: 1em;
 
-      &:first-child::before {
-        top: 42px;
-      }
+        &:first-child::before {
+          top: 42px;
+        }
 
-      &:last-child::before {
-        height: 45%;
-      }
+        &:last-child::before {
+          height: 45%;
+        }
+
+        .MuiButtonBase-root {
+          color: #3572F1;
+          width: 100%;
+          height: 50px;
+          padding: 50px;
+          font-size: 20px;
+          background: #EBF1FE;
+          font-style: normal;
+          font-family: Roboto;
+          font-weight: 300;
+          line-height: 23px;
+          border-color: #3572F1;
+          border-style: Solid;
+          border-width: 2px;
+          border-radius: 5px;
+          letter-spacing: -0.01em;
+
+          .buttonTitle {
+            width: 100%;
+            height: 20px;
+            background-color: royalblue;
+            position: absolute;
+            top: 0;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 12px;
+            color: white;
+          }
+        }
+
+        &.pending {
+          .MuiButtonBase-root {
+            opacity: 50%;
+          }
+          .buttonTitle {
+            background-color: darkgray;
+          }
+          &:after {
+            border-color: darkgray;
+          }
+        }
+        
       }
     li::before {
         content: '';
@@ -45,18 +89,7 @@ h2 {
         height: 20px;
         width: 20px;
       }
-  .buttonTitle {
-    width: 100%;
-    height: 20px;
-    background-color: royalblue;
-    position: absolute;
-    top: 0;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 12px;
-    color: white;
-  }
+  
 }
 .appointmentDetails {
   display: block;

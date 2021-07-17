@@ -161,6 +161,7 @@ module.exports = (env, argv) => {
             ]
         },
         devServer: {
+            host: '0.0.0.0',
             port: 5000,
             open: true,
             inline: true,

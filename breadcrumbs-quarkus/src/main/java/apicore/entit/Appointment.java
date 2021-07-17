@@ -21,9 +21,13 @@ public class Appointment extends availability {
     public Users interviewer;
 
     @ManyToOne
+    public Users candidate;
+
+    @ManyToOne
     public interview_milestones milestone;
 
     public String interviewer_email;
+    public String candidate_email;
     public String interview_type;
 
     public static void add(String startTime, String endTime, String title, String email, String type) {

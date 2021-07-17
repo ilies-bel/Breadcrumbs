@@ -11,6 +11,7 @@ import {
   Toolbar,
   DateNavigator,
   TodayButton,
+  Resources,
   EditRecurrenceMenu,
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
@@ -20,14 +21,9 @@ import axios from 'axios';
 //Requête à effectuer à chaque changement dans le calendrier
   axios.baseURL = "https://breadcrumbs.pwa.fr";
   const fetchData = async (changedData) => {
-    const firstData = changedData[0];
-    const dataToSend = {
-      "title": firstData.title,
-      "startDate": firstData?.startDate.toString() ?? "No start date",
-      "endDate": firstData?.endDate?.toString() ?? "No endDate"
-    }
-    console.log("dataToSend");console.log(changedData);console.log("/dataToSend");
-    await axios.put("https://breadcrumbs.pwa.fr/api/availability/list", changedData)
+    const availabilities = changedData.filter((availability) => availability.type === 'Availability');
+
+    await axios.put("https://breadcrumbs.pwa.fr/api/availability/list", availabilities)
             .then(res => (console.log(res.data)))
             .catch(e => {
                   console.log(e);
@@ -35,22 +31,26 @@ import axios from 'axios';
             )
   };
 
-const Appointment = ({
-  children, style, ...restProps
-}) => (
-  <Appointments.Appointment
-    {...restProps}
-    style={{
-      ...style,
-      backgroundColor: 'roylalblue',
-      borderRadius: '8px',
-      fontFamily: 'Roboto'
-    }}
-  >
-    {children}
-  </Appointments.Appointment>
-);
 
+const allowDrag = ({ type }) => type !== 'Appointment';
+const Appointment = ({
+  children, style, data, ...restProps
+}) => {
+    return (
+      <Appointments.Appointment
+      data={data}
+        {...restProps}
+        style={{
+          ...style,
+          borderRadius: '8px',
+          fontFamily: 'Roboto',
+          cursor: allowDrag(data) ? 'pointer' : 'not-allowed'
+        }}
+      >
+        {children}
+      </Appointments.Appointment>
+    )
+} 
   const SHIFT_KEY = 16;
 
   export default class Demo extends React.PureComponent {
@@ -60,6 +60,16 @@ const Appointment = ({
         data: this.props.resList,
         currentDate: this.props.resList[4].startDate,
         isShiftPressed: false,
+        mainResourceName: 'type',
+        resources: [
+          {
+            fieldName: 'type',
+            instances: [
+              {id: 'Availability', text: 'Free time', color: 'royalblue'},
+              {id: 'Appointment', text: 'Appointment with a candidate', color: 'darkgray'}
+            ]
+          }
+        ]
       };
       this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
   
@@ -125,13 +135,13 @@ const Appointment = ({
     }
   
     render() {
-      const { currentDate, data } = this.state;
+      const { currentDate, data, resources } = this.state;
   if(data){
       return (
         <Paper>
           <Scheduler
             data={data}
-            height={1000}
+            height={800}
           >
             <ViewState
               currentDate={currentDate}
@@ -153,7 +163,10 @@ const Appointment = ({
             <AppointmentTooltip
               showDeleteButton
             />
-            <DragDropProvider />
+            <DragDropProvider allowDrag={allowDrag} />
+            <Resources
+              data={resources}
+            />
           </Scheduler>
         </Paper>
       );

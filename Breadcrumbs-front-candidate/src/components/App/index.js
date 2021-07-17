@@ -39,13 +39,13 @@ const App = () => {
             <Router>
                 <AuthContext.Provider value={ { token: token, userName: user, setData: setData } } >
                 { !token && <Redirect to="/login/email"/>}
+                { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>
                     <MainNav>
                         <TitleSource>Breadcrumbs</TitleSource>
                         <div className={classes.offset}/>
 
                         <TitleDescriptionSource></TitleDescriptionSource>
-                        <Route exact path={ROUTES.LANDING} component={HiringProcessPage}/>
                         <Route path={ROUTES.ACCOUNT} component={AccountPage}/>
                         <Route path={ROUTES.HIRING_PROCESS} component={HiringProcessPage}/>
                         <Route path={ROUTES.TIPS} component={TipsPage}/>

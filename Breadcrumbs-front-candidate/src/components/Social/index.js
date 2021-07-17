@@ -65,7 +65,6 @@ const SocialPage = () => {
     const {path, url} = useRouteMatch();
     return (
         <Router>
-            <Redirect to='/hiring'/>
             <TitleSource>{SOCIAL_TITLE}</TitleSource>
 
             <Paper >

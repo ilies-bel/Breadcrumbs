@@ -105,7 +105,7 @@ services:
       - traefik.http.routers.quarkus.tls=true
       - traefik.http.routers.quarkus.service=quarkusservice
       - traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT
-      - traefik.http.routers.quarkus.middlewares=errorpage@file
+  #    - traefik.http.routers.quarkus.middlewares=errorpage@file
 
   # quarkus-auth:
   #   build:
