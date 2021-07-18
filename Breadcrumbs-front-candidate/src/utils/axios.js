@@ -25,8 +25,8 @@ export const useGetAccount = () => {
 export const useGetDisponibilities = () => {
     return useAPI(AVAILABILITY)
 }
-export const useGetTips = (header) => {
-    return useAPI(tips, header);
+export const useGetTips = () => {
+    return useAPI(tips);
 }
 export const useGetAmbassador = () => {
     return useAPI(AMBASSADOR);

@@ -15,47 +15,47 @@ services:
     networks:
       - traefik-global-proxy
 
-#  pwa:
-#    build: $PWA_DIR
-#    environment:
-#        HOST: 0.0.0.0
-#        PORT: $PWA_PORT
-#    working_dir: /usr/src/app
-#    volumes:
-#      - $PWA_DIR:/usr/src/app
-#    expose:
-#      - $PWA_PORT
-#    networks:
-#      - traefik-global-proxy
-#    labels:
-#      - traefik.enable=true
-#      - traefik.http.routers.pwa.rule=Host(`$PWA_HOST`)
-#      - traefik.http.routers.pwa.tls=true
-#      - traefik.http.routers.pwa.service=pwaservice
-#      - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
-#      - traefik.http.routers.pwa.middlewares=errorpage@file
-#    depends_on:
-#      - traefik
-#
-#  employer:
-#    build: $EMPLOYER_DIR
-#    environment:
-#        HOST: 0.0.0.0
-#        PORT: $EMPLOYER_PORT
-#    volumes:
-#      - $EMPLOYER_DIR:/usr/src/app
-#    working_dir: /usr/src/app
-#    expose:
-#      - $EMPLOYER_PORT
-#    networks:
-#      - traefik-global-proxy
-#    labels:
-#      - traefik.enable=true
-#      - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
-#      - traefik.http.routers.employer.tls=true
-#      - traefik.http.routers.employer.middlewares=errorpage@file
-#    depends_on:
-#      - traefik
+  pwa:
+    build: $PWA_DIR
+    environment:
+        HOST: 0.0.0.0
+        PORT: $PWA_PORT
+    working_dir: /usr/src/app
+    volumes:
+      - $PWA_DIR:/usr/src/app
+    expose:
+      - $PWA_PORT
+    networks:
+      - traefik-global-proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pwa.rule=Host(`$PWA_HOST`)
+      - traefik.http.routers.pwa.tls=true
+      - traefik.http.routers.pwa.service=pwaservice
+      - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
+      - traefik.http.routers.pwa.middlewares=errorpage@file
+    depends_on:
+      - traefik
+
+  # employer:
+  #   build: $EMPLOYER_DIR
+  #   environment:
+  #       HOST: 0.0.0.0
+  #       PORT: $EMPLOYER_PORT
+  #   volumes:
+  #     - $EMPLOYER_DIR:/usr/src/app
+  #   working_dir: /usr/src/app
+  #   expose:
+  #     - $EMPLOYER_PORT
+  #   networks:
+  #     - traefik-global-proxy
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
+  #     - traefik.http.routers.employer.tls=true
+  #     - traefik.http.routers.employer.middlewares=errorpage@file
+  #   depends_on:
+  #     - traefik
 
 
 #  breadcrumbs-api-core:
@@ -86,15 +86,10 @@ services:
     networks:
       - traefik-global-proxy
     restart: always
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.datab.rule=Host(`$PWA_HOST`)
-      - traefik.http.routers.datab.service=databservice
-      - traefik.http.services.databservice.loadbalancer.server.port=5432
     
   quarkus:
     build:
-      context: ./breadcrumbs-quarkus2
+      context: ./breadcrumbs-quarkus
       dockerfile: src/main/docker/Dockerfile.jvm
     expose:
        - $QUARKUS_PORT
@@ -110,7 +105,7 @@ services:
       - traefik.http.routers.quarkus.tls=true
       - traefik.http.routers.quarkus.service=quarkusservice
       - traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT
-  #    - traefik.http.routers.quarkus.middlewares=errorpage@file
+      - traefik.http.routers.quarkus.middlewares=errorpage@file
 
   # quarkus-auth:
   #   build:

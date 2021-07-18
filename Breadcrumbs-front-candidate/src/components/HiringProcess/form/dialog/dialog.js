@@ -58,7 +58,7 @@ export default function ConfirmationDialogRaw(props) {
           </FormControl>
       </DialogContent>
       <DialogActions>
-          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={props.onClose}>Cancesssl</button>
           <button onClick={() => handleOk(calendarChosen.google, calendarChosen.outlook) }>Confirm</button>          
       </DialogActions>
     </Dialog>

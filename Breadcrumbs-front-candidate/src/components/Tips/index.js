@@ -52,7 +52,7 @@ const Tips = () => {
     const context = useContext;
     const token = window.localStorage.getItem("token");
     console.log(token);console.log("/token");
-    const [{data, loading, error}, refetch] = useGetTips({'Authorization': `Bearer ${token}`});
+    const [{data, loading, error}, refetch] = useGetTips();
     const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();

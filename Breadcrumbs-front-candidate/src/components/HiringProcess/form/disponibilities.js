@@ -119,14 +119,14 @@ const SelectDate = () => {
     if (loading) return <CircularProgress />
     if(error) return <strong>Error. No data found</strong>
 
-    return (
+    if(data) return (
         <>
         <PageDescription>Book your appointment</PageDescription>
             {
                 data.map((avalability, index) =>
                     <DateItem key={index}
-                    startDate={avalability.startDate}
-                    endDate={avalability.endDate}
+                    startDate={avalability?.startDate}
+                    endDate={avalability?.endDate}
                     />
                 )
             }
