@@ -10,7 +10,6 @@ class BottomLink extends React.Component {
             hover: false
         }
         this.handleClick = () => {
-            console.log("clicked")
             this.props.onChange(this.props.index)
         }
         this.href=this.props.href

@@ -32,7 +32,7 @@ export default NextAuth({
             async authorize(credentials, req) {
                 let data = null;
                 let url = process.env.AUTH_URL;
-                console.log(req);console.log("/req")
+                
                 const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password})
                     .then(async(response) => {
                             const res = response.data;
@@ -47,7 +47,7 @@ export default NextAuth({
                             }
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error(e)
                         return null;
                     })
                 if(data) {

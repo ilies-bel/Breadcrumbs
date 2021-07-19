@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Label from '../../components/Label';
-import Calendar from '../../components/Calendar';
+
+import Calendar from '@/components/Calendar';
 import axios from 'axios';
 import { Switch, FormControlLabel } from '@material-ui/core';
 import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
@@ -32,11 +32,9 @@ const useEventSource = (url) => {
         }
         return () => {
             source.close();
-            //console.log('event closed')
         }
 
     }, [])
-//console.log(data)
     return data;
 }
 
@@ -58,9 +56,14 @@ export default function Hiring({resList, error}) {
     const [checked, setChecked] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);
     const [session, loading] = useSession();
+    const [confirm, setText] = useState("Here you can edit your availabilities");
     const toggleChecked = () => {
         setChecked((prev) => !prev);
-      };
+        setText("Here you can edit your availabilities");
+      }
+    const confirmChange = () => {
+        checked && setText("Change Saved !");
+    }
     
     if(!session) return (<strong>You must be signed in to view this page</strong>)
     if(loading) return (<strong>Loading ...</strong>)
@@ -71,15 +74,14 @@ export default function Hiring({resList, error}) {
             <br/>
 
             <div>
+            <div><strong>{confirm}</strong></div>
                 <FormControlLabel
                     control={<Switch size="small" checked={checked} onChange={toggleChecked} />}
                     label={!checked ? 'Locked' : 'Editing'}
                 />
                 {error && <div>There was an error.</div>}
-                {!error && resList && (<div style={style.calendar}>  <Calendar resList={resList} onEdit={checked} /> </div>)}
-            </div>
-
-            
+                {!error && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} /> </div>)}
+            </div>            
         </>
     );
 }

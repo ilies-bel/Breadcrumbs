@@ -69,7 +69,6 @@ class Header extends React.Component {
         const { classes } = this.props;
         const { data } = this.state;
         const dataUser = data?.user;
-        console.log(data);console.log("/data");
 
         return (
             <header>
