@@ -76,7 +76,7 @@ export default function Hiring({resList, error}) {
                     label={!checked ? 'Locked' : 'Editing'}
                 />
                 {error && <div>There was an error.</div>}
-                {!error && resList && (<div style={style.calendar}>  <Calendar resList={resList} /> </div>)}
+                {!error && resList && (<div style={style.calendar}>  <Calendar resList={resList} onEdit={checked} /> </div>)}
             </div>
 
             
