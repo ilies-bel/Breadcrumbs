@@ -58,37 +58,34 @@ const LoginEmailPage = () => {
     )
 }
 
-const BASE_AUTH_URL = process.env.AUTH_HOST
 const BASE_API_URL = process.env.BASE_API_URL
 const jwtValidation = (token) => {
     let payload = null;
-    let error = null;
 
     const publicKeyInstance  = axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
     publicKeyInstance.get("/key/public").then((res) => {
         let payload;
         let publicKey = res.data//.replace("BQIDAQAB", "BQIDRPAB");
 
-        verify(token, publicKey, function(err, decoded) {
-            !err ? payload = decoded : error = err;
-        });
+        payload = decode(token, publicKey);
         console.log("payload");console.log(payload);console.log("/payload");
     })
         .catch((e) => {
             console.error("Public Key not loaded")
             console.error(e);
         });
-    return {payload, error}
+    return payload;
 }
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
     const context = useAuthContext();
+    console.log(BASE_API_URL);console.log("/BASE_API_URL");
 
     const onSubmit = handleSubmit((data) => {
 
         console.log(data);
 
-        const authInstance  = axios.create({baseURL: BASE_AUTH_URL, method: "post"});
+        const authInstance  = axios.create({baseURL: BASE_API_URL, method: "post"});
 
         authInstance({
             url: "/auth/login",
@@ -98,18 +95,19 @@ const Login = () => {
                 const res = response.data;
 
                 // handle server responses
-                const {payload, error} = jwtValidation(res.token);
+                const payload = jwtValidation(res.token);
                 error && console.error(error)
                 if (res.status==="Success") {
                     localStorage.setItem("user", JSON.stringify(response.data));
-                    console.log("login successfully");
+                    console.log("login successfully"); console.log(payload);
                     //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                    !error && localStorage.setItem("user", res.user.first_name);
-                    !error && localStorage.setItem("token", res.token);
-                    !error && context.setData("token", res.token);
+                    payload && localStorage.setItem("user", res.user.first_name);
+                    payload && localStorage.setItem("token", res.token);
+                    payload && context.setData("token", res.token);
 
                 } else if (res.status === "Connection_Failure_Wrong_Password") {
                     console.log("mail or password invalid");
+                    console.log(payload);
 
                     setError("all", {
                         type: "server",

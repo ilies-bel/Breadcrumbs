@@ -25,6 +25,7 @@ export default NextAuth({
       }),
        Providers.Credentials({
             name: 'email',
+           redirect: 'false',
             credentials: {
                 email: { label: "user", type: "text", placeholder: "your email" },
                 password: { label: "type your password", type: "password" }
@@ -34,11 +35,11 @@ export default NextAuth({
                 let url = process.env.AUTH_URL;
                 
                 const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password})
-                    .then(async(response) => {
+                    .then((response) => {
                             const res = response.data;
 
                             if (res.status==="Success") {
-                                const payload = await jwtValidation(res?.token);
+                                const payload = jwtValidation(res?.token);
                                 //Si le token à été décodé
                                 payload ? data = {id: 1, name: ["Paul", "Domi", payload, res?.token], email: res?.email} : data=null;
                             }
@@ -47,7 +48,7 @@ export default NextAuth({
                             }
                     })
                     .catch(e => {
-                        console.error(e)
+                        console.error(e.response)
                         return null;
                     })
                 if(data) {
@@ -81,7 +82,7 @@ const jwtValidation = async(token) => {
         let publicKey = res.data;
         payload = decode(token, publicKey);
     }).catch((e) => {
-        console.error(e);
+        console.error(payload);
     });
 
     if(payload?.iss === 'breadcrumbs') {

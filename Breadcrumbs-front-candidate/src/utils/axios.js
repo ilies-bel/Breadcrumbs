@@ -11,6 +11,7 @@ const CANDIDATE_API_URL = process.env.CANDIDATE_API_URL
 
 
 export const useAPI = (path='', header={}) => {
+    console.log(BASE_API_URL);
     return useAxios({
         baseURL: BASE_API_URL,
         url: path,

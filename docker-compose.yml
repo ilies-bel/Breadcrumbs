@@ -20,6 +20,9 @@ services:
     environment:
         HOST: 0.0.0.0
         PORT: $PWA_PORT
+        BASE_API_URL: $PWA_BASE_API_URL
+        AUTH_HOST: $PWA_BASE_API_URL
+        AXIOS_BASE_URL: $PWA_BASE_API_URL
     working_dir: /usr/src/app
     volumes:
       - $PWA_DIR:/usr/src/app
