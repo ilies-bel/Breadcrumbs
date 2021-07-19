@@ -1,16 +1,12 @@
 package apicore.entit.user;
 
-import apicore.entit.Appointment;
-import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
+import apicore.entit.milestone.availability.Appointment;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
-import io.quarkus.runtime.StartupEvent;
 
-import javax.enterprise.event.Observes;
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 
@@ -24,10 +20,10 @@ public class Users extends PanacheEntityBase {
     public String first_name;
     public String last_name;
     public String email;
-    public String password;
+    private String password;
     public String role;
 
-    @OneToMany(mappedBy = "interviewer")
+    @OneToMany(mappedBy = "interlocutor")
     public List<Appointment> appointments;
 
     @Transactional
@@ -106,5 +102,9 @@ public class Users extends PanacheEntityBase {
     }
     public static Users findUserByEmail(String email) {
         return findUserByQuery("email", email);
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 }

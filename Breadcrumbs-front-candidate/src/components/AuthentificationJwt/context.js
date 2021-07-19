@@ -4,7 +4,13 @@ export const AuthContext = React.createContext({
     token: '',
     userName: '',
     profilePicture: null,
-    setData: () => {}
+    title: null,
+    startDate: null,
+    endDate: null,
+    interlocutor: null,
+
+    setData: () => {},
+    setAppointment: () => {}
 });
 
 export const useAuthContext = () => {

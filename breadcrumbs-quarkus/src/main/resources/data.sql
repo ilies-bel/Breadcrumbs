@@ -16,8 +16,5 @@ insert into interview_type (title, description, time_length, field) values ('Mot
 insert into interview_type (title, description, time_length, field) values ('Technical test', 'A quick skill test', 15, 'Software analyst');
 
 insert into Users (first_name, last_name, email, role, password) values ('candidate', 'be', 'candidate@breadcrumbs.com', 'candidate', 'password');
-insert into Users (first_name, last_name, email, role, password) values ('collaborator', 'be', 'collaborator@breadcrumbs.com', 'collaborator', 'password');
+insert into Users (first_name, last_name, email, role, password) values ('collaborator', 'beldjilali', 'collaborator@breadcrumbs.com', 'collaborator', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('supervisor', 'be', 'supervisor@breadcrumbs.com', 'supervisor', 'password');
-
-insert into availability (title, startDate, endDate) values ('Phone call', '20/09/2025|10:00', '20/09/2025|11:00')
-insert into availability (title, startDate, endDate) values ('Phone call', '20/09/2025|13:00', '20/09/2025|14:30')

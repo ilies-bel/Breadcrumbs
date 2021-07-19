@@ -7,5 +7,5 @@ COPY package.json .
 
 #COPY . .
 
-#CMD npm run build && npm run serve
-CMD npm run start
+CMD npm run build && npm run serve
+#CMD npm run start

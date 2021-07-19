@@ -28,16 +28,29 @@ const App = () => {
     const classes = useStyles();
     const [ token, setToken ] = useState(window.localStorage.getItem("token"));
     const [ user, setUser ] = useState(window.localStorage.getItem("user"));
+    const [ title, setTitle] = useState();
+    const [ endDate, setEnd] = useState();
+    const [ startDate, setStart] = useState();
+    const [interlocutor, setInterlocutor] = useState()
 
-    function setData(token, user) {
+    function setData(token, user, newAppointment) {
         setToken(token);
         setUser(user);
+    }
+    function RegisterAppointments(title, endDate, startDate, interv) {
+        setTitle(title);setEnd(endDate);setStart(startDate);
+        setInterlocutor(interv)
     }
 
     return (
         <div>
             <Router>
-                <AuthContext.Provider value={ { token: token, userName: user, setData: setData } } >
+                <AuthContext.Provider value={ {
+                    token: token,
+                    userName: user,
+                    startDate: startDate,
+                    endDate: endDate,
+                    setData: setData, setAppointment: RegisterAppointments } } >
                 { !token && <Redirect to="/login/email"/>}
                 { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>

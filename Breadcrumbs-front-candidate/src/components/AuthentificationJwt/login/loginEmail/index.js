@@ -91,12 +91,12 @@ const Login = () => {
         const authInstance  = axios.create({baseURL: BASE_AUTH_URL, method: "post"});
 
         authInstance({
-            url: "/login",
+            url: "/auth/login",
             data: {"email": data.email, "password": data.password}
         })
             .then((response) => {
                 const res = response.data;
-                console.log("response");console.log(response.data);console.log("/response");
+
                 // handle server responses
                 const {payload, error} = jwtValidation(res.token);
                 error && console.error(error)

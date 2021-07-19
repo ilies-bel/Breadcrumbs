@@ -1,7 +1,6 @@
 package apicore.entit.milestone;
 
-import apicore.entit.Appointment;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import apicore.entit.milestone.availability.Appointment;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;

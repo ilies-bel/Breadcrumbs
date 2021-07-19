@@ -20,7 +20,7 @@ export default function Home() {
         <button onClick={() => signIn()}>Sign in</button> :
         <div>
           <button onClick={() => signOut()}>Sign out</button>
-          <p>Signed as {session?.user?.name ?? "No one"}</p>
+          <p>Signed as {typeof(session?.user?.name) === 'string' ? session?.user?.name : ( session?.user?.name?.[0] ?? "No one")}</p>
         </div>
         }
 

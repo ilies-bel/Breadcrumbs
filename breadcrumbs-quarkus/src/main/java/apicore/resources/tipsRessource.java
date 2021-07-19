@@ -24,7 +24,7 @@ import javax.ws.rs.core.SecurityContext;
 @Path("/tips")
 public class tipsRessource {
     @Inject JWTParser parser;
-    @Inject JsonWebToken jwt;
+    @Inject JsonWebToken token;
     @Inject
     @Claim(standard = Claims.full_name)
     String full_name;
@@ -49,24 +49,6 @@ public class tipsRessource {
         else {
             jj = ctx.getUserPrincipal().getName();
         }
-/*        String principal = jwt.getClaim("name").toString();
-        System.out.println("principal :");System.out.println(principal);System.out.println("/principal");*/
-  /*      try {
-            //System.out.println("jjr dans try-catch tips");System.out.println(jjr);System.out.println("/tips");
-            String publicKey = ResourceUtils.readResource("publicKey.pem");
-            //System.out.println(publicKey);System.out.println("/publicKey");
-            //JsonWebToken jt = parser.parse(jjr);
-            //JsonWebToken jt = parser.verify(jjr, publicKey).getClaim("name");
-            String jt2 = jwt.getClaim("name").toString();
-            //JsonWebToken jt = parser.verify("eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJicmVhZGNydW1icyIsInN1YiI6ImNhbmRpZGF0ZSIsImF1ZCI6Imh0dHBzOi8vYnJlYWRjcnVtYnMucHdhLmZyL2FwaSIsImlhdCI6MTYyNTE1MTAsImV4cCI6MTYyNTExMH0.fbsINzkpuClW3sDqdFgzgylV-F5iOBwxFqItRaUgvsqFxK8L1RTWPwjLbzEZkBzRfmQUTu8UOWZDhj4E87QI2zMlFglCj-5a9VIy-oPEad23K9ZFAV1BsoIdTy8wMLggSNVIHKeoU5QwdMLWXwKj2pHsZnPv2sclfgy-zT2CHyfKg_TWHsiDSjyOJLVoMWrQl3XAOoW5cR0l5AO6aWJGSdOCIhjcQtOMbbJCgyqdwBB0TNDwTt8_R27ex0tfJ_rCvsJ84Gf37VRql7yN-Hc0gTM9X8O_nuX1Ck0DZy8BRi97pgcMgr2gPNJmTX0HpZ6Lq68TiA1w74X2Ipp8T0WGFA", publicKey);
-            //JsonWebToken jt = parser.parse("eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJicmVhZGNydW1icyIsInN1YiI6ImNhbmRpZGF0ZSIsImF1ZCI6Imh0dHBzOi8vYnJlYWRjcnVtYnMucHdhLmZyL2FwaSIsImlhdCI6MTYyNTE1MTAsImV4cCI6MTYyNTExMH0.fbsINzkpuClW3sDqdFgzgylV-F5iOBwxFqItRaUgvsqFxK8L1RTWPwjLbzEZkBzRfmQUTu8UOWZDhj4E87QI2zMlFglCj-5a9VIy-oPEad23K9ZFAV1BsoIdTy8wMLggSNVIHKeoU5QwdMLWXwKj2pHsZnPv2sclfgy-zT2CHyfKg_TWHsiDSjyOJLVoMWrQl3XAOoW5cR0l5AO6aWJGSdOCIhjcQtOMbbJCgyqdwBB0TNDwTt8_R27ex0tfJ_rCvsJ84Gf37VRql7yN-Hc0gTM9X8O_nuX1Ck0DZy8BRi97pgcMgr2gPNJmTX0HpZ6Lq68TiA1w74X2Ipp8T0WGFA");
-            System.out.println("jwt tips");System.out.println(jt2);System.out.println("/tips jwt");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-*/
-
         return Response.ok(jj).build();
     }
 

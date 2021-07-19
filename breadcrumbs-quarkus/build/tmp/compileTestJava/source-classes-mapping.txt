@@ -1,0 +1,2 @@
+com/example/ExampleResourceTest.java
+ com.example.ExampleResourceTest

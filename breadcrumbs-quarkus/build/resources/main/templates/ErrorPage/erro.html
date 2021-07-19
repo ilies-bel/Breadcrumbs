@@ -1,0 +1,51 @@
+{@apicore.errorPage.ErrorPage status}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur {status}</title>
+    <style>
+        body {
+            background-image: url("https://i.stack.imgur.com/nq623.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        div, h1 {
+            font-family: Roboto;
+            font-size: 50px;
+            text-align: center;
+        }
+        div {
+            border-style: solid;
+            border-radius: 5px;
+            border-width: 1px;
+            color: royalblue;
+            background-color: white;
+            opacity: 50%;
+        }
+        h1 {
+            font-weight: bold;
+        }
+        div p {
+            font-size: 30px;
+        }
+        .banner {
+            height: 200px;
+            width: 100%;
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Havasu_Creek_landscape._Grand_Canyon_National_Park%2C_Arizona_(26383460775).jpg/1280px-Havasu_Creek_landscape._Grand_Canyon_National_Park%2C_Arizona_(26383460775).jpg");
+            border-style: solid;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="banner"></div>
+<h2>Breadcrumbs - Traefik</h2>
+
+<div>
+    <h1>Erreur <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status/{status}">{status}</a> </h1>
+    <p>This page doesn't exist or is restricted</p>
+    <p>Are you lost ?</p>
+</div>
+</body>
+</html>

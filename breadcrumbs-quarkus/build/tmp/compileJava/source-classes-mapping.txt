@@ -1,0 +1,48 @@
+apicore/entit/milestone/interview_type.java
+ apicore.entit.milestone.interview_type
+apicore/entit/user/JSONWebKeySet.java
+ apicore.entit.user.JSONWebKeySet
+apicore/entit/milestone/interview_milestones.java
+ apicore.entit.milestone.interview_milestones
+apicore/resources/milestoneRessource/interview_typeRessource.java
+ apicore.resources.milestoneRessource.interview_typeRessource
+apicore/init/appInitializer.java
+ apicore.init.appInitializer
+apicore/resources/authRessource/titleRessource.java
+ resources.titleRessource
+apicore/entit/user/Users.java
+ apicore.entit.user.Users
+com/example/resteasyjackson/MyObjectMapperCustomizer.java
+ com.example.resteasyjackson.MyObjectMapperCustomizer
+apicore/repo/tipsRepo.java
+ apicore.repo.tipsRepo
+apicore/resources/tipsRessource.java
+ apicore.resources.tipsRessource
+com/example/ExampleResource.java
+ com.example.ExampleResource
+apicore/entit/user/TokenResponse.java
+ apicore.entit.user.TokenResponse
+apicore/errorPage/ErrorPage.java
+ apicore.errorPage.ErrorPage
+ apicore.errorPage.ErrorPage$Templates
+apicore/resources/authRessource/userRessource.java
+ apicore.resources.authRessource.userRessource
+apicore/resources/milestoneRessource/availabilityResource.java
+ apicore.resources.milestoneRessource.availabilityResource
+apicore/repo/availabilityRepo.java
+ apicore.repo.availabilityRepo
+apicore/entit/user/GenerateToken.java
+ apicore.entit.user.GenerateToken
+apicore/resources/titleRessource.java
+ apicore.resources.titleRessource
+apicore/resources/authRessource/generateRessource.java
+ apicore.resources.authRessource.generateRessource
+apicore/entit/availability/availability.java
+ apicore.entit.availability.availability
+apicore/entit/tips/interview_tips.java
+ apicore.entit.tips.interview_tips
+com/example/resteasyjackson/JacksonResource.java
+ com.example.resteasyjackson.JacksonResource
+ com.example.resteasyjackson.JacksonResource$Quark
+apicore/resources/milestoneRessource/interview_milestoneResource.java
+ apicore.resources.milestoneRessource.interview_milestoneResource

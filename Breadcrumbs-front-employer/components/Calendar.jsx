@@ -18,12 +18,14 @@ import {
 
 import axios from 'axios';
 
+const axiosURL = process.env.LIST_URL;
+
 //Requête à effectuer à chaque changement dans le calendrier
-  axios.baseURL = "https://breadcrumbs.pwa.fr";
-  const fetchData = async (changedData) => {
+  const fetchData = async (changedData, url) => {
+
     const availabilities = changedData.filter((availability) => availability.type === 'Availability');
 
-    await axios.put("https://breadcrumbs.pwa.fr/api/availability/list", availabilities)
+    await axios.put("http://localhost:8080/api/availability/list", availabilities)
             .then(res => (console.log(res.data)))
             .catch(e => {
                   console.log(e);
@@ -129,7 +131,7 @@ const Appointment = ({
         }
         
         //On envoie une requête à une api pour enregistrer les changements
-        fetchData(data);   
+        fetchData(data, axiosURL);
         return { data };
       });
     }

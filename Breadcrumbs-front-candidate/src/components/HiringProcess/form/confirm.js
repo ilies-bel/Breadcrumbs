@@ -6,9 +6,16 @@ import {HIRING_DESCRIPTION} from "constants/description";
 import {FlashyButton, PaperDiv} from "littleComponents";
 import { Calendar } from 'tabler-icons-react';
 import ConfirmationDialogRaw from './dialog/dialog';
+import {useAuthContext} from "../../AuthentificationJwt/context";
 
 const ConfirmPage = () => {
-    const [modalOpen, setOpen] = useState(true);
+    const [modalOpen, setOpen] = useState(false);
+    const context = useAuthContext();
+    const startDate = context?.startDate;
+    const endDate = context?.endDate;
+    const title = context?.title;
+    const inte = context?.interlocutor;
+
     const handleClose = () => {
         setOpen(false);
     }
@@ -19,6 +26,10 @@ const ConfirmPage = () => {
         <PaperDiv>
             <h3> <PageDescription> {HIRING_DESCRIPTION.CONFIRMATION_SUCCESSFUL} </PageDescription></h3>
             <PageDescription>{HIRING_DESCRIPTION.CONFIRMATION_SUCCESSFUL2}</PageDescription>
+            <PageDescription>
+                <div>Beginning at {startDate}</div>
+                <div> to {endDate} with {inte}</div>
+            </PageDescription>
             <FlashyButton onClick={handleOpen}>
                 <Calendar
                     size={20}

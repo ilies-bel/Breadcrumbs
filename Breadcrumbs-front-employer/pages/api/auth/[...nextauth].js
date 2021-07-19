@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers';
 import axios from "axios";
+import { decode } from "jsonwebtoken";
 
 export default NextAuth({
     // Configure one or more authentication providers
@@ -28,18 +29,29 @@ export default NextAuth({
                 email: { label: "user", type: "text", placeholder: "your email" },
                 password: { label: "type your password", type: "password" }
             },
-            async authorize(credentials) {
+            async authorize(credentials, req) {
                 let data = null;
-                let url = process.env.BASE_API_URL;
-                const c = await axios.post(url, {"email":credentials.email, "password":credentials.password})
-                    .then(res => data = res.data )
-                if(data.token) {
-                    const token = data.token
-                    const dataUser = data.user;
-                    const name = [dataUser.first_name, dataUser?.last_name]
-                    const mail = dataUser.email
-                    const user = { id: 1, name: name, email: mail };
-                    //throw '/tips/dlo'
+                let url = process.env.AUTH_URL;
+                console.log(req);console.log("/req")
+                const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password})
+                    .then(async(response) => {
+                            const res = response.data;
+
+                            if (res.status==="Success") {
+                                const payload = await jwtValidation(res?.token);
+                                //Si le token à été décodé
+                                payload ? data = {id: 1, name: ["Paul", "Domi", payload, res?.token], email: res?.email} : data=null;
+                            }
+                            else {
+                                data = null
+                            }
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        return null;
+                    })
+                if(data) {
+                    const user = data;
                     return user
                 }
                 else {
@@ -52,10 +64,30 @@ export default NextAuth({
     pages: {
         //signIn: '/Authentification/login',
         signOut: '/',
-        error: '/auth/error', // Error code passed in query string as ?error=
+        error: '/', // Error code passed in query string as ?error=
         verifyRequest: '/auth/verify-request', // (used for check email message)
         newUser: null // If set, new users will be directed here on first sign in
       }
     // A database is optional, but required to persist accounts in a database
     //database: process.env.DATABASE_URL,
   })
+
+const publicKeyURL = process.env.AXIOS_URL
+const jwtValidation = async(token) => {
+    let payload;
+
+    const publicKeyInstance  = await axios.create({baseURL: publicKeyURL, url:"/key/public", method: "get"});
+    await publicKeyInstance.get("/key/public").then((res) => {
+        let publicKey = res.data;
+        payload = decode(token, publicKey);
+    }).catch((e) => {
+        console.error(e);
+    });
+
+    if(payload?.iss === 'breadcrumbs') {
+        return payload;
+    }
+    else {
+        return null;
+    }
+}

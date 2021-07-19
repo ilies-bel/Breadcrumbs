@@ -23,6 +23,7 @@ public class GenerateToken {
      * */
     public static String generateUserToken(Users user) {
         String param = user.email;
+        String name = user.first_name;
         String role = Users.findRoleByEmail(param);
 
         if(!role.isEmpty()) {
@@ -33,7 +34,9 @@ public class GenerateToken {
         }
         String token =
                 Jwt.issuer("breadcrumbs")
-                        .upn("collaborator@breadcrumbs.com")
+                        .upn(param)
+                        .claim("email", param)
+                        .claim("name", name!=null ? name : "I have no name")
                         .groups(role)
                         .sign();
         return token;

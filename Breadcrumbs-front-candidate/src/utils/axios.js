@@ -43,17 +43,20 @@ export const useInterviewType = (id='') => {
 
 
 //TODO: Fonctions à compléter en fonctions de l'API mis en place
-export const useAppointmentAPI = (path='', data={}, method='get', manual=false) => {
+export const useAppointmentAPI = (path='', token='', data={}, method='get', manual=false) => {
     return useAxios({
-        baseURL: `${BASE_API_URL}/${APPOINTMENT}`,
+        baseURL: `${BASE_API_URL}`,
         method: method,
-        url: path,
-        data: data
+        url: `${APPOINTMENT}/${path}`,
+        data: data,
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     }, {manual: manual});
 }
 
-export const useCreateAppointment = (data={}) => {
-    return useAppointmentAPI('', data, 'post', true)
+export const useCreateAppointment = (data={}, token) => {
+    return useAppointmentAPI('add', token,{data}, 'post', true)
 }
 export const useEditAppointment = (id, data={}) => {
     return useAppointmentAPI(`/${id}`, data, 'put')

@@ -167,7 +167,6 @@ module.exports = (env, argv) => {
             compress: false,
             hot: true,
             historyApiFallback: true,
-            sockPath: '/var/run/docker.sock'
         },
     };
 }

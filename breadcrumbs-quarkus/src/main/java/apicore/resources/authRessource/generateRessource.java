@@ -29,7 +29,7 @@ public class generateRessource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Users user) {
         token = "No token";
-        String requestedPassword = user.password;
+        String requestedPassword = user.getPassword();
         String storedPassword = user.findPasswordByEmail(user.email);
 
         Users storedUser = Users.findUserByEmail(user.email);

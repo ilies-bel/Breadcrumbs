@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.ExampleResourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-07-17T02:12:55" hostname="mdo-hpenvyx360convertible15ee0xxx" time="1.206">
+  <properties/>
+  <testcase name="testHelloEndpoint()" classname="com.example.ExampleResourceTest" time="1.206"/>
+  <system-out><![CDATA[2021-07-17 04:12:48,399 INFO  [org.tes.doc.DockerClientProviderStrategy] (build-15) Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2021-07-17 04:12:49,024 INFO  [org.tes.doc.DockerClientProviderStrategy] (build-15) Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2021-07-17 04:12:49,025 INFO  [org.tes.DockerClientFactory] (build-15) Docker host IP address is localhost
+2021-07-17 04:12:49,058 INFO  [org.tes.DockerClientFactory] (build-15) Connected to docker: 
+  Server Version: 20.10.7
+  API Version: 1.41
+  Operating System: Garuda Linux
+  Total Memory: 7395 MB
+2021-07-17 04:12:49,072 INFO  [org.tes.uti.ImageNameSubstitutor] (build-15) Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2021-07-17 04:12:49,113 INFO  [org.tes.uti.RegistryAuthLocator] (build-15) Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.3.1, configFile: /home/mdo/.docker/config.json. Falling back to docker-java default behaviour. Exception message: /home/mdo/.docker/config.json (Aucun fichier ou dossier de ce type)
+2021-07-17 04:12:49,880 INFO  [org.tes.DockerClientFactory] (build-15) Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2021-07-17 04:12:49,880 INFO  [org.tes.DockerClientFactory] (build-15) Checking the system...
+2021-07-17 04:12:49,881 INFO  [org.tes.DockerClientFactory] (build-15) ✔︎ Docker server version should be at least 1.6.0
+2021-07-17 04:12:49,938 INFO  [org.tes.DockerClientFactory] (build-15) ✔︎ Docker environment should have more than 2GB free disk space
+2021-07-17 04:12:50,255 INFO  []]>&#x1f433;<![CDATA[ .2]] (build-15) Creating container for image: postgres:13.2
+2021-07-17 04:12:50,361 INFO  []]>&#x1f433;<![CDATA[ .2]] (build-15) Starting container with ID: c1308ea96951a5d17af2bc53b0e424c9876fce026881250ca3da494a40335d0d
+2021-07-17 04:12:50,578 INFO  []]>&#x1f433;<![CDATA[ .2]] (build-15) Container postgres:13.2 is starting: c1308ea96951a5d17af2bc53b0e424c9876fce026881250ca3da494a40335d0d
+2021-07-17 04:12:53,121 INFO  []]>&#x1f433;<![CDATA[ .2]] (build-15) Container postgres:13.2 started in PT3.180632S
+]]></system-out>
+  <system-err><![CDATA[juil. 17, 2021 4:12:47 AM org.jboss.threads.Version <clinit>
+INFO: JBoss Threads version 3.2.0.Final
+juil. 17, 2021 4:12:48 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 5.4.29.Final
+juil. 17, 2021 4:12:53 AM org.hibernate.validator.internal.util.Version <clinit>
+INFO: HV000001: Hibernate Validator 6.2.0.Final
+juil. 17, 2021 4:12:53 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: <default>]
+juil. 17, 2021 4:12:53 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 5.4.29.Final
+juil. 17, 2021 4:12:53 AM org.hibernate.annotations.common.reflection.java.JavaReflectionManager <clinit>
+INFO: HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+juil. 17, 2021 4:12:54 AM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: io.quarkus.hibernate.orm.runtime.dialect.QuarkusPostgreSQL10Dialect
+juil. 17, 2021 4:12:54 AM org.jboss.threads.Version <clinit>
+INFO: JBoss Threads version 3.2.0.Final
+juil. 17, 2021 4:12:55 AM io.quarkus.bootstrap.runner.Timing printStartupTime
+INFO: Quarkus 1.13.7.Final on JVM started in 8.197s. Listening on: http://localhost:8081
+juil. 17, 2021 4:12:55 AM io.quarkus.bootstrap.runner.Timing printStartupTime
+INFO: Profile test activated. 
+juil. 17, 2021 4:12:55 AM io.quarkus.bootstrap.runner.Timing printStartupTime
+INFO: Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, hibernate-orm-rest-data-panache, hibernate-validator, jdbc-postgresql, mutiny, narayana-jta, qute, rest-client, rest-client-jaxb, rest-client-jsonb, resteasy, resteasy-jackson, resteasy-jsonb, resteasy-qute, security, security-jdbc, smallrye-context-propagation, smallrye-jwt, vertx, vertx-web]
+]]></system-err>
+</testsuite>

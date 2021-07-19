@@ -49,9 +49,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Tips = () => {
-    const context = useContext;
-    const token = window.localStorage.getItem("token");
-    console.log(token);console.log("/token");
     const [{data, loading, error}, refetch] = useGetTips();
     const [open, setOpen] = React.useState(true);
 

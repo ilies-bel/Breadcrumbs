@@ -42,7 +42,7 @@ const ProfileItem = (props) => {
     const data = props.data ?? null;
     return (
         <div className="profile">
-            <Label>{data && data.name[0]}</Label>
+            <Label>{data && data.name?.[0]}</Label>
             {data ?
                 <Button onClick={() => signOut()} title="Sign out" ><Avatar src={data.image} /></Button> :
                 <Button onClick={() => signIn()} title="Sign in"> <Avatar/> </Button>
@@ -69,6 +69,7 @@ class Header extends React.Component {
         const { classes } = this.props;
         const { data } = this.state;
         const dataUser = data?.user;
+        console.log(data);console.log("/data");
 
         return (
             <header>

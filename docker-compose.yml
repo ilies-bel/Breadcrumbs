@@ -37,25 +37,25 @@ services:
     depends_on:
       - traefik
 
-  # employer:
-  #   build: $EMPLOYER_DIR
-  #   environment:
-  #       HOST: 0.0.0.0
-  #       PORT: $EMPLOYER_PORT
-  #   volumes:
-  #     - $EMPLOYER_DIR:/usr/src/app
-  #   working_dir: /usr/src/app
-  #   expose:
-  #     - $EMPLOYER_PORT
-  #   networks:
-  #     - traefik-global-proxy
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
-  #     - traefik.http.routers.employer.tls=true
-  #     - traefik.http.routers.employer.middlewares=errorpage@file
-  #   depends_on:
-  #     - traefik
+  employer:
+    build: $EMPLOYER_DIR
+    environment:
+       HOST: 0.0.0.0
+       PORT: $EMPLOYER_PORT
+    volumes:
+     - $EMPLOYER_DIR:/usr/src/app
+    working_dir: /usr/src/app
+    expose:
+     - $EMPLOYER_PORT
+    networks:
+     - traefik-global-proxy
+    labels:
+     - traefik.enable=true
+     - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
+     - traefik.http.routers.employer.tls=true
+     - traefik.http.routers.employer.middlewares=errorpage@file
+    depends_on:
+     - traefik
 
 
 #  breadcrumbs-api-core:

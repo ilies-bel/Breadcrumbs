@@ -1,0 +1,12 @@
+com/example/ExampleResource.class
+resources/generateRessource.class
+user/JSONWebKeySet.class
+user/TokenResponse.class
+milestone/interview_milestones.class
+resources/titleRessource.class
+user/GenerateToken.class
+com/example/SomePage.class
+milestone/interview_type.class
+resources/userRessource.class
+META-INF/panache-archive.marker
+user/Users.class

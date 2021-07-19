@@ -19,6 +19,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import {FlashyButton} from "littleComponents";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { useCreateAppointment } from '../../../utils/axios';
+import {AuthContext, useAuthContext} from "../../AuthentificationJwt/context";
 
 const useStyles = makeStyles(theme => ({
     dispoInput: theme.element.button.big,
@@ -26,59 +27,20 @@ const useStyles = makeStyles(theme => ({
     
 }))
 
-const DispoInput = (props) => {
-  const classes = useStyles();
-    return (
-    <>
-    <Button className={classes.dispoInput} variant="outlined" color="primary">
-      <div>Beginning at :{props.start} </div>
-      <div>End at : {props.end}</div>
-      {props.interviewer && <pre>with {props.interviewer}</pre>}
-    </Button>
 
-    </>
-    )
-
-}
-const datesTab = [
-    {
-        day: "23 November 2021",
-        startDate: "13:15",
-        endDate: "14:00"
-    },
-    {
-        day: "23 November 2021",
-        startDate: "14:15",
-        endDate: "15:00"
-    },
-    {
-        day: "23 November 2021",
-        startDate: "15:15",
-        endDate: "16:00"
-    },
-    {
-        day: "24 November 2021",
-        startDate: "10:11",
-        endDate: "11:00"
-    },
-    {
-        day: "23 November 2021",
-        startDate: "11:15",
-        endDate: "12:00"
-    }
-]
 const DateItem = (props) => {
     const history = useHistory();
-    const context = useContext();
+
+    const context = useAuthContext();
+    const token = window.localStorage.getItem("token");
+
     const [{data, loading, error}, execute] = useCreateAppointment({
-        startDate: props.startDate,
-        endDate: props.endDate,
-        interviewer: 'collaborator',
-        candidate_email: context.email
-    });
+        startDate: props?.startDate ?? "30 february 2005",
+        endDate: props?.endDate,
+    }, token);
     
-    const handleConfirm = (startDate, endDate) => {
-        execute();
+    const handleConfirm = async(startDate, endDate, setAppointment) => {
+        await execute({}).then(res => console.log(res));
         history.push(CONFIRM)
     }
     if (!(props.startDate && props.endDate)) {
@@ -92,34 +54,39 @@ const DateItem = (props) => {
     }
     else {
         return (
-            <Accordion>
-                <AccordionSummary>
-                    {props.startDate} to {props.endDate} <ExpandMore/>
-                </AccordionSummary>
-                <AccordionDetails className="appointmentDetails">
-                    <div>
-                    You’re about to book an appointment for your phone interview.<br/>
+            <AuthContext.Consumer>
+            {({title, startDate, endDate, interlocutor, setAppointment}) => (
+                <Accordion>
+                    <AccordionSummary>
+                        {props.startDate} to {props.endDate} <ExpandMore/>
+                    </AccordionSummary>
+                    <AccordionDetails className="appointmentDetails">
+                        <div>
+                        You’re about to book an appointment for your phone interview.<br/>
 
-                    Do you confirm this time slot?</div>
-                    <FlashyButton onClick={(startDate, endDate) => handleConfirm(startDate, endDate)} > Confirm appointment </FlashyButton>
-                </AccordionDetails>
-            </Accordion>
+                        Do you confirm this time slot?</div>
+                        <FlashyButton onClick={() => {
+                            handleConfirm(props.startDate, props.endDate);
+                            setAppointment('Phone Call', props.startDate, props.endDate, "Collaborator Beldji");
+                        }} > Confirm appointment </FlashyButton>
+                    </AccordionDetails>
+                </Accordion>
+            )}
+            </AuthContext.Consumer>
         )
     }
 }
 const SelectDate = () => {
     const [open, setOpen] = useState(false);
     const [{ data, loading, error }] = useGetDisponibilities();
-    
-
-    function handleModal() {
-        setOpen(!open);
-    }
 
     if (loading) return <CircularProgress />
     if(error) return <strong>Error. No data found</strong>
+    let isdataEmpty = data.length <= 0;
 
-    if(data) return (
+    if(isdataEmpty) return <strong>table availability is empty</strong>
+
+    if(!isdataEmpty) return (
         <>
         <PageDescription>Book your appointment</PageDescription>
             {
@@ -127,11 +94,12 @@ const SelectDate = () => {
                     <DateItem key={index}
                     startDate={avalability?.startDate}
                     endDate={avalability?.endDate}
+                              interlocutor={avalability?.interlocutor}
+                              title={avalability?.title}
                     />
                 )
             }
             <DateItem />
-        <ConfirmModal handleModal={handleModal} open={open} />
     </>
     );
 }
