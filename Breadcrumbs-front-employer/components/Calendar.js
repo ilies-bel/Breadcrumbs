@@ -26,9 +26,9 @@ const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
     const availabilities = changedData.filter((availability) => availability.type === 'Availability');
 
-    await axios.put(axiosURL, availabilities, {
+    await axios.put(url, availabilities, {
       headers: {
-        Authoruzation: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     })
             .catch(e => {
@@ -65,7 +65,7 @@ const Appointment = ({
       super(props);
       this.state = {
         data: this.props.resList,
-        sessionData: ["no loaded session"],
+        sessionData: null,
         currentDate: this.props.resList[4].startDate,
         isShiftPressed: false,
         mainResourceName: 'type',
@@ -80,19 +80,22 @@ const Appointment = ({
         ]
       };
       this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
+      this.getToken= () => {
+        return getSession().then(response => this.setState({sessionData: response?.user?.name?.[3] ?? "No token" }) )
+      }
   
       this.commitChanges = this.commitChanges.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
       this.onKeyUp = this.onKeyUp.bind(this);
     }
   
-    componentDidMount() {
+    async componentDidMount() {
       window.addEventListener('keydown', this.onKeyDown);
       window.addEventListener('keyup', this.onKeyUp);
 
-      getSession().then(response => { this.setState({sessionData: response?.user?.name ?? ["no found session"]}) })
+      await this.getToken();
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
-      fetchData(this.props.resList, this.props.resList, this.state.sessionData?.[2]);
+      fetchData(this.props.resList, axiosURL, this.state.sessionData ?? "");
       this.props.onChange();
     }
   
@@ -141,7 +144,7 @@ const Appointment = ({
         }
         
         //On envoie une requête à une api pour enregistrer les changements
-        fetchData(data, axiosURL);
+        fetchData(data, axiosURL, this.state.sessionData);
         this.props.onChange();
         return { data };
       });
