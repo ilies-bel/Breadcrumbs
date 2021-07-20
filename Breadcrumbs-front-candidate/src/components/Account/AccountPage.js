@@ -137,8 +137,10 @@ const AccountPage = props => {
                                     name="notification_push"
                                     inputProps={{'aria-label': 'primary checkbox'}}/>
                             }
-                            label={`Allow Breadcrumbs to send push
-                            notifications ${userConsent ?? ""}`}
+                            label={userConsent ==='denied' ? `You previously deny Push Notification.
+                                                            You must change notification parameter of your browser to activate push notification.`
+                                                          : `Allow Breadcrumbs to send push notifications`
+                                                        }
                             labelPlacement="start"
                         />
 

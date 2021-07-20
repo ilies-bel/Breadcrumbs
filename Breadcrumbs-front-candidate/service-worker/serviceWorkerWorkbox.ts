@@ -32,6 +32,7 @@ const navigationRoute = new NavigationRoute(handler, {
 registerRoute(navigationRoute);
 
 
+const BASE_URL = process.env.AX
 
 function isPushNotificationSupported() {
   return "serviceWorker" in navigator && "PushManager" in self;
@@ -56,11 +57,10 @@ function receivePushNotification(event) {
   const data = event.data.json();
 
   const options = {
-    body: "Voilà Comment fidéliser l'utilisateur. Le roi des pirates, ce sera...",
+    body: `${data?.body ?? "Voilà Comment fidéliser l'utilisateur. Le roi des pirates, ce sera..."}`,
     icon: "/favicon.ico",
-    actions: [{action: "Cliquer",title: "Book Appointment",icon: "http://localhost:5000/Subtract.png"},
-    {action: "Close",title: "Ignore",icon: "http://localhost:5000/Subtract.png"},
-    {action: "Read",title: "Read ambassador's post",icon: "/Subtract.png"}
+    actions: [{action: "Cliquer",title: "Book Appointment",icon: "/Subtract.png"},
+    {action: "Skip",title: "Ignore",icon: "/Subtract.png"},
     ],
     badge: "/favicon.ico",
     image: "https://www.studiobell.ca/assets/images/_header/NMC-Digital-Assest-Dec2017-NZ-2603.jpg",
