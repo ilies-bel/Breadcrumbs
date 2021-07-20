@@ -22,11 +22,11 @@ import { getSession } from 'next-auth/client';
 const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
 //Requête à effectuer à chaque changement dans le calendrier
-  const fetchData = async (changedData, url, token="") => {
+  const fetchData = async (changedData, url, token="", onChange=() => {}) => {
 
     const availabilities = changedData.filter((availability) => availability.type === 'Availability');
 
-    await axios.put(url, availabilities, {
+    return await axios.put(url, availabilities, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -96,7 +96,6 @@ const Appointment = ({
       await this.getToken();
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
       fetchData(this.props.resList, axiosURL, this.state.sessionData ?? "");
-      this.props.onChange();
     }
   
     componentWillUnmount() {
@@ -143,9 +142,8 @@ const Appointment = ({
           data = data.filter(appointment => appointment.id !== deleted);
         }
         
-        //On envoie une requête à une api pour enregistrer les changements
-        fetchData(data, axiosURL, this.state.sessionData);
-        this.props.onChange();
+        //On envoie une requête à une api pour enregistrer les changements.
+        fetchData(data, axiosURL, this.state.sessionData).then(() => this.props.onChange());
         return { data };
       });
     }

@@ -134,3 +134,41 @@ export function unregister() {
     });
   }
 }
+
+
+/** On véfrifie si l'appareil peut recevoir les notifications */
+export function isPushNotificationSupported() {
+  return "serviceWorker" in navigator && "PushManager" in window;
+}
+/** Demander la permission de l'utilisateur */
+export async function askUserPermission() {
+  return await Notification.requestPermission();
+}
+
+export async function createNotificationSubscription() {
+  //wait for service worker installation to be ready
+  const serviceWorker = await navigator.serviceWorker.ready;
+  // subscribe and return the subscription
+  return await serviceWorker.pushManager.subscribe({
+    userVisibleOnly: false,
+    applicationServerKey: "ttt" //Clé VAPID
+  });
+}
+
+export function getUserSubscription() {
+  //wait for service worker installation to be ready, and then
+  return navigator.serviceWorker.ready
+    .then(function(serviceWorker) {
+      return serviceWorker.pushManager.getSubscription();
+    })
+    .then(function(pushSubscription) {
+      return pushSubscription;
+    });
+}
+
+export async function unSubscribe() {
+  //wait for service worker installation to be ready
+  const serviceWorker = await navigator.serviceWorker.ready;
+  // subscribe and return the subscription
+  return await getUserSubscription().then(subscription => subscription.unsubscribe().then((success) => console.log(success)))
+}

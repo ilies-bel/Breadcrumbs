@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 
 import {withFirebase} from '../Firebase';
 import {Box, FormControlLabel, Switch, TextField} from "@material-ui/core";
@@ -7,15 +7,24 @@ import FlashyButton from "../littleComponents/flashyButton";
 import "./accountPage.scss"
 import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
+import PushNotification from '../PushNotifications';
+import usePushNotifications from 'utils/usePushNotification.js';
 
-const user_info =
+const useUser_info = () =>
     {
-        photo: "https://upload.wikimedia.org/wikipedia/commons/0/04/Elon_Musk_and_Hans_Koenigsmann_at_the_SpaceX_CRS-8_post-launch_press_conference_%2826223624532%29_%28cropped%29.jpg",
-        first_name: "Brandon",
-        last_name: "Bannon",
-        email: "iliesb.pro@gmail.com",
-        notification_email: true,
-        notification_push: false
+        const {
+            userConsent,
+          } = usePushNotifications();
+
+          
+        const [photo, setPhoto]= useState("https://upload.wikimedia.org/wikipedia/commons/0/04/Elon_Musk_and_Hans_Koenigsmann_at_the_SpaceX_CRS-8_post-launch_press_conference_%2826223624532%29_%28cropped%29.jpg")
+        const [first_name, setName]= useState("Brandon")
+        const [last_name]= useState("Bannon")
+        const [email]= useState("iliesb.pro@gmail.com")
+        const [notification_email]= useState(true)
+        const [notification_push, setPush]= useState(userConsent==='granted');
+
+        return {photo, setPhoto, first_name, setName, notification_push, setPush, notification_email}
     }
 
 const onSendPasswordResetEmail = () => {
@@ -24,33 +33,42 @@ const onSendPasswordResetEmail = () => {
 
 
 const AccountPage = props => {
+    const {
+        userConsent,
+        onClickAskUserPermission,
+        error,
+        loading
+      } = usePushNotifications();
 
-    const [user, setUser] = React.useState({
-        user_info
-    });
 
+    const {first_name, setName, notification_push, setPush, notification_email} = useUser_info();
+    useEffect(() => {
+        setPush(userConsent==='granted');
+    }, [userConsent])
+
+    function togglePushNotification() {
+        !notification_push && onClickAskUserPermission();
+    }
 
     return (
 
         <div>
+            
             <TitleSource>My account</TitleSource>
-
-
-
             <div>
                 <h2 className={"main_title"}>
                     Personal information
                 </h2>
+
                 <form>
                     <TextField
 
                         id="first_name"
                         name="first_name"
                         label="FIRST NAME"
-                        defaultValue={user_info.first_name}
+                        defaultValue={first_name}
                         fullWidth
                         margin="normal"
-
 
                     />
 
@@ -58,7 +76,7 @@ const AccountPage = props => {
                         id="last_name"
                         name="last_name"
                         label="LAST NAME"
-                        defaultValue={user_info.last_name}
+                        defaultValue={"DEFAULT"}
                         fullWidth
                         margin="normal"
                     />
@@ -68,7 +86,7 @@ const AccountPage = props => {
                         id="email"
                         name="email"
                         label="EMAIL ADDRESS"
-                        defaultValue={user_info.email}
+                        defaultValue={"DEFAULT"}
                         fullWidth
                         margin="normal"
                     />
@@ -92,7 +110,7 @@ const AccountPage = props => {
                             value="start"
                             control={
                                 <Switch
-                                    checked={user.notification_email}
+                                    checked={notification_email}
                                     color="primary"
                                     name="notification_email"
                                     inputProps={{'aria-label': 'mail checkbox'}}/>
@@ -113,14 +131,14 @@ const AccountPage = props => {
                             value="start"
                             control={
                                 <Switch
-                                    checked={user.notification_push}
-
+                                    checked={notification_push}
+                                    onChange={togglePushNotification}
                                     color="primary"
                                     name="notification_push"
                                     inputProps={{'aria-label': 'primary checkbox'}}/>
                             }
-                            label="Allow Breadcrumbs to send push
-                            notifications"
+                            label={`Allow Breadcrumbs to send push
+                            notifications ${userConsent ?? ""}`}
                             labelPlacement="start"
                         />
 
@@ -135,17 +153,12 @@ const AccountPage = props => {
 
                 </form>
 
-
                 <span>
-
-
-
-
 
             </span>
             </div>
 
-
+            
         </div>
 
 

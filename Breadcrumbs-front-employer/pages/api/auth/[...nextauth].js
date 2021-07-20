@@ -32,6 +32,7 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 let data = null;
+                let error = null;
                 let url = process.env.AUTH_URL;
                 
                 const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password})
@@ -40,15 +41,15 @@ export default NextAuth({
 
                             if (res.status==="Success") {
                                 const payload = jwtValidation(res?.token);
-                                //Si le token à été décodé
-                                payload ? data = {id: 1, name: ["Paul", "Domi", payload, res?.token], email: res?.email} : data=null;
+                                //Si le token à été décodé, on défini l'objet 'data'. Sinon on défini une erreur
+                                payload ? data = {id: 1, name: ["Paul", "Domi", payload, res?.token], email: res?.email} : error="Echéc de validation/décodage du JWT";
                             }
                             else {
-                                data = null
+                                console.error(res.status);
                             }
                     })
                     .catch(e => {
-                        console.error(e.response)
+                        console.error("requête d'identification a échoué")
                         return null;
                     })
                 if(data) {
@@ -56,7 +57,7 @@ export default NextAuth({
                     return user
                 }
                 else {
-                    // throw '/tips/kfkfkffk';
+                    console.error(error);
                     return null;
                 }
             }
@@ -67,7 +68,8 @@ export default NextAuth({
         signOut: '/',
         error: '/', // Error code passed in query string as ?error=
         verifyRequest: '/auth/verify-request', // (used for check email message)
-        newUser: null // If set, new users will be directed here on first sign in
+        newUser: null, // If set, new users will be directed here on first sign in
+        redirect: false
       }
     // A database is optional, but required to persist accounts in a database
     //database: process.env.DATABASE_URL,

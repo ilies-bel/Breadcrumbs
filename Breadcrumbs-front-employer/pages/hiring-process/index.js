@@ -61,8 +61,9 @@ export default function Hiring({resList, error}) {
         setChecked((prev) => !prev);
         setText("Here you can edit your availabilities");
       }
+
     const confirmChange = () => {
-        checked && setText("Change Saved !");
+        setText("Change Saved !");
     }
     
     if(!session) return (<strong>You must be signed in to view this page</strong>)

@@ -55,7 +55,10 @@ const Tips = () => {
     const classes = useStyles();
 
     if (loading) return <CircularProgress/>
-    if (error) return <strong>Error. No data found</strong>
+    if (error) return (<div>
+        <strong>Error. No data found</strong>
+        <PushNotification></PushNotification>
+        </div>)
 
     return (
         <>

@@ -14,15 +14,11 @@ services:
       - 443:443
     networks:
       - traefik-global-proxy
-
   pwa:
     build: $PWA_DIR
     environment:
         HOST: 0.0.0.0
         PORT: $PWA_PORT
-        BASE_API_URL: $PWA_BASE_API_URL
-        AUTH_HOST: $PWA_BASE_API_URL
-        AXIOS_BASE_URL: $PWA_BASE_API_URL
     working_dir: /usr/src/app
     volumes:
       - $PWA_DIR:/usr/src/app
@@ -39,14 +35,15 @@ services:
       - traefik.http.routers.pwa.middlewares=errorpage@file
     depends_on:
       - traefik
-
   employer:
-    build: $EMPLOYER_DIR
+    build:
+      context: $EMPLOYER_DIR
+      dockerfile: Dockerfile
     environment:
        HOST: 0.0.0.0
        PORT: $EMPLOYER_PORT
     volumes:
-     - $EMPLOYER_DIR:/usr/src/app
+     - ./Breadcrumbs-front-employer:/usr/src/app
     working_dir: /usr/src/app
     expose:
      - $EMPLOYER_PORT
@@ -56,6 +53,7 @@ services:
      - traefik.enable=true
      - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
      - traefik.http.routers.employer.tls=true
+     - traefik.http.services.employer.loadbalancer.server.port=$EMPLOYER_PORT
      - traefik.http.routers.employer.middlewares=errorpage@file
     depends_on:
      - traefik
@@ -77,7 +75,7 @@ services:
 #      - traefik.http.routers.apicore.tls=true
 #      - "traefik.http.routers.apicore.service=apiservice"
 #      - "traefik.http.services.apiservice.loadbalancer.server.port=$API_PORT"
-#
+
   breadcrumbs-api-core-database:
     image: postgres
     environment:

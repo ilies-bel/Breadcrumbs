@@ -4,7 +4,7 @@ import {useHistory, Link} from "react-router-dom";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import { decode, verify } from "jsonwebtoken";
+import { decode } from "jsonwebtoken";
 
 
 const LoginEmailPage = () => {
@@ -58,28 +58,22 @@ const LoginEmailPage = () => {
     )
 }
 
-const BASE_API_URL = process.env.BASE_API_URL
-const jwtValidation = (token) => {
-    let payload = null;
+const BASE_API_URL = process.env.AXIOS_BASE_URL
+const jwtValidation = async(token) => {
+    let payload;
 
-    const publicKeyInstance  = axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
-    publicKeyInstance.get("/key/public").then((res) => {
-        let payload;
-        let publicKey = res.data//.replace("BQIDAQAB", "BQIDRPAB");
-
-        payload = decode(token, publicKey);
-        console.log("payload");console.log(payload);console.log("/payload");
-    })
+    const publicKeyInstance  = await axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
+    publicKeyInstance.get("/key/public").then(res => payload = decode(token, res.data) )
         .catch((e) => {
             console.error("Public Key not loaded")
             console.error(e);
         });
+
     return payload;
 }
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
     const context = useAuthContext();
-    console.log(BASE_API_URL);console.log("/BASE_API_URL");
 
     const onSubmit = handleSubmit((data) => {
 
@@ -95,11 +89,12 @@ const Login = () => {
                 const res = response.data;
 
                 // handle server responses
-                const payload = jwtValidation(res.token);
-                error && console.error(error)
                 if (res.status==="Success") {
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                    console.log("login successfully"); console.log(payload);
+                    const payload = jwtValidation(res.token);
+
+                    localStorage.setItem("user", JSON.stringify(res));
+
+                    payload && console.log("login successfully"); console.log(res);
                     //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
                     payload && localStorage.setItem("user", res.user.first_name);
                     payload && localStorage.setItem("token", res.token);

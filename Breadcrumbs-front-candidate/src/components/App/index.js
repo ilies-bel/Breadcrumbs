@@ -33,7 +33,7 @@ const App = () => {
     const [ startDate, setStart] = useState();
     const [interlocutor, setInterlocutor] = useState()
 
-    function setData(token, user, newAppointment) {
+    function setData(token, user) {
         setToken(token);
         setUser(user);
     }
