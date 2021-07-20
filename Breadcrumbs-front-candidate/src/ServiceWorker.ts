@@ -7,6 +7,8 @@
 // existing tabs open on the page have been closed, since previously cached
 // resources are updated in the background.
 //
+import axios from "axios";
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost'
     // [::1] is the IPv6 localhost address.
@@ -149,12 +151,35 @@ export async function createNotificationSubscription() {
   //wait for service worker installation to be ready
   const serviceWorker = await navigator.serviceWorker.ready;
   // subscribe and return the subscription
+  console.log("entré dans createNotificationSubscription");
   return await serviceWorker.pushManager.subscribe({
-    userVisibleOnly: false,
-    applicationServerKey: "ttt" //Clé VAPID
-  });
+    userVisibleOnly: true,
+    applicationServerKey: "BL_yp6XxXQ2QvB41rHwy-I6Q1nl0e1upnq4_yj3keSCEgqEq2SenoiTpVDpunQOQdlbqx4TENaxsKObB80gtg84"
+  }).then(function(pushSubscription) {
+    console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+    return pushSubscription;
+  }).catch(e => {
+        console.log(e);console.log("createNotificationSubscription error");
+        console.log(e);console.log("/createNotificationSubscription error")
+      });
 }
+/** Le paramètre 'subscription' correspond à l'objet retourné par la fonction createNotificationSubscription */
+export async function postSubscription(subscription) {
+  const response = await fetch(`http://localhost:8080/api/subscribe`, {
+    credentials: "omit",
+    headers: { "content-type": "application/json;charset=UTF-8", "sec-fetch-mode": "cors" },
+    body: JSON.stringify(subscription),
+    method: "POST",
+    mode: "cors"
+  });
 
+  let res;
+
+  const response2 = await axios.post(`http://localhost:8080/api/subscribe`, subscription, {
+    headers: { "content-type": "application/json;charset=UTF-8", /*"sec-fetch-mode": "cors"*/ },
+  }).then(response => res = response.data)
+
+}
 export function getUserSubscription() {
   //wait for service worker installation to be ready, and then
   return navigator.serviceWorker.ready

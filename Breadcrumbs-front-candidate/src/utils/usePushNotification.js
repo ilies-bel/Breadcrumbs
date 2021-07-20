@@ -14,6 +14,7 @@ import {
   askUserPermission,
   register,
   createNotificationSubscription,
+  postSubscription,
   getUserSubscription,
   unSubscribe
 } from "../ServiceWorker.ts";
@@ -86,12 +87,13 @@ export default function usePushNotifications() {
    * define a click handler that creates a push notification subscription.
    * Once the subscription is created, it uses the setUserSubscription hook
    */
-  const onClickSusbribeToPushNotification = () => {
+  const onClickSusbribeToPushNotification = async() => {
     setLoading(true);
     setError(false);
-    createNotificationSubscription()
+    await createNotificationSubscription()
       .then(function(subscrition) {
         setUserSubscription(subscrition);
+        console.log("onClickSusbribeToPushNotification");console.log(subscrition);console.log("/objet subscroiption onClickSusbribeToPushNotification");
         setLoading(false);
       })
       .catch(err => {
@@ -113,10 +115,10 @@ export default function usePushNotifications() {
   const onClickSendSubscriptionToPushServer = () => {
     setLoading(true);
     setError(false);
-    axios
-      .post("/subscription", userSubscription)
+    postSubscription(userSubscription)
       .then(function(response) {
         setPushServerSubscriptionId(response.id);
+        console.log("onClickSendSubscriptionToPushServer");console.log(subscrition);console.log("/objet subscroiption onClickSendSubscriptionToPushServer");
         setLoading(false);
       })
       .catch(err => {
@@ -126,7 +128,7 @@ export default function usePushNotifications() {
   };
 
   /**
-   * define a click handler that request the push server to send a notification, passing the id of the saved subscription
+   * define a click handler thuserSubscriptionat request the push server to send a notification, passing the id of the saved subscription
    */
   const onClickSendNotification = async () => {
     setLoading(true);
@@ -144,6 +146,7 @@ export default function usePushNotifications() {
   return {
     onClickAskUserPermission,
     onClickSusbribeToPushNotification,
+    ClickToUnsubscribe,
     onClickSendSubscriptionToPushServer,
     pushServerSubscriptionId,
     onClickSendNotification,

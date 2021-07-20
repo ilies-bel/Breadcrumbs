@@ -2,6 +2,7 @@
 import {createHandlerBoundToURL, precacheAndRoute} from 'workbox-precaching';
 import {NavigationRoute, registerRoute} from 'workbox-routing';
 import {clientsClaim} from 'workbox-core';
+import axios from 'axios';
 
 declare const self: Window & ServiceWorkerGlobalScope;
 
@@ -38,18 +39,6 @@ function isPushNotificationSupported() {
   return "serviceWorker" in navigator && "PushManager" in self;
 }
 
-/** Le paramètre 'subscription' correspond à l'objet retourné par la fonction createNotificationSubscription */
-async function postSubscription(subscription) {
-  const response = await fetch(`https://push-notification-demo-server.herokuapp.com/subscription`, {
-    credentials: "omit",
-    headers: { "content-type": "application/json;charset=UTF-8", "sec-fetch-mode": "cors" },
-    body: JSON.stringify(subscription),
-    method: "POST",
-    mode: "cors"
-  });
-  return await response.json();
-}
-
 //Fonction à effectuer au moment de lévénement push
 function receivePushNotification(event) {
   console.log("[Service Worker] Push Received.");
@@ -57,7 +46,7 @@ function receivePushNotification(event) {
   const data = event.data.json();
 
   const options = {
-    body: `${data?.body ?? "Voilà Comment fidéliser l'utilisateur. Le roi des pirates, ce sera..."}`,
+    body: `${data?.body ?? "Voilà Comment fidéliser l'utilisateur.\n Le roi des pirates, ce sera..."}`,
     icon: "/favicon.ico",
     actions: [{action: "Cliquer",title: "Book Appointment",icon: "/Subtract.png"},
     {action: "Skip",title: "Ignore",icon: "/Subtract.png"},

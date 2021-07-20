@@ -9,6 +9,7 @@ import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
 import PushNotification from '../PushNotifications';
 import usePushNotifications from 'utils/usePushNotification.js';
+import {unSubscribe} from "../../ServiceWorker";
 
 const useUser_info = () =>
     {
@@ -21,10 +22,10 @@ const useUser_info = () =>
         const [first_name, setName]= useState("Brandon")
         const [last_name]= useState("Bannon")
         const [email]= useState("iliesb.pro@gmail.com")
-        const [notification_email]= useState(true)
+        const [notification_email, setNotifEmail]= useState(true)
         const [notification_push, setPush]= useState(userConsent==='granted');
 
-        return {photo, setPhoto, first_name, setName, notification_push, setPush, notification_email}
+        return {photo, setPhoto, first_name, setName, last_name, email, notification_push, setPush, notification_email, setNotifEmail}
     }
 
 const onSendPasswordResetEmail = () => {
@@ -36,6 +37,10 @@ const AccountPage = props => {
     const {
         userConsent,
         onClickAskUserPermission,
+        onClickSusbribeToPushNotification,
+        onClickSendSubscriptionToPushServer,
+        userSubscription,
+        ClickToUnsubscribe,
         error,
         loading
       } = usePushNotifications();
@@ -48,6 +53,16 @@ const AccountPage = props => {
 
     function togglePushNotification() {
         !notification_push && onClickAskUserPermission();
+        onClickSusbribeToPushNotification();
+        console.log(userSubscription);console.log("/userSubscription");
+        onClickSendSubscriptionToPushServer();
+        if(loading) {
+            console.log("load ... ")
+        }
+        error && console.log("pas souscrit")
+/*        if(notification_push){
+            unSubscribe();
+        }*/
     }
 
     return (
