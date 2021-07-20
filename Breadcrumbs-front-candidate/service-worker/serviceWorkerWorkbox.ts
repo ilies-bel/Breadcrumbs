@@ -32,7 +32,7 @@ const navigationRoute = new NavigationRoute(handler, {
 registerRoute(navigationRoute);
 
 
-const BASE_URL = process.env.AX
+const BASE_URL = process.env.SUBSC_URL
 
 function isPushNotificationSupported() {
   return "serviceWorker" in navigator && "PushManager" in self;
