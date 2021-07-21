@@ -1,5 +1,6 @@
 package apicore.resources.milestoneRessource;
 import apicore.entit.milestone.availability.availability;
+import apicore.resources.milestoneRessource.appointmentRessource;
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,15 +22,14 @@ public class availabilityResource {
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("collaborator")
     public Response addAvailability(availability a) {
-        String email = token.getClaim("email");
-        Users collaborator = Users.findByEmail(email);
+        Users collaborator = a.getInterlocutor();
         //System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
         availability.add(a.startDate, a.endDate, a.title, collaborator);
         return Response.ok(a).build();
     }
 
     @POST
-    @Path("/list")
+    @Path("/add/list")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,9 +49,9 @@ public class availabilityResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAvailability() {
+    public Response getAvailabilities() {
         ObjectMapper mapper = new ObjectMapper();
-        List<availability> avaiList = availability.listAll();
+        List<availability> avaiList = availability.getAll();
         try {
             String response = mapper.writeValueAsString(avaiList);
             return Response.ok(response).build();
@@ -59,5 +59,11 @@ public class availabilityResource {
             e.printStackTrace();
             return Response.ok("Parsing Error").build();
         }
+    }
+    @GET
+    @Path("/andAppointments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllSlot() {
+        return appointmentRessource.getAllSlot();
     }
 }

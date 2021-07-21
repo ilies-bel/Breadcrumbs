@@ -15,7 +15,7 @@ export default function LoginPage({providers}) {
             {
                 providers && Object.values(providers).map((provider, index) =>
                     <div key={index}>
-                        <button onClick={() => signIn(provider.id)} >Sign in with {provider.name}</button>
+                        <button onClick={() => signIn(provider.id, {redirect: false,})} >Sign in with {provider.name}</button>
                     </div>
                 )
             }

@@ -2,20 +2,24 @@ package apicore.entit.milestone.availability;
 
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 public class availability extends PanacheEntityBase {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonProperty("id") @JsonAlias("id")
     public Integer id_slot;
 
     public String startDate;
     public String endDate;
+    @JsonAlias("title")
     public String title;
+    public String interlocutor_email;
 
     @JsonAlias({"type", "typSlot"})
     public String status;
@@ -23,19 +27,34 @@ public class availability extends PanacheEntityBase {
     @ManyToOne
     public Users interlocutor;
 
+    private static final String STATUS = "Availability";
+
     public availability() {}
     public availability(String startTime, String endTime, String title, Users user) {
         this.startDate = startTime;
         this.endDate = endTime;
         this.title = title;
         this.interlocutor = user;
-        this.status = "Availability";
+        this.status = STATUS;
+    }
+    public availability(String startTime, String endTime, String title, String email) {
+        this(startTime, endTime, title);
+        Users interlocutor = Users.findByEmail(email);
+        this.interlocutor = interlocutor;
+        this.status = STATUS;
     }
     public availability(String startTime, String endTime, String title) {
         this.startDate = startTime;
         this.endDate = endTime;
         this.title = title;
-        this.status = "Availability";
+        this.status = STATUS;
+    }
+
+    /** Retourne toute availability
+     * On filtre par STATUS pour ne pas retourner les appointments
+     * */
+    public static List<availability> getAll() {
+        return availability.list("status", STATUS);
     }
     /** Ajoute une availability dans la table de la base de données */
     public static void add(String startTime, String endTime, String title, Users user) {
@@ -62,4 +81,7 @@ public class availability extends PanacheEntityBase {
         availability.addList(availabilityList);
     }
 
+    public Users getInterlocutor() {
+        return Objects.requireNonNullElseGet(this.interlocutor, () -> Users.findUserByEmail(this.interlocutor_email));
+    }
 }

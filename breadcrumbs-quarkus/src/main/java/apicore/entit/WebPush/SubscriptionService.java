@@ -1,5 +1,6 @@
 package apicore.entit.WebPush;
 
+import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -16,4 +17,7 @@ public class SubscriptionService extends PanacheEntityBase {
 
     @ManyToOne @JsonAlias("keys")
     public VapidKey keys;
+
+    @ManyToOne
+    public Users subscriber;
 }

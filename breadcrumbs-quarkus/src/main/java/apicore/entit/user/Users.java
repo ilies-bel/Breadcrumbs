@@ -1,5 +1,6 @@
 package apicore.entit.user;
 
+import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.milestone.availability.Appointment;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -24,7 +25,10 @@ public class Users extends PanacheEntityBase {
     public String role;
 
     @OneToMany(mappedBy = "interlocutor")
-    public List<Appointment> appointments;
+    private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "subscriber")
+    private List<SubscriptionService> subscription;
 
     @Transactional
     @Startup

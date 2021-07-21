@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequestScoped
 @Path("/appointment")
@@ -20,6 +21,13 @@ public class appointmentRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
+        List<Appointment> appoinList = Appointment.listAll();
+        return Response.ok(appoinList).build();
+    }
+    @GET
+    @Path("/andAvailability")
+    @Produces(MediaType.APPLICATION_JSON)
+    public static Response getAllSlot() {
         List<availability> availabilityList = availability.listAll();
         List<Appointment> appoinList = Appointment.listAll();
         List<availability> totalList = new ArrayList<availability>();
@@ -39,8 +47,9 @@ public class appointmentRessource {
     @RolesAllowed("candidate")
     public Response addAppointment(availability available) {
         String email = token.getName();
-        Users user = Users.findUserByEmail(email);
-        Appointment.addFromAvailability(available, user);
+        Users candidate = Users.findUserByEmail(email);
+        Users interlocutor = available.getInterlocutor();
+        Appointment.addFromAvailability(available, candidate, interlocutor);
         return Response.ok("Appointment registered From an availability parameter " + email).build();
     }
     @Path("/add/ava")
