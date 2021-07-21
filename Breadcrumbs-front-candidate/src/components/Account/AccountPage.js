@@ -9,12 +9,11 @@ import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
 import PushNotification from '../PushNotifications';
 import usePushNotifications from 'utils/usePushNotification.js';
-import {unSubscribe} from "../../ServiceWorker";
 
 const useUser_info = () =>
     {
         const {
-            userConsent,
+            userSubscription,
           } = usePushNotifications();
 
           
@@ -23,7 +22,7 @@ const useUser_info = () =>
         const [last_name]= useState("Bannon")
         const [email]= useState("iliesb.pro@gmail.com")
         const [notification_email, setNotifEmail]= useState(true)
-        const [notification_push, setPush]= useState(userConsent==='granted');
+        const [notification_push, setPush]= useState(userSubscription!=null);
 
         return {photo, setPhoto, first_name, setName, last_name, email, notification_push, setPush, notification_email, setNotifEmail}
     }
@@ -48,21 +47,17 @@ const AccountPage = props => {
 
     const {first_name, setName, notification_push, setPush, notification_email} = useUser_info();
     useEffect(() => {
-        setPush(userConsent==='granted');
-    }, [userConsent])
+        setPush(userSubscription!=null);
+    }, [userSubscription])
 
-    function togglePushNotification() {
-        !notification_push && onClickAskUserPermission();
-        onClickSusbribeToPushNotification();
-        console.log(userSubscription);console.log("/userSubscription");
-        onClickSendSubscriptionToPushServer();
-        if(loading) {
-            console.log("load ... ")
-        }
-        error && console.log("pas souscrit")
-/*        if(notification_push){
-            unSubscribe();
-        }*/
+    async function togglePushNotification() {
+        onClickAskUserPermission();
+        //loading && console.log("waiting for consent");
+
+        !userSubscription && onClickSusbribeToPushNotification();
+        //loading && console.log("toggling subscription");
+
+        userSubscription ? onClickSendSubscriptionToPushServer() : ClickToUnsubscribe();
     }
 
     return (

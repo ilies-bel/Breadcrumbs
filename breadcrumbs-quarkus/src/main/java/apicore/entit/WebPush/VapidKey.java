@@ -10,7 +10,7 @@ import java.util.List;
 public class VapidKey extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id_vapid;
-    @JsonAlias("p256dh")
+    @JsonAlias({"p256dh", "ps256"})
     public String publicVapidKey;
     public String auth;
 

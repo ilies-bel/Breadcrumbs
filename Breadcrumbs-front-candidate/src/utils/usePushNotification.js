@@ -90,10 +90,9 @@ export default function usePushNotifications() {
   const onClickSusbribeToPushNotification = async() => {
     setLoading(true);
     setError(false);
-    await createNotificationSubscription()
+    return await createNotificationSubscription()
       .then(function(subscrition) {
         setUserSubscription(subscrition);
-        console.log("onClickSusbribeToPushNotification");console.log(subscrition);console.log("/objet subscroiption onClickSusbribeToPushNotification");
         setLoading(false);
       })
       .catch(err => {
@@ -105,20 +104,20 @@ export default function usePushNotifications() {
   const ClickToUnsubscribe = () => {
     setLoading(true);
     setError(false);
-    unSubscribe()
+    unSubscribe();
+    setUserSubscription(null);
   }
 
   /**
    * define a click handler that sends the push susbcribtion to the push server.
    * Once the subscription ics created on the server, it saves the id using the hook setPushServerSubscriptionId
    */
-  const onClickSendSubscriptionToPushServer = () => {
+  const onClickSendSubscriptionToPushServer = async() => {
     setLoading(true);
     setError(false);
-    postSubscription(userSubscription)
+    await postSubscription(userSubscription)
       .then(function(response) {
         setPushServerSubscriptionId(response.id);
-        console.log("onClickSendSubscriptionToPushServer");console.log(subscrition);console.log("/objet subscroiption onClickSendSubscriptionToPushServer");
         setLoading(false);
       })
       .catch(err => {
