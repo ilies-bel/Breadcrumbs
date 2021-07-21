@@ -150,11 +150,11 @@ export async function askUserPermission() {
 export async function createNotificationSubscription() {
   //wait for service worker installation to be ready
   const serviceWorker = await navigator.serviceWorker.ready;
+
   // subscribe and return the subscription
-  console.log("entré dans createNotificationSubscription");
   return await serviceWorker.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: "BL_yp6XxXQ2QvB41rHwy-I6Q1nl0e1upnq4_yj3keSCEgqEq2SenoiTpVDpunQOQdlbqx4TENaxsKObB80gtg84"
+    applicationServerKey: "BPRml0-j_ctC0x1sFanUqFNG38eo832OZD6Z3J6QOTqK2By_UMgdV7x2gO0WFzJU-_2vObvZ9lYZqdXrYyRJxA8"
   }).then(function(pushSubscription) {
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return pushSubscription;
@@ -163,20 +163,14 @@ export async function createNotificationSubscription() {
         console.log(e);console.log("/createNotificationSubscription error")
       });
 }
-/** Le paramètre 'subscription' correspond à l'objet retourné par la fonction createNotificationSubscription */
+const SUBSC_URL = process.env.SUBSC_URL;
+/** On effectue la requête destiné à l'endpoint pour s'abonner aux notofications. 
+ * Le paramètre 'subscription' correspond à l'objet retourné par la fonction createNotificationSubscription */
 export async function postSubscription(subscription) {
-  const response = await fetch(`http://localhost:8080/api/subscribe`, {
-    credentials: "omit",
-    headers: { "content-type": "application/json;charset=UTF-8", "sec-fetch-mode": "cors" },
-    body: JSON.stringify(subscription),
-    method: "POST",
-    mode: "cors"
-  });
-
   let res;
-
-  const response2 = await axios.post(`http://localhost:8080/api/subscribe`, subscription, {
-    headers: { "content-type": "application/json;charset=UTF-8", /*"sec-fetch-mode": "cors"*/ },
+ 
+  await axios.put(SUBSC_URL, subscription, {
+    headers: { "content-type": "application/json;charset=UTF-8" },
   }).then(response => res = response.data)
 
 }
@@ -194,6 +188,12 @@ export function getUserSubscription() {
 export async function unSubscribe() {
   //wait for service worker installation to be ready
   const serviceWorker = await navigator.serviceWorker.ready;
-  // subscribe and return the subscription
-  return await getUserSubscription().then(subscription => subscription.unsubscribe().then((success) => console.log(success)))
+  
+  return await getUserSubscription().then(async (subscription) => {
+    await axios.delete(SUBSC_URL, {
+      data: subscription,
+      headers: { "content-type": "application/json;charset=UTF-8" },
+    })
+    .then(() => subscription.unsubscribe().then((success) => console.log("Désabonnement success")))    
+  } )
 }
