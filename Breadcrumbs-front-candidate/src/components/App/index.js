@@ -33,6 +33,13 @@ const App = () => {
     const [ startDate, setStart] = useState();
     const [interlocutor, setInterlocutor] = useState()
 
+    window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "a2b772b1-9a60-42a1-9dd5-481c00e325f5",
+    });
+  });
+
     function setData(token, user) {
         setToken(token);
         setUser(user);
@@ -43,7 +50,7 @@ const App = () => {
     }
 
     return (
-        <div>
+        <div>            
             <Router>
                 <AuthContext.Provider value={ {
                     token: token,

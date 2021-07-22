@@ -3,6 +3,7 @@ import React, {Component, useState, useEffect} from 'react';
 import {withFirebase} from '../Firebase';
 import {Box, FormControlLabel, Switch, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import FlashyButton from "../littleComponents/flashyButton";
 import "./accountPage.scss"
 import {TitleSource} from "Navigation/titleContext";
@@ -54,10 +55,9 @@ const AccountPage = props => {
         onClickAskUserPermission();
         //loading && console.log("waiting for consent");
 
-        !userSubscription && onClickSusbribeToPushNotification();
-        //loading && console.log("toggling subscription");
-
-        userSubscription ? onClickSendSubscriptionToPushServer() : ClickToUnsubscribe();
+        !userSubscription ? await onClickSusbribeToPushNotification() : ClickToUnsubscribe();
+        console.log("user dbsbsbns");console.log(userSubscription); console.log("/user dbsbsbns");
+        //await onClickSendSubscriptionToPushServer()
     }
 
     return (
@@ -137,22 +137,23 @@ const AccountPage = props => {
                             PUSH NOTIFICATIONS
                         </h3>
 
-                        <FormControlLabel
+                        {<FormControlLabel
                             value="start"
                             control={
+                                loading ? <CircularProgress/> :   
                                 <Switch
                                     checked={notification_push}
                                     onChange={togglePushNotification}
                                     color="primary"
                                     name="notification_push"
                                     inputProps={{'aria-label': 'primary checkbox'}}/>
-                            }
+                                }
                             label={userConsent ==='denied' ? `You previously deny Push Notification.
                                                             You must change notification parameter of your browser to activate push notification.`
                                                           : `Allow Breadcrumbs to send push notifications`
                                                         }
                             labelPlacement="start"
-                        />
+                        />}
 
                     </div>
 

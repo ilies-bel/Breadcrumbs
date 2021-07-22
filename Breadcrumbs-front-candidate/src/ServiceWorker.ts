@@ -154,10 +154,11 @@ export async function createNotificationSubscription() {
   // subscribe and return the subscription
   return await serviceWorker.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: "BPRml0-j_ctC0x1sFanUqFNG38eo832OZD6Z3J6QOTqK2By_UMgdV7x2gO0WFzJU-_2vObvZ9lYZqdXrYyRJxA8"
+    applicationServerKey: "BIY62sUhXQZnEe39GpuNSHqxjBoXXDmng26oKiyQISJM6cPodHbRaKdsjf5y9iCpsOlbmNXlugTNjWThgvuPHqg"
   }).then(function(pushSubscription) {
+    postSubscription(pushSubscription);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
-    return pushSubscription;
+    return JSON.stringify(pushSubscription);
   }).catch(e => {
         console.log(e);console.log("createNotificationSubscription error");
         console.log(e);console.log("/createNotificationSubscription error")
