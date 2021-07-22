@@ -3,9 +3,13 @@ package apicore.entit.user;
 import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.milestone.availability.Appointment;
 
+import apicore.entit.milestone.interview_process;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
+import io.quarkus.runtime.StartupEvent;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -13,6 +17,7 @@ import java.util.List;
 
 @Entity
 @Startup
+@ApplicationScoped
 public class Users extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +35,12 @@ public class Users extends PanacheEntityBase {
     @OneToMany(mappedBy = "subscriber")
     private List<SubscriptionService> subscription;
 
+    @OneToMany
+    private List<interview_process> processes;
+
     @Transactional
     @Startup
-    public static void seed() {
+    public static void seed(@Observes StartupEvent ev) {
         Users user = new Users();
         Users.add("another.candidate@breadcrumbs.com", "password", "candidate", "Candidate", "candidate");
         Users.add("another.collaborator@breadcrumbs.com", "password", "collaborator", "collaborator", "collaborator");

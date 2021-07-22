@@ -15,6 +15,8 @@ public class availability extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonProperty("id") @JsonAlias("id")
     public Integer id_slot;
 
+    private static final String STATUS = "Availability";
+
     public String startDate;
     public String endDate;
     @JsonAlias("title")
@@ -26,8 +28,6 @@ public class availability extends PanacheEntityBase {
 
     @ManyToOne
     public Users interlocutor;
-
-    private static final String STATUS = "Availability";
 
     public availability() {}
     public availability(String startTime, String endTime, String title, Users user) {

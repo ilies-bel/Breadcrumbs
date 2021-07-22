@@ -1,5 +1,6 @@
 package apicore.entit.WebPush;
 
+import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 

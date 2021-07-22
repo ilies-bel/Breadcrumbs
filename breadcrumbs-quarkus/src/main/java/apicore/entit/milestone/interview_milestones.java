@@ -12,11 +12,10 @@ public class interview_milestones extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_milestone;
 
-    public String interview_processes;
-
+    @ManyToMany
+    public List<interview_process> interview_processes;
     @ManyToOne
     public interview_type type;
-
     @OneToMany(mappedBy = "milestone")
     public List<Appointment> appointment;
 
