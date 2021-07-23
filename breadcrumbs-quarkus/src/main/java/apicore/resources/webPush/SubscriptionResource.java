@@ -1,20 +1,20 @@
 package apicore.resources.webPush;
 
 import apicore.entit.WebPush.SubscriptionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
+import apicore.entit.WebPush.VapidKey;
+import apicore.entit.WebPush.PushServerService;
+import org.jose4j.lang.JoseException;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.concurrent.ExecutionException;
 
 @Path("/subscribe")
 public class SubscriptionResource {
-
-
     @PUT
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
@@ -25,10 +25,9 @@ public class SubscriptionResource {
             subscription.add();
         }
         else {
-            entity.update(subscription.keys);
+            entity.updateKey(subscription.keys);
         }
-
-        return Response.ok(subscription).status(215).build();
+        return Response.ok(subscription).build();
     }
 
     @GET
@@ -38,10 +37,14 @@ public class SubscriptionResource {
 
     @DELETE
     @Transactional
-    public Response delete(SubscriptionService s) {
-        s.supprime();
-        return Response.ok("successfully deleted").build();
+    public void deleteSubscription(SubscriptionService subscription) {
+        SubscriptionService.deleteEndpoint(subscription.endpoint);
     }
 
+    @GET
+    @Path("/key")
+    public Response getke() {
+        return Response.ok(VapidKey.listAll()).build();
+    }
 
 }

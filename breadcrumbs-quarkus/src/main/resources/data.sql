@@ -6,10 +6,10 @@ insert into interview_tips (ranking, title, description) values (2, 'Gather your
 insert into interview_tips (ranking, title, description) values (2, 'Anticipate', '---');
 insert into interview_tips (ranking, title, description) values (2, 'Get in positive mindset', '---');
 
-insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Phone Call', 'Step 1', 'inProgress');
-insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Motivation interview', 'Step 2', 'pending');
-insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Technical test', 'Step 3', 'pending');
-insert into interview_milestones (interview_processes, interview_type, milestone_name, status) values ('Process', 'Ambition test', 'Step 4', 'pending');
+insert into interview_milestones (interview_type, milestone_name, status) values ('Phone Call', 'Step 1', 'inProgress');
+insert into interview_milestones (interview_type, milestone_name, status) values ('Motivation interview', 'Step 2', 'pending');
+insert into interview_milestones (interview_type, milestone_name, status) values ('Technical test', 'Step 3', 'pending');
+insert into interview_milestones (interview_type, milestone_name, status) values ('Ambition test', 'Step 4', 'pending');
 
 insert into interview_type (title, description, time_length, field) values ('Phone Call', 'A quick call to give you the opportunity to give your opinion', 15, 'HR coordinator');
 insert into interview_type (title, description, time_length, field) values ('Motivation interview', 'The first meeting.', 15, 'Marketing manager');
@@ -18,3 +18,4 @@ insert into interview_type (title, description, time_length, field) values ('Tec
 insert into Users (first_name, last_name, email, role, password) values ('candidate', 'be', 'candidate@breadcrumbs.com', 'candidate', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('collaborator', 'beldjilali', 'collaborator@breadcrumbs.com', 'collaborator', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('supervisor', 'be', 'supervisor@breadcrumbs.com', 'supervisor', 'password');
+insert into Users (first_name, last_name, email, role, password) values ('third', 'candidate', 'another.third@breadcrumbs.com', 'candidate', 'password');

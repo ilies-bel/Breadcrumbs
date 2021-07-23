@@ -25,7 +25,6 @@ export default NextAuth({
       }),
        Providers.Credentials({
             name: 'email',
-           redirect: 'false',
             credentials: {
                 email: { label: "user", type: "text", placeholder: "your email" },
                 password: { label: "type your password", type: "password" }
@@ -35,7 +34,12 @@ export default NextAuth({
                 let error = null;
                 let url = process.env.AUTH_URL;
                 
-                const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password})
+                const cred = await axios.post(url, {"email":credentials.email, "password":credentials.password},{
+                    headers: {
+"Content-Type": "application/json;charset=UTF-8",
+                        "Access-Control-Allow-Origin": "*"
+                    }
+                })
                     .then((response) => {
                             const res = response.data;
 
@@ -66,7 +70,7 @@ export default NextAuth({
     pages: {
         //signIn: '/Authentification/login',
         signOut: '/',
-        error: '/', // Error code passed in query string as ?error=
+        //error: '/', // Error code passed in query string as ?error=
         verifyRequest: '/auth/verify-request', // (used for check email message)
         newUser: null, // If set, new users will be directed here on first sign in
         redirect: false

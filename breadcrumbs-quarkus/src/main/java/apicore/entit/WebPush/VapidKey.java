@@ -13,5 +13,4 @@ public class VapidKey extends PanacheEntityBase {
     @JsonAlias({"p256dh", "ps256"})
     public String publicVapidKey;
     public String auth;
-
 }

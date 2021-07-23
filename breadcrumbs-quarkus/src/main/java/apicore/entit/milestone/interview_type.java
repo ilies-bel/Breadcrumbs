@@ -1,5 +1,6 @@
 package apicore.entit.milestone;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
@@ -7,9 +8,13 @@ import java.util.List;
 
 @Entity
 public class interview_type extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_interview_type;
+    public interview_type() {}
+    public interview_type(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id_interview_type;
 
     public String title;
     public String description;

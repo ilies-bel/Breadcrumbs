@@ -1,10 +1,15 @@
 package apicore.entit.user;
 
+import apicore.entit.company.Entreprise;
 import apicore.entit.milestone.availability.Appointment;
 
+import apicore.entit.milestone.interview_process;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
+import io.quarkus.runtime.StartupEvent;
 
+import javax.enterprise.event.Observes;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,15 +25,20 @@ public class Users extends PanacheEntityBase {
     public String first_name;
     public String last_name;
     public String email;
-    private String password;
+    @JsonFilter("passFilter")
+    public String password;
     public String role;
 
-    @OneToMany(mappedBy = "interlocutor")
-    public List<Appointment> appointments;
+    @OneToMany(mappedBy = "title")
+    private List<Appointment> appointments;
+    @OneToMany
+    private List<interview_process> processes;
+    @ManyToOne
+    private Entreprise entreprises;
 
     @Transactional
     @Startup
-    public static void seed() {
+    public static void seed(@Observes StartupEvent ev) {
         Users user = new Users();
         Users.add("another.candidate@breadcrumbs.com", "password", "candidate", "Candidate", "candidate");
         Users.add("another.collaborator@breadcrumbs.com", "password", "collaborator", "collaborator", "collaborator");
@@ -105,6 +115,6 @@ public class Users extends PanacheEntityBase {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 }

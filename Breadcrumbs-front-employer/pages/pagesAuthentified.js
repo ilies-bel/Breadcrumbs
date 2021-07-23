@@ -18,7 +18,7 @@ export default function RestrictedPages({children}) {
         </div>
     )
 
-    if(!session && !publicPages.includes(children)) return ( <Button variant="outlined" ><Link href="api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3001%2F">Click here to Login with your collaborator credentials</Link></Button> )
+    if(!session && !publicPages.includes(children)) return ( <Button variant="outlined" ><Link href="api/auth/signin">Click here to Login with your collaborator credentials</Link></Button> )
     if(session) return (
         <div className="restricted" >
             {children}
