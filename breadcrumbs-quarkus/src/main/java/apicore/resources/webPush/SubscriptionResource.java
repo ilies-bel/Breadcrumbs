@@ -2,13 +2,9 @@ package apicore.resources.webPush;
 
 import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.WebPush.VapidKey;
-import apicore.interfaces.PushServerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
+import apicore.entit.WebPush.PushServerService;
 import org.jose4j.lang.JoseException;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,14 +39,6 @@ public class SubscriptionResource {
     @Transactional
     public void deleteSubscription(SubscriptionService subscription) {
         SubscriptionService.deleteEndpoint(subscription.endpoint);
-    }
-
-    @GET
-    @Path(("/send/{payload}"))
-    public Response send(SubscriptionService subscription, @PathParam("payload") String payload) throws GeneralSecurityException, JoseException, IOException, ExecutionException, InterruptedException {
-        PushServerService pusher = new PushServerService(subscription);
-        pusher.send(subscription, "payload");
-        return Response.ok("Notif send").build();
     }
 
     @GET

@@ -1,4 +1,4 @@
-package apicore.entit;
+package apicore.entit.company;
 
 import apicore.entit.user.Users;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;

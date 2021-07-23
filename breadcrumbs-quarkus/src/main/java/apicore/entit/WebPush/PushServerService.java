@@ -1,4 +1,4 @@
-package apicore.interfaces;
+package apicore.entit.WebPush;
 
 
 import apicore.entit.WebPush.SubscriptionService;
@@ -8,6 +8,7 @@ import org.jose4j.lang.BouncyCastleProviderHelp;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,27 +26,30 @@ import nl.martijndwars.webpush.Subscription;
 import org.jose4j.lang.JoseException;
 
 public class PushServerService {
+    private Notification notif;
+
     public PushServerService() {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
     }
-    private Notification notif;
     public PushServerService(SubscriptionService subbscription) {
+        this();
+
         try {
             URI uri = new URI(subbscription.endpoint);
             RestClientBuilder pushServer = RestClientBuilder.newBuilder().baseUri(uri);
             try {
                 notif = new Notification(subbscription.endpoint,
                         "BIY62sUhXQZnEe39GpuNSHqxjBoXXDmng26oKiyQISJM6cPodHbRaKdsjf5y9iCpsOlbmNXlugTNjWThgvuPHqg", subbscription.keys.auth, "{\"title\":\"ree\"}");
-            } catch (NoSuchAlgorithmException e) {
-                //System.out.println("Problème de clé");System.out.println("Problème de clé");System.out.println("Problème de clé");
-                e.printStackTrace();
+            }
+            //En prod, remplacer les e.printStac.* par l'instruction 'throw NotFoundException' afin d'éviter de retourner des erreurs 500 (Internal Error).
+            catch (NoSuchAlgorithmException e) {
+                e.printStackTrace(); //throw NotFoundException;
             } catch (InvalidKeySpecException e) {
-                //System.out.println("Problème de clé");System.out.println("Problème de clé");System.out.println("Problème de clé");
-                e.printStackTrace();
+                e.printStackTrace(); //throw NotFoundException;
             } catch (NoSuchProviderException e) {
-                e.printStackTrace();
+                e.printStackTrace(); //throw NotFoundException;
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();

@@ -1,24 +1,16 @@
 package apicore.init;
 
-import apicore.entit.Entreprise;
+import apicore.entit.company.Entreprise;
 import apicore.entit.tips.interview_tips;
 import apicore.entit.user.Users;
 import apicore.entit.milestone.*;
 import apicore.entit.milestone.availability.*;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import io.quarkus.runtime.Quarkus;
-import io.quarkus.runtime.QuarkusApplication;
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.annotations.QuarkusMain;
 
 import javax.enterprise.event.Observes;
 import javax.transaction.Transactional;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 

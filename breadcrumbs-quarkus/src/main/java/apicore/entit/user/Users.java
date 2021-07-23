@@ -1,18 +1,14 @@
 package apicore.entit.user;
 
-import apicore.entit.Entreprise;
-import apicore.entit.WebPush.SubscriptionService;
+import apicore.entit.company.Entreprise;
 import apicore.entit.milestone.availability.Appointment;
 
 import apicore.entit.milestone.interview_process;
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.persistence.*;
 import javax.transaction.Transactional;

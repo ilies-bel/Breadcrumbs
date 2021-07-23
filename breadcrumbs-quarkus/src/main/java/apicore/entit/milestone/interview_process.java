@@ -1,6 +1,6 @@
 package apicore.entit.milestone;
 
-import apicore.entit.Entreprise;
+import apicore.entit.company.Entreprise;
 import apicore.entit.user.Users;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 

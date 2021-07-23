@@ -35,6 +35,7 @@ public class SubscriptionService extends PanacheEntityBase {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
         }
+
         KeyFactory kf = KeyFactory.getInstance("ECDH", BouncyCastleProvider.PROVIDER_NAME);
         ECNamedCurveParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp256r1");
         ECPoint point = ecSpec.getCurve().decodePoint(getKeyAsBytes());
