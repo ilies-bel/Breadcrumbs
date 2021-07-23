@@ -1,9 +1,13 @@
 package apicore.entit.user;
 
+import apicore.entit.Entreprise;
 import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.milestone.availability.Appointment;
 
 import apicore.entit.milestone.interview_process;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -17,7 +21,6 @@ import java.util.List;
 
 @Entity
 @Startup
-@ApplicationScoped
 public class Users extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +29,16 @@ public class Users extends PanacheEntityBase {
     public String first_name;
     public String last_name;
     public String email;
-    private String password;
+    @JsonFilter("passFilter")
+    public String password;
     public String role;
 
-    @OneToMany(mappedBy = "interlocutor")
+    @OneToMany(mappedBy = "title")
     private List<Appointment> appointments;
-
-    @OneToMany(mappedBy = "subscriber")
-    private List<SubscriptionService> subscription;
-
     @OneToMany
     private List<interview_process> processes;
+    @ManyToOne
+    private Entreprise entreprises;
 
     @Transactional
     @Startup
@@ -117,6 +119,6 @@ public class Users extends PanacheEntityBase {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 }

@@ -23,7 +23,7 @@ public class availability extends PanacheEntityBase {
     public String title;
     public String interlocutor_email;
 
-    @JsonAlias({"type", "typSlot"})
+    @JsonAlias({"type", "typeSlot"})
     public String status;
 
     @ManyToOne

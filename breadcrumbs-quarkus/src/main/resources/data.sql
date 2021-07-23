@@ -18,5 +18,4 @@ insert into interview_type (title, description, time_length, field) values ('Tec
 insert into Users (first_name, last_name, email, role, password) values ('candidate', 'be', 'candidate@breadcrumbs.com', 'candidate', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('collaborator', 'beldjilali', 'collaborator@breadcrumbs.com', 'collaborator', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('supervisor', 'be', 'supervisor@breadcrumbs.com', 'supervisor', 'password');
-insert into Users (first_name, last_name, email, role, password) values ('another', 'candidate', 'another.candidate@breadcrumbs.com', 'candidate', 'password');
 insert into Users (first_name, last_name, email, role, password) values ('third', 'candidate', 'another.third@breadcrumbs.com', 'candidate', 'password');
