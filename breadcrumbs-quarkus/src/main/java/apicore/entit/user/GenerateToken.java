@@ -42,4 +42,17 @@ public class GenerateToken {
         return token;
     }
 
+    public static String genrateToken2() throws IOException {
+        String key = ResourceUtils.readResource("key2.pem");
+        System.out.println(key);
+        String token =
+                Jwt.issuer("breadcrumbs")
+                        .claim("email", "param")
+                        .subject("mailto:jukiture@gmail.com")
+                        .audience("https://fcm.googleapis.com/")
+                        .expiresIn(3600).sign();
+
+        return token;
+    }
+
 }

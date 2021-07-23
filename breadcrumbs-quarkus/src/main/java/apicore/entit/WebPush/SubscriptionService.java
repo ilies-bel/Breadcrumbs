@@ -29,8 +29,9 @@ public class SubscriptionService extends PanacheEntityBase {
         this.keys.persist();
         this.persist();
     }
-    public void supprime() {
-        this.keys.delete();
-        this.delete();
+    public void supprimme() {
+        SubscriptionService s = findById(this.endpoint);
+        s.keys.delete();
+        s.delete();
     }
 }
