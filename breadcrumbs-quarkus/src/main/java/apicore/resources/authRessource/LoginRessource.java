@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Path("/auth")
-public class generateRessource {
+public class LoginRessource {
     private String token;
 
 

@@ -154,7 +154,7 @@ export async function createNotificationSubscription() {
   // subscribe and return the subscription
   return await serviceWorker.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: "BIY62sUhXQZnEe39GpuNSHqxjBoXXDmng26oKiyQISJM6cPodHbRaKdsjf5y9iCpsOlbmNXlugTNjWThgvuPHqg"
+    applicationServerKey: "BIBPjpYfaviR0p3I0E6WTvrCynnGD281D6_vr6TAclDlFjX6ysSNlJV8kyxhF3z18BMPJhIAn1gq1S81KRfxHoc"
   }).then(function(pushSubscription) {
     postSubscription(pushSubscription);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
@@ -191,6 +191,7 @@ export async function unSubscribe() {
   const serviceWorker = await navigator.serviceWorker.ready;
   
   return await getUserSubscription().then(async (subscription) => {
+    //TODO : Changer l'ordre d'exécution : il faut d'abord unsubscribe avant de faire la requête axios : subscription.unsubscribe().then(axios.delete())
     await axios.delete(SUBSC_URL, {
       data: subscription,
       headers: { "content-type": "application/json;charset=UTF-8" },

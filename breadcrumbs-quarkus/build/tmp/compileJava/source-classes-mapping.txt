@@ -36,7 +36,7 @@ apicore/entit/user/GenerateToken.java
 apicore/resources/titleRessource.java
  apicore.resources.titleRessource
 apicore/resources/authRessource/generateRessource.java
- apicore.resources.authRessource.generateRessource
+ apicore.resources.authRessource.LoginRessource
 apicore/entit/availability/availability.java
  apicore.entit.availability.availability
 apicore/entit/tips/interview_tips.java

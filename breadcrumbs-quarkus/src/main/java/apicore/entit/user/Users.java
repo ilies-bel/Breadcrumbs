@@ -1,10 +1,12 @@
 package apicore.entit.user;
 
+import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.company.Entreprise;
 import apicore.entit.milestone.availability.Appointment;
 
 import apicore.entit.milestone.interview_process;
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
@@ -31,10 +33,12 @@ public class Users extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "title")
     private List<Appointment> appointments;
-    @OneToMany
+    @OneToMany @JsonIgnore
     private List<interview_process> processes;
     @ManyToOne
     private Entreprise entreprises;
+    @ManyToOne(cascade = CascadeType.ALL)
+    public SubscriptionService pushSubscription;
 
     @Transactional
     @Startup
@@ -116,5 +120,17 @@ public class Users extends PanacheEntityBase {
 
     public String getPassword() {
         return password;
+    }
+    public SubscriptionService getPushSubscription() {
+        return pushSubscription;
+    }
+    public void setPushSubscription(SubscriptionService subscription) {
+        pushSubscription = subscription;
+    }
+    public void deleteSubscription() {
+        pushSubscription=null;
+    }
+    public Boolean hasPushSubscription() {
+        return this.pushSubscription != null;
     }
 }

@@ -22,9 +22,9 @@ public class GenerateToken {
      * Retourne un JWT
      * */
     public static String generateUserToken(Users user) {
-        String param = user.email;
+        String email = user.email;
         String name = user.first_name;
-        String role = Users.findRoleByEmail(param);
+        String role = Users.findRoleByEmail(email);
 
         if(!role.isEmpty()) {
             System.out.println("GenerateToken : generateUserToken :");System.out.println(role);System.out.println("GenerateToken : generateUserToken :");
@@ -34,8 +34,8 @@ public class GenerateToken {
         }
         String token =
                 Jwt.issuer("breadcrumbs")
-                        .upn(param)
-                        .claim("email", param)
+                        .upn(email)
+                        .audience("App_PWA_Candidate")
                         .claim("name", name!=null ? name : "I have no name")
                         .groups(role)
                         .sign();

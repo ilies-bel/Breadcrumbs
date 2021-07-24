@@ -43,16 +43,10 @@ function isPushNotificationSupported() {
 function receivePushNotification(event) {
   console.log(event);
   //L'objet contenant la notification est convertit en JSON
-  const datatemp = event.data.json();
-  const data = JSON.parse(datatemp);
-  console.log("data");console.log(data);console.log("/data");
-  console.log(datatemp);console.log("/datatemp");
-  console.log("title");console.log(data.title);console.log("/title data");
-  console.log("event data");console.log(event.data);console.log("/event data");
-  console.log("event");console.log(event);console.log("/event");
+  const data = event.data.json();
 
   const options = {
-    body: `${data ?? "Voilà Comment fidéliser l'utilisateur.\n Le roi des pirates, ce sera..."}`,
+    body: `${data.body ?? "Voilà Comment fidéliser l'utilisateur.\n Le roi des pirates, ce sera..."}`,
     icon: "/favicon.ico",
     actions: [{action: "Cliquer",title: "Book Appointment",icon: "/Subtract.png"},
     {action: "Skip",title: "Ignore",icon: "/Subtract.png"},
@@ -63,7 +57,7 @@ function receivePushNotification(event) {
   }
   //Afficher la notifiation
   event.waitUntil(
-    self.registration.showNotification(data, options)
+    self.registration.showNotification(data.title, options)
   );
 }
 self.addEventListener("push", receivePushNotification); //Listener de l'événement push

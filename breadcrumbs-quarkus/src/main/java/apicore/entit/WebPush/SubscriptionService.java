@@ -2,6 +2,7 @@ package apicore.entit.WebPush;
 
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -14,6 +15,8 @@ import javax.ws.rs.NotFoundException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class SubscriptionService extends PanacheEntityBase {
@@ -24,30 +27,21 @@ public class SubscriptionService extends PanacheEntityBase {
     @ManyToOne(cascade = CascadeType.ALL)
     public VapidKey keys;
 
-    public byte[] getKeyAsBytes() {
-        return Base64.getDecoder().decode(keys.publicVapidKey);
+    @ManyToOne
+    private Users user;
+
+    public String getPublicVapidKey() {
+        String key = Objects.requireNonNullElseGet(keys.publicVapidKey, () -> "Key_Not_Found");
+        return key;
     }
 
-    /**
-     * Returns the base64 encoded public key as a PublicKey object
-     */
-    public PublicKey getUserPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
 
-        KeyFactory kf = KeyFactory.getInstance("ECDH", BouncyCastleProvider.PROVIDER_NAME);
-        ECNamedCurveParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp256r1");
-        ECPoint point = ecSpec.getCurve().decodePoint(getKeyAsBytes());
-        ECPublicKeySpec pubSpec = new ECPublicKeySpec(point, ecSpec);
-
-        return kf.generatePublic(pubSpec);
-    }
     public void add() {
         //Il est préférable insérer keys avant subscription
         //Si on insère subscription avant keys, le résultat ser le même mais une troisième requête sera effectué pour lier subscription à la key correspondante
         this.keys.persist();
         this.persist();
+        System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");
     }
     public void updateKey(VapidKey key) {
         this.keys.delete();
@@ -57,10 +51,12 @@ public class SubscriptionService extends PanacheEntityBase {
     }
     public static void deleteEndpoint(String endpoint) {
         SubscriptionService subscription = SubscriptionService.findById(endpoint);
+        Users user = Users.find("pushSubscription", subscription).firstResult();
         if(subscription == null) {
             throw new NotFoundException();
         }
         else {
+            user.deleteSubscription();
             subscription.delete();
         }
     }

@@ -1,5 +1,6 @@
 package apicore.resources.milestoneRessource;
 import apicore.entit.milestone.availability.availability;
+import apicore.entit.milestone.interview_process;
 import apicore.resources.milestoneRessource.appointmentRessource;
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +26,7 @@ public class availabilityResource {
         Users collaborator = a.getInterlocutor();
         //System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
         availability.add(a.startDate, a.endDate, a.title, collaborator);
+
         return Response.ok(a).build();
     }
 
