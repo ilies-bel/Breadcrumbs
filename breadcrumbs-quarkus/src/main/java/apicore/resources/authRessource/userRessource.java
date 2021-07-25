@@ -1,8 +1,10 @@
 package apicore.resources.authRessource;
 
 import apicore.entit.user.Users;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class userRessource {
+    @Inject
+    JsonWebToken jwt;
     @RolesAllowed("collaborator")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

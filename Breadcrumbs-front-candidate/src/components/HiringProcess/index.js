@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Link, NavLink, Redirect, Route, useRouteMatch, useHistory} from 'react-router-dom';
 
 import {TitleSource} from "../Navigation/titleContext";
-import {AuthUserContext} from "../AuthentificationFirebase/Session";
+
 import {CONFIRM, DISPO, HIRING_PROCESS_TITLE} from "../../constants/routes";
 
 import HiringProcess from './hiring';
@@ -13,6 +13,8 @@ import {useGetProcess} from "../../utils/axios";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import NotFound from "components/NotFound";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { PageDescription } from 'Navigation';
 
 const HiringProcessPage = (props) => {
     const {path, url} = useRouteMatch();

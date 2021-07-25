@@ -19,6 +19,7 @@ import {makeStyles} from "@material-ui/core";
 import {AuthContext} from "components/AuthentificationJwt/context";
 import LoginEmailPage from "components/AuthentificationJwt/login/loginEmail";
 import OnBoardingPage from "components/AuthentificationJwt/signIn";
+import BigProvider, { useContextdata } from '../AuthentificationJwt/context';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -26,28 +27,8 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
     const classes = useStyles();
-    const [ token, setToken ] = useState(window.localStorage.getItem("token"));
-    const [ user, setUser ] = useState(window.localStorage.getItem("user"));
-    const [ title, setTitle] = useState();
-    const [ endDate, setEnd] = useState();
-    const [ startDate, setStart] = useState();
-    const [interlocutor, setInterlocutor] = useState()
 
-    window.OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "a2b772b1-9a60-42a1-9dd5-481c00e325f5",
-    });
-  });
-
-    function setData(token, user) {
-        setToken(token);
-        setUser(user);
-    }
-    function RegisterAppointments(title, endDate, startDate, interv) {
-        setTitle(title);setEnd(endDate);setStart(startDate);
-        setInterlocutor(interv)
-    }
+    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, setInterlocutor } = useContextdata();    
 
     return (
         <div>            
@@ -57,7 +38,8 @@ const App = () => {
                     userName: user,
                     startDate: startDate,
                     endDate: endDate,
-                    setData: setData, setAppointment: RegisterAppointments } } >
+                    interlocutor,
+                    setData: setUserData, setAppointment: setAppointment, setInterlocutor: setInterlocutor } } >
                 { !token && <Redirect to="/login/email"/>}
                 { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>
@@ -75,7 +57,7 @@ const App = () => {
                         <Route path={ROUTES.CONFIRM} component={ConfirmPage}/>
 
                         <Route path="/auth" component={OnBoardingPage} />
-                        { !token && <Route path="/login/email" component={LoginEmailPage}/>}
+                        <Route path="/login/email" component={LoginEmailPage}/>
                     </MainNav>
                     <BottomNav/>
                 </AuthContext.Provider>

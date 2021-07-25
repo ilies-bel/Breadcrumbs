@@ -34,7 +34,6 @@ public class interview_process extends PanacheEntityBase {
         this(e, candidates, new ArrayList<>());
     }
 
-
     @JsonIgnore
     public interview_milestones getCurrentMilestone() {
         return milestones.get(currentMilestoneIndex);

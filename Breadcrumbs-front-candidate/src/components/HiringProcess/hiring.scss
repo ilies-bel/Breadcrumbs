@@ -54,7 +54,7 @@ h2 {
           }
         }
 
-        &.pending {
+        &.pending, &.completed {
           .MuiButtonBase-root {
             opacity: 50%;
           }

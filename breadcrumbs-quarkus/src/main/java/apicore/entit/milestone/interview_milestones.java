@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class interview_milestones extends PanacheEntityBase {
     public enum STATUS {
-        PENDING("pending"), IN_PROGRESS("inProgress"), INCOMING, COMPLETED;
+        PENDING("pending"), IN_PROGRESS("inProgress"), INCOMING, COMPLETED("completed");
         STATUS() {}
         STATUS(String val) {
             value=val;

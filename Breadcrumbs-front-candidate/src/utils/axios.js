@@ -5,7 +5,8 @@ const BASE_API_URL = process.env.AXIOS_BASE_URL
 const AVAILABILITY = process.env.AVAILABILITY_API;
 const tips = process.env.TIPS_API
 const AMBASSADOR = process.env.AMBASSADOR_API;
-const PROCESS = process.env.PROCESS_MILESTONE_API
+const PROCESS = process.env.PROCESS_API
+const MILESTONE = process.env.PROCESS_MILESTONE_API
 const APPOINTMENT = process.env.APPOINTMENT_API
 const INTERVIEW_TYPE = process.env.INTERVIEW_TYPE;
 const CANDIDATE_API_URL = process.env.CANDIDATE_API_URL
@@ -49,10 +50,10 @@ export const useGetAmbassador = () => {
     return useAPI(AMBASSADOR);
 }
 export const useGetProcess = () => {
-    return useAPI(PROCESS);
+    return useAPI(MILESTONE);
 }
 export const useGetMilestone = () => {
-    return useAPI(PROCESS);
+    return useAPI(MILESTONE);
 }
 export const useInterviewType = (id='') => {
     return useAPI(`${INTERVIEW_TYPE}/${id}`)
@@ -73,7 +74,7 @@ export const useAppointmentAPI = (path='', token='', data={}, method='get', manu
 }
 
 export const useCreateAppointment = (data={}, token) => {
-    return useAppointmentAPI('add', token,{data}, 'post', true)
+    return useAppointmentAPI('add', token,data, 'post', true)
 }
 export const useEditAppointment = (id, data={}) => {
     return useAppointmentAPI(`/${id}`, data, 'put')

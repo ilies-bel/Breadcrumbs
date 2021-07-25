@@ -13,7 +13,7 @@ public class Appointment extends availability {
 
     public String candidate_email;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public Users candidate;
 
     @ManyToOne
