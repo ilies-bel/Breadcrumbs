@@ -48,7 +48,7 @@ export default function DateItem(props) {
     else {
         return (
             <AuthContext.Consumer>
-            {({ setAppointment, setInterlocutor}) => (
+            {({ setAppointment, setInterview}) => (
                 <Accordion>
                     <AccordionSummary>
                         {props.startDate} to {props.endDate} <ExpandMore/>             
@@ -67,7 +67,7 @@ export default function DateItem(props) {
 
                             <FlashyButton onClick={() => {
                                 handleConfirm(props.startDate, props.endDate);
-                                setInterlocutor(props?.interlocutor?.first_name)
+                                setInterview({ interviewer: props?.interlocutor?.first_name})
                                 setAppointment(props.startDate, props.endDate);
                             }} > Confirm appointment 
                             </FlashyButton>

@@ -23,6 +23,11 @@ const HiringProcess = () => {
     
     const [{ data, loading, error }, refetch] = useGetMilestone();
     const context = useAuthContext();
+    
+    
+    function setInterview(data) {
+        context.setInterview({milestone_name: data?.milestone_name, type: data?.type.title, description: data?.type.description})
+    }    
 
     const handleButtonClick = (status) => {
         status !== 'pending' && history.push(`milestone/${process?.milestone_name}`)
@@ -37,15 +42,16 @@ const HiringProcess = () => {
             <ol className="timeline">
                 {data && data.map((process, i) =>
                     <li key={i} className={process?.status} >
-                        <ButtonBase onClick={() => process?.status=='inProgress' && handleButtonClick(process?.status) } >
+                        <ButtonBase onClick={() => {
+                            process?.status=='inProgress' && handleButtonClick(process?.status);
+                            process?.status=='inProgress' && setInterview(process)
+                            } } >
                             <div className="buttonTitle">Due to 2{i} november - {process?.status}</div>
 
                                 { process?.milestone_name } -
 
 
                                 { process?.type.title }
-
-                                  
 
                             <HelpOutline color="primary" />
                             <Link to={`${DISPO}`}>

@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 const App = () => {
     const classes = useStyles();
 
-    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, setInterlocutor } = useContextdata();    
+    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useContextdata();    
 
     return (
         <div>            
@@ -39,7 +39,9 @@ const App = () => {
                     startDate: startDate,
                     endDate: endDate,
                     interlocutor,
-                    setData: setUserData, setAppointment: setAppointment, setInterlocutor: setInterlocutor } } >
+                    interviewType: interviewType,
+                    interviewDescription: interviewDescription,
+                    setData: setUserData, setAppointment: setAppointment, setInterview: setInterview } } >
                 { !token && <Redirect to="/login/email"/>}
                 { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>
