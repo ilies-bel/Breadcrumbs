@@ -19,8 +19,8 @@ public class availability extends PanacheEntityBase {
 
     public String startDate;
     public String endDate;
-    @JsonAlias("title")
-    public String title;
+
+    @JsonAlias({"email", "email_interlocutor"})
     public String interlocutor_email;
 
     @JsonAlias({"type", "typeSlot"})
@@ -30,39 +30,40 @@ public class availability extends PanacheEntityBase {
     public Users interlocutor;
 
     public availability() {}
-    public availability(String startTime, String endTime, String title, Users user) {
-        this.startDate = startTime;
-        this.endDate = endTime;
-        this.title = title;
-        this.interlocutor = user;
-        this.status = STATUS;
+
+    /** Construire une availability à partir d'un objet Users */
+    public availability(String startTime, String endTime, Users collaborator) {
+        this(startTime, endTime);
+        this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
+        this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "nobody@empty.fr");
     }
-    public availability(String startTime, String endTime, String title, String email) {
-        this(startTime, endTime, title);
+    /** Construire une availability à partir de l'adresse email d'un collaborateur */
+    public availability(String startTime, String endTime, String email) {
+        this(startTime, endTime);
         Users interlocutor = Users.findByEmail(email);
-        this.interlocutor = interlocutor;
-        this.status = STATUS;
+        this.interlocutor = Objects.requireNonNull(interlocutor, "No users found with this email adress.");
+        this.interlocutor_email = email;
     }
-    public availability(String startTime, String endTime, String title) {
+    protected availability(String startTime, String endTime) {
         this.startDate = startTime;
         this.endDate = endTime;
-        this.title = title;
         this.status = STATUS;
     }
 
-    /** Retourne toute availability
+    /** Retourne toutes les availability
      * On filtre par STATUS pour ne pas retourner les appointments
      * */
     public static List<availability> getAll() {
         return availability.list("status", STATUS);
     }
     /** Ajoute une availability dans la table de la base de données */
-    public static void add(String startTime, String endTime, String title, Users user) {
-        availability a = new availability(startTime, endTime, title, user);
+    public static void add(String startTime, String endTime, Users user) {
+        availability a = new availability(startTime, endTime, user);
         a.persist();
     }
-    public static void add(String startTime, String endTime, Users user) {
-        availability.add(startTime, endTime, "Avalability", user);
+    public static void add(String startTime, String endTime, String email) {
+        availability a = new availability(startTime, endTime, email);
+        a.persist();
     }
     /**
      * Ajoute plusieurs avalabilities dans la table.
@@ -82,6 +83,8 @@ public class availability extends PanacheEntityBase {
     }
 
     public Users getInterlocutor() {
-        return Objects.requireNonNullElseGet(this.interlocutor, () -> Users.findUserByEmail(this.interlocutor_email));
+        Users user = new Users();
+        user.email = "nobody@empty.com";
+        return Objects.requireNonNullElseGet(this.interlocutor, () -> user);
     }
 }

@@ -2,11 +2,9 @@ package apicore.resources.webPush;
 
 import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.WebPush.VapidKey;
-import apicore.entit.WebPush.PushServerService;
 import apicore.entit.user.Users;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.jose4j.lang.JoseException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -16,10 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 @Path("/subscribe")
 public class SubscriptionResource {
@@ -32,17 +27,18 @@ public class SubscriptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("candidate")
     public Response subscribe(SubscriptionService subscription, @Context SecurityContext ctx) {
-        System.out.println(jwt);
         SubscriptionService entity = SubscriptionService.findById(subscription.endpoint);
         String user_email = jwt.getClaim(Claims.upn);
         Users candidate = Users.findByEmail(user_email);
 
-        if(entity == null || user_email == null || candidate==null) {
+        if(entity == null || candidate==null) {
             candidate.setPushSubscription(subscription);
-            subscription.add();
+            subscription.add(candidate);
         }
         else {
             entity.updateKey(subscription.keys);
+            entity.updateUser(candidate);
+            candidate.setPushSubscription(entity);
         }
         return Response.ok(subscription).build();
     }

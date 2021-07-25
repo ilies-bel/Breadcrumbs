@@ -1,39 +1,27 @@
 package apicore.entit.WebPush;
 
 
-import apicore.entit.WebPush.SubscriptionService;
 import apicore.entit.milestone.interview_process;
 import apicore.entit.user.Users;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jose4j.lang.BouncyCastleProviderHelp;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.NotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Security;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
-import nl.martijndwars.webpush.Subscription;
 import org.jose4j.lang.JoseException;
 
-public class PushServerService {
+public class PushSender {
     public Notification notif;
     private String publicKey;
     private PushService pusher;
 
-    public PushServerService() {
+    public PushSender() {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
             try {
@@ -44,7 +32,7 @@ public class PushServerService {
             }
         }
     }
-    public PushServerService(SubscriptionService subscription) {
+    public PushSender(SubscriptionService subscription) {
         this();
         this.publicKey = subscription.keys.publicVapidKey;
     }

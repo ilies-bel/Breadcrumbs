@@ -27,8 +27,8 @@ public class Users extends PanacheEntityBase {
     public String first_name;
     public String last_name;
     public String email;
-    @JsonFilter("passFilter")
-    public String password;
+
+    private String password;
     public String role;
 
     @OneToMany(mappedBy = "title")
@@ -36,7 +36,7 @@ public class Users extends PanacheEntityBase {
     @OneToMany @JsonIgnore
     private List<interview_process> processes;
     @ManyToOne
-    private Entreprise entreprises;
+    public Entreprise entreprise;
     @ManyToOne(cascade = CascadeType.ALL)
     public SubscriptionService pushSubscription;
 
@@ -121,11 +121,15 @@ public class Users extends PanacheEntityBase {
     public String getPassword() {
         return password;
     }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public SubscriptionService getPushSubscription() {
         return pushSubscription;
     }
     public void setPushSubscription(SubscriptionService subscription) {
         pushSubscription = subscription;
+        this.persist();
     }
     public void deleteSubscription() {
         pushSubscription=null;

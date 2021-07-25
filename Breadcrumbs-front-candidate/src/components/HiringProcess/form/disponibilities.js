@@ -37,6 +37,8 @@ const DateItem = (props) => {
     const [{data, loading, error}, execute] = useCreateAppointment({
         startDate: props?.startDate ?? "30 february 2005",
         endDate: props?.endDate,
+        title: props?.title ?? "Phone Call",
+        interlocutor_email: "collaborator@breadcrumbs.com"
     }, token);
     
     const handleConfirm = async(startDate, endDate, setAppointment) => {
@@ -58,9 +60,13 @@ const DateItem = (props) => {
             {({title, startDate, endDate, interlocutor, setAppointment}) => (
                 <Accordion>
                     <AccordionSummary>
-                        {props.startDate} to {props.endDate} <ExpandMore/>
+                        {props.startDate} to {props.endDate} <ExpandMore/>             
                     </AccordionSummary>
                     <AccordionDetails className="appointmentDetails">
+                        <h3>
+                        with {props?.interlocutor?.first_name} {props?.interlocutor?.last_name}
+                        </h3>
+
                         <div>
                         You’re about to book an appointment for your phone interview.<br/>
 

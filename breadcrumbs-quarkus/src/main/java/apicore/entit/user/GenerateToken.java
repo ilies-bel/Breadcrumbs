@@ -1,6 +1,7 @@
 package apicore.entit.user;
 
 import apicore.entit.user.Users;
+import com.google.common.primitives.UnsignedInteger;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import io.smallrye.jwt.util.ResourceUtils;
@@ -17,10 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GenerateToken {
-    /**Génère un JWT à un utilisateur en focntion de son email
-     * Prend en paramètre un objet User avec un email défini
-     * Retourne un JWT
-     * */
+    private static Integer EXPIRATION_DELAY = 3600*24; //Le token expire dans 24h
+    /**
+     * Génère un JWT à un utilisateur en focntion de son email
+     * @param user : Utilisateur avec une adresse email enregistrée en base de données
+     * @return un JSON Web token
+     */
     public static String generateUserToken(Users user) {
         String email = user.email;
         String name = user.first_name;
@@ -38,21 +41,8 @@ public class GenerateToken {
                         .audience("App_PWA_Candidate")
                         .claim("name", name!=null ? name : "I have no name")
                         .groups(role)
+                        .expiresIn(EXPIRATION_DELAY)
                         .sign();
         return token;
     }
-
-    public static String genrateToken2() throws IOException {
-        String key = ResourceUtils.readResource("key2.pem");
-        System.out.println(key);
-        String token =
-                Jwt.issuer("breadcrumbs")
-                        .claim("email", "param")
-                        .subject("mailto:jukiture@gmail.com")
-                        .audience("https://fcm.googleapis.com/")
-                        .expiresIn(3600).sign();
-
-        return token;
-    }
-
 }

@@ -8,18 +8,21 @@ import java.util.List;
 
 @Entity
 public class interview_milestones extends PanacheEntityBase {
+    public enum STATUS { PENDING, IN_PROGRESS, INCOMING, COMPLETED }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_milestone;
 
     @ManyToOne
     public interview_type type;
-    @OneToMany(mappedBy = "milestone")
-    public List<Appointment> appointment;
-
-    public String interview_type;
+    @OneToMany
+    private List<Appointment> appointment;
 
     public String milestone_name;
     public String status;
+
+    public String getTypeTitle() {
+        return type.title;
+    }
 
 }

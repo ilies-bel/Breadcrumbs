@@ -7,9 +7,22 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Entity
 public class interview_process extends PanacheEntityBase {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id_process;
+
+    public Integer currentMilestoneIndex;
+
+    @ManyToOne
+    public Users candidate;
+    @ManyToOne
+    public Entreprise entreprise;
+    @ManyToMany
+    public List<interview_milestones> milestones;
+
     public interview_process() {}
     public interview_process(Entreprise e, Users candidates, ArrayList<interview_milestones> milestones) {
         this.entreprise = e;
@@ -19,14 +32,15 @@ public class interview_process extends PanacheEntityBase {
     public interview_process(Entreprise e, Users candidates) {
         this(e, candidates, new ArrayList<>());
     }
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id_process;
 
-    @ManyToOne
-    public Users candidate;
-    @ManyToOne
-    public Entreprise entreprise;
 
-    @ManyToMany
-    public List<interview_milestones> milestones;
+    public interview_milestones getCurrentMilestone() {
+        return milestones.get(currentMilestoneIndex);
+    }
+    public void setCurrentMilestone(Integer newIndex) {}
+
+    public static interview_process getProcess(Users candidate, Entreprise entreprise) {
+        interview_process p1 = interview_process.find("candidate = ?1 AND  interlocutor = ?2", candidate, entreprise).firstResult();
+        return p1;
+    }
 }

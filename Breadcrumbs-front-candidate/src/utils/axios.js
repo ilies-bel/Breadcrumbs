@@ -1,4 +1,5 @@
 import useAxios from 'axios-hooks'
+import axios from 'axios';
 
 const BASE_API_URL = process.env.AXIOS_BASE_URL
 const AVAILABILITY = process.env.AVAILABILITY_API;
@@ -9,6 +10,8 @@ const APPOINTMENT = process.env.APPOINTMENT_API
 const INTERVIEW_TYPE = process.env.INTERVIEW_TYPE;
 const CANDIDATE_API_URL = process.env.CANDIDATE_API_URL
 
+const TOKEN_KEY = process.env.TOKEN_LOCAL_STORAGE_KEY;
+const storedToken = window.localStorage.getItem(TOKEN_KEY)
 
 export const useAPI = (path='', header={}) => {
     return useAxios({
@@ -17,6 +20,20 @@ export const useAPI = (path='', header={}) => {
         headers: header
     })
 }
+export const useSecureAPI = (path='', header={}) => {
+    header.Authorization = `Bearer ${storedToken}`;
+    return useAxios({
+        baseURL: BASE_API_URL,
+        url: path,
+        headers: header
+    })
+}
+export const axiosSecure = axios.create({
+    baseURL: BASE_API_URL,
+    headers: {
+        Authorization: `Bearer ${storedToken}`
+    }
+})
 
 export const useGetAccount = () => {
     return useAPI(CANDIDATE_API_URL);

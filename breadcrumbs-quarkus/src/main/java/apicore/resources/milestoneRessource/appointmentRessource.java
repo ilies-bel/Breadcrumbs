@@ -1,7 +1,10 @@
 package apicore.resources.milestoneRessource;
 import apicore.entit.milestone.availability.Appointment;
 import apicore.entit.milestone.availability.availability;
+import apicore.entit.milestone.interview_milestones;
+import apicore.entit.milestone.interview_process;
 import apicore.entit.user.Users;
+import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
@@ -9,8 +12,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,19 +50,30 @@ public class appointmentRessource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("candidate")
-    public Response addAppointment(availability available) {
-        String email = token.getName();
+    public Response addAppointment(availability available, @Context SecurityContext ctx) {
+        String email = token.getClaim(Claims.upn);
+
         Users candidate = Users.findUserByEmail(email);
-        Users interlocutor = available.getInterlocutor();
-        Appointment.addFromAvailability(available, candidate, interlocutor);
-        return Response.ok("Appointment registered From an availability parameter " + email).build();
+        Users interlocutor = Users.findUserByEmail(available.interlocutor_email);
+        System.out.println(interlocutor.entreprise);
+
+        interview_process process = interview_process.find("candidate = ?1 AND  entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+
+        interview_milestones currentMilestone = process.getCurrentMilestone();
+
+        Appointment.addFromAvailability(available, candidate, currentMilestone);
+        return Response.ok(currentMilestone.status).build();
     }
     @Path("/add/ava")
     @Transactional
     public Response addAppointment2(Appointment available) {
         String email = token.getClaim("email");
         Users user = Users.findUserByEmail(email);
-        Appointment.addFromAppointment(available, user);
+
+        interview_process process = interview_process.find("candidate", user).firstResult();
+        interview_milestones currentMilestone = process.getCurrentMilestone();
+
+        Appointment.addFromAppointment(available, user, currentMilestone);
         return Response.ok("Appointment registered From an Appointment parameter").build();
     }
 }

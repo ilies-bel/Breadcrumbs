@@ -160,19 +160,19 @@ export async function createNotificationSubscription() {
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return JSON.stringify(pushSubscription);
   }).catch(e => {
-        console.log(e);console.log("createNotificationSubscription error");
-        console.log(e);console.log("/createNotificationSubscription error")
+        console.log(e);
       });
 }
 const SUBSC_URL = process.env.SUBSC_URL;
+const TOKEN = process.env.TOKEN_LOCAL_STORAGE_KEY;
 /** On effectue la requête destiné à l'endpoint pour s'abonner aux notofications. 
  * Le paramètre 'subscription' correspond à l'objet retourné par la fonction createNotificationSubscription */
-export async function postSubscription(subscription) {
-  let res;
+export async function postSubscription(subscription: PushSubscription) {
+  const token = window.localStorage.getItem(TOKEN);
  
   await axios.put(SUBSC_URL, subscription, {
-    headers: { "content-type": "application/json;charset=UTF-8" },
-  }).then(response => res = response.data)
+    headers: { "content-type": "application/json;charset=UTF-8", "Authorization": `Bearer ${token}` },
+  })
 
 }
 export function getUserSubscription() {
@@ -189,12 +189,14 @@ export function getUserSubscription() {
 export async function unSubscribe() {
   //wait for service worker installation to be ready
   const serviceWorker = await navigator.serviceWorker.ready;
+  const token = window.localStorage.getItem(TOKEN);
   
   return await getUserSubscription().then(async (subscription) => {
+    const subscribe_temp = subscription;
     //TODO : Changer l'ordre d'exécution : il faut d'abord unsubscribe avant de faire la requête axios : subscription.unsubscribe().then(axios.delete())
     await axios.delete(SUBSC_URL, {
       data: subscription,
-      headers: { "content-type": "application/json;charset=UTF-8" },
+      headers: { "content-type": "application/json;charset=UTF-8", "Authorization": `Bearer ${token}`},
     })
     .then(() => subscription.unsubscribe().then((success) => console.log("Désabonnement success")))    
   } )

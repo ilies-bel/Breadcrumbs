@@ -1,6 +1,7 @@
 package apicore.entit.company;
 
 import apicore.entit.user.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ public class Entreprise extends PanacheEntityBase {
     @OneToMany
     public List<interview_process> processes;
 
-    @OneToMany(mappedBy = "entreprises")
+    @JsonIgnore
+    @OneToMany
     public List<Users> employees;
 }

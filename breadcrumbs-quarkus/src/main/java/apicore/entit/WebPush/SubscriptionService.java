@@ -43,10 +43,21 @@ public class SubscriptionService extends PanacheEntityBase {
         this.persist();
         System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");
     }
+    public void add(Users user) {
+        user.setPushSubscription(this);
+        this.user = user;
+        this.keys.persist();
+        this.persist();
+        System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");System.out.println("Bien add");
+    }
     public void updateKey(VapidKey key) {
         this.keys.delete();
         this.keys = key;
         this.keys.persist();
+        this.persist();
+    }
+    public void updateUser(Users user) {
+        this.user = user;
         this.persist();
     }
     public static void deleteEndpoint(String endpoint) {

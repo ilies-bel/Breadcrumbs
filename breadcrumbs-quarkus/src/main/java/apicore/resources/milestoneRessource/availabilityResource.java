@@ -25,7 +25,7 @@ public class availabilityResource {
     public Response addAvailability(availability a) {
         Users collaborator = a.getInterlocutor();
         //System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
-        availability.add(a.startDate, a.endDate, a.title, collaborator);
+        availability.add(a.startDate, a.endDate, collaborator);
 
         return Response.ok(a).build();
     }

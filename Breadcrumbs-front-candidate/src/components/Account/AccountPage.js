@@ -38,7 +38,7 @@ const AccountPage = props => {
         userConsent,
         onClickAskUserPermission,
         onClickSusbribeToPushNotification,
-        onClickSendSubscriptionToPushServer,
+
         userSubscription,
         ClickToUnsubscribe,
         error,
@@ -139,8 +139,7 @@ const AccountPage = props => {
 
                         {<FormControlLabel
                             value="start"
-                            control={
-                                loading ? <CircularProgress/> :   
+                            control={   
                                 <Switch
                                     checked={notification_push}
                                     onChange={togglePushNotification}
