@@ -54,7 +54,8 @@ public class appointmentRessource {
         String email = token.getClaim(Claims.upn);
 
         Users candidate = Users.findUserByEmail(email);
-        Users interlocutor = Users.findUserByEmail(available.interlocutor_email);
+        //L'objet available doit contenir soit un objet interlocutor, soit l'adresse mail de l'interlocutor
+        Users interlocutor = Objects.requireNonNullElseGet(available.interlocutor, () -> Users.findUserByEmail(available.interlocutor_email));
         System.out.println(interlocutor.entreprise);
 
         interview_process process = interview_process.find("candidate = ?1 AND  entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
