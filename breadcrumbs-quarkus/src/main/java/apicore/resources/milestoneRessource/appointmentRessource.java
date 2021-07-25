@@ -54,16 +54,32 @@ public class appointmentRessource {
         String email = token.getClaim(Claims.upn);
 
         Users candidate = Users.findUserByEmail(email);
-        //L'objet available doit contenir soit un objet interlocutor, soit l'adresse mail de l'interlocutor
-        Users interlocutor = Objects.requireNonNullElseGet(available.interlocutor, () -> Users.findUserByEmail(available.interlocutor_email));
-        System.out.println(interlocutor.entreprise);
+        Users interlocutor;
+        interview_process process;
 
-        interview_process process = interview_process.find("candidate = ?1 AND  entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+        if(available.interlocutor == null) {
+            interlocutor = Users.findUserByEmail(available.interlocutor_email);
 
-        interview_milestones currentMilestone = process.getCurrentMilestone();
+            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
 
-        Appointment.addFromAvailability(available, candidate, currentMilestone);
-        return Response.ok(currentMilestone.status).build();
+            interview_milestones currentMilestone = process.getCurrentMilestone();
+
+            Appointment.addFromAvailability(available, available.interlocutor_email, candidate, currentMilestone);
+        }
+        else {
+            interlocutor = available.interlocutor;
+
+            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+            System.out.println(process.getCurrentMilestone().milestone_name);
+            interview_milestones currentMilestone = process.getCurrentMilestone();
+
+            System.out.println(currentMilestone.milestone_name);
+
+            Appointment.addFromAvailability(available, candidate, currentMilestone);
+        }
+
+
+        return Response.ok("New appointment added").build();
     }
     @Path("/add/ava")
     @Transactional

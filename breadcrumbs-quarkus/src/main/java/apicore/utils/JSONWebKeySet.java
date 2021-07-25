@@ -1,4 +1,4 @@
-package apicore.entit.user;
+package apicore.utils;
 
 import io.smallrye.jwt.util.ResourceUtils;
 

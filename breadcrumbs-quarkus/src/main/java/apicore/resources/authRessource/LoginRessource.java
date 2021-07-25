@@ -2,21 +2,13 @@ package apicore.resources.authRessource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.quarkus.vertx.web.Header;
-import io.smallrye.jwt.util.ResourceUtils;
-import org.hibernate.annotations.Parameter;
-import org.jboss.resteasy.annotations.Body;
-import apicore.entit.user.GenerateToken;
+import apicore.utils.GenerateToken;
 import apicore.entit.user.TokenResponse;
 import apicore.entit.user.Users;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 
 @Path("/auth")
 public class LoginRessource {

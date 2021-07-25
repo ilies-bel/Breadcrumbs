@@ -1,7 +1,7 @@
 apicore/entit/milestone/interview_type.java
  apicore.entit.milestone.interview_type
 apicore/entit/user/JSONWebKeySet.java
- apicore.entit.user.JSONWebKeySet
+ apicore.utils.JSONWebKeySet
 apicore/entit/milestone/interview_milestones.java
  apicore.entit.milestone.interview_milestones
 apicore/resources/milestoneRessource/interview_typeRessource.java
@@ -32,7 +32,7 @@ apicore/resources/milestoneRessource/availabilityResource.java
 apicore/repo/availabilityRepo.java
  apicore.repo.availabilityRepo
 apicore/entit/user/GenerateToken.java
- apicore.entit.user.GenerateToken
+ apicore.utils.GenerateToken
 apicore/resources/titleRessource.java
  apicore.resources.titleRessource
 apicore/resources/authRessource/generateRessource.java

@@ -1,6 +1,6 @@
 package apicore.resources.authRessource;
 
-import apicore.entit.user.GenerateToken;
+import apicore.utils.GenerateToken;
 import apicore.entit.user.Users;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -11,9 +11,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;

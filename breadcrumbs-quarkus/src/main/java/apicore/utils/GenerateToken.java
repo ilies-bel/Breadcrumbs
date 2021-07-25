@@ -1,4 +1,4 @@
-package apicore.entit.user;
+package apicore.utils;
 
 import apicore.entit.user.Users;
 import com.google.common.primitives.UnsignedInteger;

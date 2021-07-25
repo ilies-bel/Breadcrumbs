@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class Appointment extends availability {
-    private static final String STATUS = "Appointment";
+    private static final String SLOT_TYPE = "Appointment";
 
     public String candidate_email;
 
@@ -24,18 +24,24 @@ public class Appointment extends availability {
     private Appointment(String startTime, String endTime, String interlocutor_email, Users candidate) {
         super(startTime, endTime, interlocutor_email);
         this.candidate = candidate;
-        this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "nobody@empty.com");
-        this.status = STATUS;
+        this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "appointment_se_nobody@empty.com");
+        this.type = SLOT_TYPE;
     }
     private Appointment(String startTime, String endTime, Users interlocutor, Users candidate) {
         super(startTime, endTime, interlocutor);
         this.candidate = candidate;
-        this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "nobody@empty.com");
+        this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "appointment_second_nobody@empty.com");
     }
     private Appointment(availability a, Users candidate)
     {
         super(a.startDate, a.endDate, a.interlocutor);
-        this.status = STATUS;
+        this.type = SLOT_TYPE;
+        this.candidate = candidate;
+    }
+    private Appointment(availability a, String email_interlocutor, Users candidate)
+    {
+        super(a.startDate, a.endDate, email_interlocutor);
+        this.type = SLOT_TYPE;
         this.candidate = candidate;
     }
 
@@ -60,6 +66,12 @@ public class Appointment extends availability {
     @Transactional
     public static void addFromAvailability(availability a, Users candidate, interview_milestones milestone) {
         Appointment appointment = new Appointment(a, candidate, milestone);
+        appointment.persist();
+    }
+    @Transactional
+    public static void addFromAvailability(availability a, String email_interlocutor, Users candidate, interview_milestones milestone) {
+        Appointment appointment = new Appointment(a, email_interlocutor, candidate);
+        appointment.milestone = milestone;
         appointment.persist();
     }
     @Transactional

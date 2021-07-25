@@ -23,7 +23,7 @@ public class availabilityResource {
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("collaborator")
     public Response addAvailability(availability a) {
-        Users collaborator = a.getInterlocutor();
+        Users collaborator = a.interlocutor;
         //System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
         availability.add(a.startDate, a.endDate, collaborator);
 

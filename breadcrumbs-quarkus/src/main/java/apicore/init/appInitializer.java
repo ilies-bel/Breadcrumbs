@@ -23,15 +23,26 @@ public class appInitializer {
         Quarkus.run(args);
     }
 
+    public void seedAll(@Observes StartupEvent ev) {
+        // Les méthodes de seed appelées ci-dessous doivent être exécuter dans l'ordre
+        seedTips();
+        Users.seed();
+        seedType();
+        seedMilestone();
+        seedEntreprises();
+        seedProcess();
+        seedAvalability();
+    }
+
     @Transactional
-    public static void seedTips(@Observes StartupEvent ev) {
+    public static void seedTips() {
         interview_tips.add("Rand tip", "Here is a random tips");
         interview_tips.add("Second Rand tip", "Here is a second random tips");
         interview_tips.add("third Rand tip", "Here is a third random tips");
     }
 
     @Transactional
-    public static void seedAvalability(@Observes StartupEvent ev) {
+    public static void seedAvalability() {
         availability a = new availability("1/08/2020|14:00", "1/08/2020|15:00", "collaborat@breadcrumbs.com");
         a.persist();
         a = new availability("2/08/2020|14:00", "2/08/2020|15:00", "collaborat@breadcrumbs.com");
@@ -44,16 +55,17 @@ public class appInitializer {
         a.persist();
     }
     @Transactional
-    public static void seedEntreprises(@Observes StartupEvent ev) {
+    public static void seedEntreprises() {
         Entreprise entreprise = new Entreprise("Breadcrumbs"); entreprise.persist();
         Entreprise entreprise2 = new Entreprise("SWORD"); entreprise.persist();
 
         Users collaborator = Users.find("email", "collaborator@breadcrumbs.com").firstResult();
+        collaborator.entreprise = entreprise; collaborator.persist();
         Users collaborator2 = Users.find("email", "another.collaborator@breadcrumbs.com").firstResult();
         collaborator2.entreprise = entreprise; collaborator2.persist();
     }
     @Transactional
-    public static void seedProcess(@Observes StartupEvent ev) {
+    public static void seedProcess() {
         Entreprise e = Entreprise.findById("Breadcrumbs");
         Users u = Users.findByEmail("candidate@breadcrumbs.com");
         List<interview_milestones> milestones = new ArrayList<interview_milestones>(interview_milestones.listAll());
@@ -64,22 +76,22 @@ public class appInitializer {
 
     }
     @Transactional
-    public static void seedMilestone(@Observes StartupEvent ev) {
+    public static void seedMilestone() {
         interview_milestones im = new interview_milestones();
         im.milestone_name="Step 1";
-        im.status="completed";im.type = interview_type.find("title", "Phone Call").firstResult();  im.persist();
+        im.statusStr= interview_milestones.STATUS.COMPLETED.toStsing();im.type = interview_type.find("title", "Phone Call").firstResult();  im.persist();
 
         interview_milestones im2 = new interview_milestones();
-        im2.milestone_name="Step 2";im2.status="inProgress";im2.type = interview_type.find("title", "Phone Call").firstResult();im2.persist();
+        im2.milestone_name="Step 2";im2.statusStr= interview_milestones.STATUS.IN_PROGRESS.toStsing() ;im2.type = interview_type.find("title", "Phone Call").firstResult();im2.persist();
 
         interview_milestones im3 = new interview_milestones();
-        im3.milestone_name="Step 3";im3.status="pending";im3.type = interview_type.find("title", "EscargoPhone Call").firstResult(); im3.persist();
+        im3.milestone_name="Step 3";im3.statusStr= interview_milestones.STATUS.PENDING.toStsing();im3.type = interview_type.find("title", "EscargoPhone Call").firstResult(); im3.persist();
 
         interview_milestones im4 = new interview_milestones();im4.persist();
-        im4.milestone_name="Step 4";im4.status="pending";im4.type = interview_type.find("title", "EscargoPhone Call").firstResult();im4.persist();
+        im4.milestone_name="Step 4";im4.statusStr= interview_milestones.STATUS.PENDING.toStsing();im4.type = interview_type.find("title", "EscargoPhone Call").firstResult();im4.persist();
     }
     @Transactional
-    public static void seedType(@Observes StartupEvent ev) {
+    public static void seedType() {
         interview_type type = new interview_type("Phone Call", "Call me from the other side"); type.persist();
         interview_type type2 = new interview_type("EscargoPhone Call", "Call me from Grand Line"); type2.persist();
     }

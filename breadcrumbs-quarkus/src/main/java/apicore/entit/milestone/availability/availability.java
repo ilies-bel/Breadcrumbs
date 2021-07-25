@@ -13,9 +13,9 @@ import java.util.Objects;
 @Entity
 public class availability extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonProperty("id") @JsonAlias("id")
-    public Integer id_slot;
+    public Long id_slot;
 
-    private static final String STATUS = "Availability";
+    private static final String SLOT_TYPE = "Availability";
 
     public String startDate;
     public String endDate;
@@ -24,7 +24,7 @@ public class availability extends PanacheEntityBase {
     public String interlocutor_email;
 
     @JsonAlias({"type", "typeSlot"})
-    public String status;
+    public String type;
 
     @ManyToOne
     public Users interlocutor;
@@ -35,26 +35,26 @@ public class availability extends PanacheEntityBase {
     public availability(String startTime, String endTime, Users collaborator) {
         this(startTime, endTime);
         this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
-        this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "nobody@empty.fr");
+        this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "availability_constructor_nobody@empty.fr");
     }
     /** Construire une availability à partir de l'adresse email d'un collaborateur */
     public availability(String startTime, String endTime, String email) {
         this(startTime, endTime);
         Users interlocutor = Users.findByEmail(email);
-        this.interlocutor = Objects.requireNonNull(interlocutor, "No users found with this email adress.");
+        this.interlocutor = Objects.requireNonNull(interlocutor, "No users found with this email address.");
         this.interlocutor_email = email;
     }
     protected availability(String startTime, String endTime) {
         this.startDate = startTime;
         this.endDate = endTime;
-        this.status = STATUS;
+        this.type = SLOT_TYPE;
     }
 
     /** Retourne toutes les availability
-     * On filtre par STATUS pour ne pas retourner les appointments
+     * On filtre par SLOT_TYPE pour ne pas retourner les appointments
      * */
     public static List<availability> getAll() {
-        return availability.list("status", STATUS);
+        return availability.list("type", SLOT_TYPE);
     }
     /** Ajoute une availability dans la table de la base de données */
     public static void add(String startTime, String endTime, Users user) {
@@ -80,11 +80,5 @@ public class availability extends PanacheEntityBase {
     public static void updateAvalabilities(List<availability> availabilityList) {
         availability.deleteAll();
         availability.addList(availabilityList);
-    }
-
-    public Users getInterlocutor() {
-        Users user = new Users();
-        user.email = "nobody@empty.com";
-        return Objects.requireNonNullElseGet(this.interlocutor, () -> user);
     }
 }

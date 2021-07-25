@@ -31,18 +31,18 @@ public class Users extends PanacheEntityBase {
     private String password;
     public String role;
 
-    @OneToMany(mappedBy = "title")
+    @OneToMany(mappedBy = "candidate")
     private List<Appointment> appointments;
     @OneToMany @JsonIgnore
     private List<interview_process> processes;
     @ManyToOne
     public Entreprise entreprise;
-    @ManyToOne(cascade = CascadeType.ALL)
-    public SubscriptionService pushSubscription;
+    @ManyToOne(cascade = CascadeType.ALL) @JsonIgnore
+    private SubscriptionService pushSubscription;
 
     @Transactional
     @Startup
-    public static void seed(@Observes StartupEvent ev) {
+    public static void seed() {
         Users user = new Users();
         Users.add("another.candidate@breadcrumbs.com", "password", "candidate", "Candidate", "candidate");
         Users.add("another.collaborator@breadcrumbs.com", "password", "collaborator", "collaborator", "collaborator");

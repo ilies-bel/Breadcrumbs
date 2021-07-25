@@ -21,7 +21,7 @@ public class Entreprise extends PanacheEntityBase {
     @Id
     public String raisonSocial;
 
-    @OneToMany
+    @OneToMany @JsonIgnore
     public List<interview_process> processes;
 
     @JsonIgnore

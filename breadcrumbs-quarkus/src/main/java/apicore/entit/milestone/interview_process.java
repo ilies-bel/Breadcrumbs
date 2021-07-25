@@ -2,6 +2,7 @@ package apicore.entit.milestone;
 
 import apicore.entit.company.Entreprise;
 import apicore.entit.user.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class interview_process extends PanacheEntityBase {
     }
 
 
+    @JsonIgnore
     public interview_milestones getCurrentMilestone() {
         return milestones.get(currentMilestoneIndex);
     }
@@ -46,7 +48,7 @@ public class interview_process extends PanacheEntityBase {
     }
 
     public static interview_process getProcess(Users candidate, Entreprise entreprise) {
-        interview_process p1 = interview_process.find("candidate = ?1 AND  interlocutor = ?2", candidate, entreprise).firstResult();
+        interview_process p1 = interview_process.find("candidate = ?1 AND  entreprise = ?2", candidate, entreprise).firstResult();
         return p1;
     }
 }
