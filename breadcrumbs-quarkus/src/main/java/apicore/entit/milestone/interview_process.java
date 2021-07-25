@@ -37,7 +37,13 @@ public class interview_process extends PanacheEntityBase {
     public interview_milestones getCurrentMilestone() {
         return milestones.get(currentMilestoneIndex);
     }
-    public void setCurrentMilestone(Integer newIndex) {}
+    public void IncrementCurrentMilestone() {
+        ListIterator<interview_milestones> iterator;
+        interview_milestones currentMilestone = this.getCurrentMilestone();
+        milestones.get(currentMilestoneIndex).status = interview_milestones.STATUS.COMPLETED;
+        currentMilestoneIndex ++;
+        milestones.get(currentMilestoneIndex).status = interview_milestones.STATUS.IN_PROGRESS;
+    }
 
     public static interview_process getProcess(Users candidate, Entreprise entreprise) {
         interview_process p1 = interview_process.find("candidate = ?1 AND  interlocutor = ?2", candidate, entreprise).firstResult();

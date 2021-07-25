@@ -19,7 +19,7 @@ public class interview_milestones extends PanacheEntityBase {
     private List<Appointment> appointment;
 
     public String milestone_name;
-    public String status;
+    public STATUS status;
 
     public String getTypeTitle() {
         return type.title;
