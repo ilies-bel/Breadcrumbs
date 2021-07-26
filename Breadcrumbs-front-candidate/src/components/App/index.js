@@ -16,10 +16,9 @@ import {TitleSource} from "Navigation/titleContext";
 import {TitleDescriptionSource} from "Navigation/descriptionContext"
 import {makeStyles} from "@material-ui/core";
 
-import {AuthContext} from "components/AuthentificationJwt/context";
 import LoginEmailPage from "components/AuthentificationJwt/login/loginEmail";
 import OnBoardingPage from "components/AuthentificationJwt/signIn";
-import BigProvider, { useContextdata } from '../AuthentificationJwt/context';
+import BigProvider, { AuthContext, useContextdata, useAuthContext } from 'components/AuthentificationJwt/context';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -27,21 +26,15 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
     const classes = useStyles();
+    const context = useAuthContext;
 
-    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useContextdata();    
+    // On commence par charger les données du context avant de les forunir depuis le BigProvider
+    const { token, setUserData } = useContextdata();    
 
     return (
         <div>            
             <Router>
-                <AuthContext.Provider value={ {
-                    token: token,
-                    userName: user,
-                    startDate: startDate,
-                    endDate: endDate,
-                    interlocutor,
-                    interviewType: interviewType,
-                    interviewDescription: interviewDescription,
-                    setData: setUserData, setAppointment: setAppointment, setInterview: setInterview } } >
+                <BigProvider >
                 { !token && <Redirect to="/login/email"/>}
                 { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>
@@ -59,10 +52,10 @@ const App = () => {
                         <Route path={ROUTES.CONFIRM} component={ConfirmPage}/>
 
                         <Route path="/auth" component={OnBoardingPage} />
-                        <Route path="/login/email" component={LoginEmailPage}/>
+                        { !token && <Route path="/login/email" component={LoginEmailPage}/>}
                     </MainNav>
                     <BottomNav/>
-                </AuthContext.Provider>
+                </BigProvider>
             </Router>
         </div>
 

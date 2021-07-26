@@ -23,18 +23,24 @@ export const useAuthContext = () => {
 }
 
 
-
+/**
+ * Composant qui sert à distribuer les données du context dans l'application.
+ * @param {données de contexte} props 
+ * @returns 
+ */
 export default function BigProvider(props) {
-    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, setInterlocutor } = useContextdata();   
+    const { token, user, setUserData, startDate, endDate, setData, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useContextdata();
 
     return (
         <AuthContext.Provider value={ {
-                            token: token,
-                            userName: user,
-                            startDate: startDate,
-                            endDate: endDate,
-                            interlocutor,
-                            setData: setUserData, setAppointment: RegisterAppointments, setInterlocutor: setInterlocutorInformation } } >
+            token: token,
+            userName: user,
+            startDate: startDate,
+            endDate: endDate,
+            interlocutor,
+            interviewType: interviewType,
+            description: interviewDescription,
+            setData: setUserData, setAppointment: setAppointment, setInterview: setInterview } } >
                 { props.children }
         </AuthContext.Provider>
     )
@@ -62,7 +68,8 @@ export const useContextdata = () => {
         setUser(user);
     }
     /**
-     * Méthode qui sert à changer les caractéristiques d'un type d'interview
+     * Méthode qui sert à changer les caractéristiques d'un type d'interview : type, interlocuteur et description
+     * cette méthode est retourné parmi les states.
      * @param {*} param0 
      */
     function setInterview({type=null, interviewer=null, milestone_name=null, description="Votre prochain rendez-vous"}) {

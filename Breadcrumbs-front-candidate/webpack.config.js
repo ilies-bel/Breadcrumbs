@@ -10,7 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
-
+    
     // In dev mode we use ForkTsCheckerWebpackPlugin for type checking, which is faster when re-compiling
     const tsConfigOptions = isProduction ? {} : {
         transpileOnly: true,

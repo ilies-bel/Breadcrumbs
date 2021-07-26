@@ -7,11 +7,14 @@ import apicore.entit.user.Users;
 import io.smallrye.jwt.util.ResourceUtils;
 import org.jose4j.lang.JoseException;
 
+import javax.annotation.security.RolesAllowed;
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -50,22 +53,25 @@ public class PushSenderResource {
         }
     }
 
-    @GET
+    @POST
     @Path(("/send/list"))
-    public Response multipleSending(Payload payload, Set<Integer> list_user) {
-        for(Integer id : list_user) {
-            Users user = Users.findById(id);
+    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.TEXT_PLAIN)
+    @RolesAllowed("collaborator")
+    public Response toAllSending(Payload payload) {
+        List<Users> list_user = Users.listAll();
+        for(Users user : list_user) {
             if(user.hasPushSubscription()) {
                 SubscriptionService subscription = user.getPushSubscription();
-                PushSender pushServer = new PushSender(subscription);
+
                 try {
+                    PushSender pushServer = new PushSender(subscription);
                     pushServer.sendNotification(subscription, payload);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    return Response.ok("Erreur. persone n'a reçu la notification.").status(400).build();
                 }
             }
         }
-        return Response.ok("dkkdkd").build();
+        return Response.ok("Bien envoyé").build();
     }
 
     @GET

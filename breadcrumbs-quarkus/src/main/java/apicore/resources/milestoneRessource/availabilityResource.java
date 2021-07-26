@@ -35,12 +35,13 @@ public class availabilityResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("collaborator")
     public Response addAvailability(List<availability> a) {
         availability.addList(a);
         return Response.ok(a).build();
     }
     @PUT
-    @Path("/list")
+    @Path("/update/")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

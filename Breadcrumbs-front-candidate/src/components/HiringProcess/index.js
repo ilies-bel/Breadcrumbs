@@ -33,7 +33,7 @@ const HiringProcessPage = (props) => {
                 <div>
                 <Redirect to={`${url}/hiring`} />
                     <Route path={`${url}/hiring`} component={HiringProcess} />
-                    <Route path={`${url}/milestone/:id`} component={MilestonePage} />
+                    <Route path={`${url}/milestone`} component={MilestonePage} />
                 <Route path={DISPO} component={SelectDate} />
                 <Route path={CONFIRM} component={ConfirmPage} />
                 </div>

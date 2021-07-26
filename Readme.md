@@ -4,6 +4,10 @@ Les application Candidate et Epmloyer, ainsi que le back-end Quarkus dispose tou
 
 ---
 ## API Quarkus
+Prérequis :
+- Docker
+- java JDK 11 ou supérieur
+
 1. Se placer dans le dossier breadcrumbs-quarkus
 2. Vérifier que JAVA_HOME est bien configuré et point bien vers un JDK
 3. Lancer :
