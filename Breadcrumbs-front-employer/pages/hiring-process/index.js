@@ -51,11 +51,9 @@ const fetchData = async () => await
             }),
         );
 
-
 export default function Hiring({resList, error}) {
     const [checked, setChecked] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);
-    const [session, loading] = useSession();
     const [confirm, setText] = useState("Here you can edit your availabilities");
     const toggleChecked = () => {
         setChecked((prev) => !prev);
@@ -66,10 +64,7 @@ export default function Hiring({resList, error}) {
         setText("Change Saved !");
     }
     
-    if(!session) return (<strong>You must be signed in to view this page</strong>)
-    if(loading) return (<strong>Loading ...</strong>)
-    
-    if(session) return (
+    return (
         <>
             <h2>Hiring process</h2>
             <br/>

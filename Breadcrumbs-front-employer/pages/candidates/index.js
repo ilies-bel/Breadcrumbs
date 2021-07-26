@@ -23,6 +23,7 @@ const Candidates = ({users, error}) => {
 
     return (
         <>
+            <Link href='/Authentification' >Sign in </Link>
             <Head><title> Candidates view</title></Head>
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

@@ -18,6 +18,7 @@ import {
 
 import axios from 'axios';
 import { getSession } from 'next-auth/client';
+import {AuthContext} from "../pages/Authentification/context";
 
 const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
@@ -63,6 +64,7 @@ const Appointment = ({
   export default class Demo extends React.PureComponent {
     constructor(props) {
       super(props);
+      this.context = AuthContext,
       this.state = {
         data: this.props.resList,
         sessionData: null,
@@ -95,7 +97,7 @@ const Appointment = ({
 
       await this.getToken();
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
-      fetchData(this.props.resList, axiosURL, this.state.sessionData ?? "");
+      fetchData(this.props.resList, axiosURL, this.context?.token ?? "");
     }
   
     componentWillUnmount() {
@@ -143,7 +145,7 @@ const Appointment = ({
         }
         
         //On envoie une requête à une api pour enregistrer les changements.
-        fetchData(data, axiosURL, this.state.sessionData).then(() => this.props.onChange());
+        fetchData(data, axiosURL, this.context.token ?? "iioop").then(() => this.props.onChange());
         return { data };
       });
     }

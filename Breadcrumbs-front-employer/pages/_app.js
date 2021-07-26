@@ -6,8 +6,14 @@ import { Provider, getSession } from 'next-auth/client';
 import RestrictedPages from "./pagesAuthentified";
 
 import 'tailwindcss/tailwind.css'
+import {AuthProvider, useAuthContext} from "./Authentification/context";
+import LoginPage from "./Authentification/login";
 
 function MyApp({ Component, pageProps }) {
+    const context = useAuthContext()
+    if(process.browser) {
+        context.setToken(window.localStorage.getItem("token"));
+    }
 
   return (
     <>
@@ -16,9 +22,9 @@ function MyApp({ Component, pageProps }) {
     <BottomNav/>
         <Header />
         <main>
-        <Provider >
-            <RestrictedPages children={ <Component {...pageProps} /> } />
-        </Provider>
+            <AuthProvider>
+                <RestrictedPages children={<Component {...pageProps} />} />
+            </AuthProvider>
       </main>
     </div>
     </>

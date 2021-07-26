@@ -6,20 +6,22 @@ import Link from "next/link";
 import Button from "@material-ui/core/Button";
 import Tips from "./tips";
 import Office from "./office";
+import {useAuthContext} from "./Authentification/context";
 
 const publicPages = [ Tips, Office ]
 export default function RestrictedPages({children}) {
-    const [ session, loading ] = useSession();
-    if(loading) return ( <CircularProgress />)
+    const context = useAuthContext();
 
-    if( !session && publicPages.includes(children) ) return (
+    const token = context.token;
+
+    if( !token && publicPages.includes(children) ) return (
         <div className="restricted" >
             {children}
         </div>
     )
 
-    if(!session && !publicPages.includes(children)) return ( <Button variant="outlined" ><Link href="api/auth/signin">Click here to Login with your collaborator credentials</Link></Button> )
-    if(session) return (
+    if(!token) return <strong>You have to be signed in.<LoginPage /></strong>
+    if(token) return (
         <div className="restricted" >
             {children}
         </div>

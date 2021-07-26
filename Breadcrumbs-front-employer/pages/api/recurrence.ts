@@ -1,3 +1,5 @@
+import {NextApiRequest, NextApiResponse} from "next";
+
 const recurrenceAppointments = [{
     title: 'Phone call with Peter Smith',
     startDate: new Date(1622185391853),
@@ -61,6 +63,6 @@ const recurrenceAppointments = [{
   }];
 
   
-export default (req: any, res) => {
+export default (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json(recurrenceAppointments)
   }
