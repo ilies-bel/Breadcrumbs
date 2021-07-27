@@ -51,27 +51,22 @@ const fetchData = async () => await
             }),
         );
 
-
 export default function Hiring({resList, error}) {
     const [checked, setChecked] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);
-    const [session, loading] = useSession();
-    const [confirm, setText] = useState("Here you can edit your availabilities");
+    const [confirm, setText] = useState("Here you can edit your availabilities. Double click to add an availability");
     const toggleChecked = () => {
         setChecked((prev) => !prev);
-        setText("Here you can edit your availabilities");
+        setText("Here you can edit your availabilities.");
       }
 
     const confirmChange = () => {
         setText("Change Saved !");
     }
     
-    if(!session) return (<strong>You must be signed in to view this page</strong>)
-    if(loading) return (<strong>Loading ...</strong>)
-    
-    if(session) return (
+    return (
         <>
-            <h2>Hiring process</h2>
+            <h1>Hiring process</h1>
             <br/>
 
             <div>
@@ -79,6 +74,11 @@ export default function Hiring({resList, error}) {
                 <FormControlLabel
                     control={<Switch size="small" checked={checked} onChange={toggleChecked} />}
                     label={!checked ? 'Locked' : 'Editing'}
+                />
+                <br/>
+                <FormControlLabel
+                    control={<Switch size="small" checked={true} onChange={toggleChecked} />}
+                    label={"Ask confirmation before deleting "}
                 />
                 {error && <div>There was an error.</div>}
                 {!error && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} /> </div>)}
