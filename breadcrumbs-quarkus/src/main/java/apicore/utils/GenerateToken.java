@@ -18,9 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GenerateToken {
-    private static Integer EXPIRATION_DELAY = 3600*24; //Le token expire dans 24h
+    private static final Integer EXPIRATION_DELAY = 3600*24; //Le token 24h après sa création
     /**
-     * Génère un JWT à un utilisateur en focntion de son email
+     * Génère un JWT à un utilisateur en fonction de son email
      * @param user : Utilisateur avec une adresse email enregistrée en base de données
      * @return un JSON Web token
      */
@@ -29,16 +29,10 @@ public class GenerateToken {
         String name = user.first_name;
         String role = Users.findRoleByEmail(email);
 
-        if(!role.isEmpty()) {
-            System.out.println("GenerateToken : generateUserToken :");System.out.println(role);System.out.println("GenerateToken : generateUserToken :");
-        }
-        else {
-            System.out.println("Role non trouvé");
-        }
         String token =
                 Jwt.issuer("breadcrumbs")
                         .upn(email)
-                        .audience("App_PWA_Candidate")
+                        .audience(role.equals("candidate") ? "App_PWA_Candidate" : "APP_EMPLOYER")
                         .claim("name", name!=null ? name : "I have no name")
                         .groups(role)
                         .expiresIn(EXPIRATION_DELAY)

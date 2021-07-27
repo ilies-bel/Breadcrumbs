@@ -16,7 +16,7 @@ import java.util.List;
 public class userRessource {
     @Inject
     JsonWebToken jwt;
-    @RolesAllowed("collaborator")
+    @RolesAllowed("COLLABORATOR")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Users> getAll() {

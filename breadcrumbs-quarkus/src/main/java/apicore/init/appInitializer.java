@@ -11,6 +11,8 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 
 import javax.enterprise.event.Observes;
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class appInitializer {
         Quarkus.run(args);
     }
 
-    public void seedAll(@Observes StartupEvent ev) {
+    public void seedAll(@Observes StartupEvent ev) throws InvalidKeySpecException, NoSuchAlgorithmException {
         // Les méthodes de seed appelées ci-dessous doivent être exécuter dans l'ordre
         seedTips();
         Users.seed();

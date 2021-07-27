@@ -9,8 +9,3 @@ insert into interview_tips (ranking, title, description) values (2, 'Get in posi
 insert into interview_type (title, description, time_length, field) values ('Phone Call', 'A quick call to give you the opportunity to give your opinion', 15, 'HR coordinator');
 insert into interview_type (title, description, time_length, field) values ('Motivation interview', 'The first meeting.', 15, 'Marketing manager');
 insert into interview_type (title, description, time_length, field) values ('Technical test', 'A quick skill test', 15, 'Software analyst');
-
-insert into Users (first_name, last_name, email, role, password) values ('candidate', 'be', 'candidate@breadcrumbs.com', 'candidate', 'password');
-insert into Users (first_name, last_name, email, role, password) values ('collaborator', 'beldjilali', 'collaborator@breadcrumbs.com', 'collaborator', 'password');
-insert into Users (first_name, last_name, email, role, password) values ('supervisor', 'be', 'supervisor@breadcrumbs.com', 'supervisor', 'password');
-insert into Users (first_name, last_name, email, role, password) values ('third', 'candidate', 'another.third@breadcrumbs.com', 'candidate', 'password');

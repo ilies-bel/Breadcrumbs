@@ -1,5 +1,6 @@
 package apicore.resources.authRessource;
 
+import apicore.utils.GeneratePassword;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import apicore.utils.GenerateToken;
@@ -9,6 +10,8 @@ import apicore.entit.user.Users;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 @Path("/auth")
 public class LoginRessource {
@@ -19,7 +22,7 @@ public class LoginRessource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(Users user) {
+    public Response login(Users user) throws NoSuchAlgorithmException, InvalidKeySpecException {
         token = "No token";
         String requestedPassword = user.getPassword();
         String storedPassword = user.findPasswordByEmail(user.email);
@@ -28,10 +31,9 @@ public class LoginRessource {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        System.out.println("requested password");System.out.println(requestedPassword);System.out.println("requested password");
-        System.out.println("stored password");System.out.println(storedPassword);System.out.println("stored password");
+        System.out.println(GeneratePassword.verifyPassword(requestedPassword, storedPassword));
 
-        if( storedPassword.equals(requestedPassword) ) {
+        if( GeneratePassword.verifyPassword(requestedPassword, storedPassword) ) {
             token = GenerateToken.generateUserToken(user);
             TokenResponse t_response = new TokenResponse(token, storedUser);
 
