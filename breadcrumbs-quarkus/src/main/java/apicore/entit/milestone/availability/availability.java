@@ -2,6 +2,7 @@ package apicore.entit.milestone.availability;
 
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -12,15 +13,16 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 public class availability extends PanacheEntityBase {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonProperty("id") @JsonAlias("id")
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
     public Long id_slot;
 
     private static final String SLOT_TYPE = "Availability";
 
     public String startDate;
     public String endDate;
+    public String location;
 
-    @JsonAlias({"email", "email_interlocutor"})
+    @JsonAlias({"email", "email_interlocutor", "interviewer_email"})
     public String interlocutor_email;
 
     @JsonAlias({"type", "typeSlot"})
@@ -70,6 +72,11 @@ public class availability extends PanacheEntityBase {
      *  Cette méthode n'est pas imdempotente */
     public static void addList(List<availability> availabilityList) {
         for(availability a : availabilityList) {
+            if(a.interlocutor==null) {
+                Users interlocutor = Users.findByEmail(a.interlocutor_email);
+                a.interlocutor = interlocutor;
+            }
+
             a.persist();
         }
     }

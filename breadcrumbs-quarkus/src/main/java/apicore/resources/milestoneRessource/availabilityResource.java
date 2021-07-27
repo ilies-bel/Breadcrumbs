@@ -1,8 +1,10 @@
 package apicore.resources.milestoneRessource;
+import apicore.entit.WebPush.PushSender;
 import apicore.entit.milestone.availability.availability;
 import apicore.entit.milestone.interview_process;
 import apicore.resources.milestoneRessource.appointmentRessource;
 import apicore.entit.user.Users;
+import apicore.resources.webPush.PushSenderResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -24,8 +26,13 @@ public class availabilityResource {
     @RolesAllowed("collaborator")
     public Response addAvailability(availability a) {
         Users collaborator = a.interlocutor;
-        //System.out.println("milestone endpoint ava :");System.out.println(a.startDate);System.out.println("/ava");
-        availability.add(a.startDate, a.endDate, collaborator);
+
+        if(collaborator!=null) {
+        availability.add(a.startDate, a.endDate, collaborator.email);
+        }
+        else {
+            availability.add(a.startDate, a.endDate, a.interlocutor_email);
+        }
 
         return Response.ok(a).build();
     }
@@ -47,6 +54,8 @@ public class availabilityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateAvailability(List<availability> a) {
         availability.updateAvalabilities(a);
+        PushSenderResource pushResource = new PushSenderResource();
+        pushResource.toAllSending("New availabilities !");
         return Response.ok(a).build();
     }
 

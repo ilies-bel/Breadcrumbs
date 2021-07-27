@@ -21,13 +21,18 @@ import {
 import axios from 'axios';
 import { getSession } from 'next-auth/client';
 import {AuthContext} from "../pages/Authentification/context";
+import { calendarData } from "../pages/hiring-process/CalendarData/calendarData"
 
 const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
 //Requête à effectuer à chaque changement dans le calendrier
   const fetchData = async (changedData, url, token="", onChange=() => {}) => {
 
-    const availabilities = changedData.filter((availability) => availability.type === 'Availability');
+    const availabilities = changedData.filter((availability) => availability.type !== 'Appointment');
+
+    for( let availability of availabilities) {
+      availability.type= "Availability"
+    }
 
     return await axios.put(url, availabilities, {
       headers: {
@@ -81,21 +86,10 @@ const Appointment = ({
         appointmentChanges: {},
         isShiftPressed: false,
         mainResourceName: 'type',
-        resources: [
-          {
-            fieldName: 'type',
-            instances: [
-              {id: 'Availability', text: 'Free time', color: 'royalblue'},
-              {id: 'Appointment', text: 'Appointment with a candidate', color: 'darkgray'}
-            ]
-          }
-        ]
+        resources: calendarData
       };
       this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
-      this.getToken= () => {
-        return getSession().then(response => this.setState({sessionData: response?.user?.name?.[3] ?? "No token" }) )
-      }
-
+    
       this.commitChanges = this.commitChanges.bind(this);
       this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
       this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
@@ -114,7 +108,6 @@ const Appointment = ({
       window.addEventListener('keydown', this.onKeyDown);
       window.addEventListener('keyup', this.onKeyUp);
 
-      await this.getToken();
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
       fetchData(this.props.resList, axiosURL, this.context?.token ?? "");
     }

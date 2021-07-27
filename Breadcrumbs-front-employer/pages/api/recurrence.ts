@@ -23,13 +23,15 @@ const recurrenceAppointments = [{
     id: 102,
     rRule: 'FREQ=DAILY;COUNT=5',
     type: 'Availability',
+    interlocutor_email: 'collaborator@breadcrumbs.com'
   }, {
-    title: 'Interview with Jane Cooper',
+    title: 'Interview Room 2',
     startDate: new Date(2021, 5, 26, 10, 0),
     endDate: new Date(2021, 5, 26, 11, 0),
     id: 3,
     location: 'Room 2',
     type: 'Availability',
+    interlocutor_email: 'collaborator@breadcrumbs.com'
   }, {
     title: 'Phone call',
     startDate: new Date(2021, 5, 27, 11, 45),
@@ -37,6 +39,7 @@ const recurrenceAppointments = [{
     id: 4,
     location: 'Room 2',
     type: 'Availability',
+    interlocutor_email: 'collaborator@breadcrumbs.com'
   }, {
     title: 'Phone call',
     startDate: new Date(2021, 5, 26, 14, 40),
@@ -44,6 +47,7 @@ const recurrenceAppointments = [{
     id: 5,
     location: 'Room 2',
     type: 'Availability',
+    interlocutor_email: 'sengoku.le.bouddha@navy.gov'
   }, {
     title: 'Telegram call',
     startDate: new Date(2021, 5, 28, 9, 45),
@@ -51,7 +55,7 @@ const recurrenceAppointments = [{
     id: 6,
     location: 'Room 1',
     type: 'Appointment',
-    interviewer_email: 'sengoku.le.bouddha@navy.gov'
+    interlocutor_email: 'sengoku.le.bouddha@navy.gov'
   }, {
     title: 'Escargophone call',
     startDate: new Date(2021, 5, 29, 11, 45),
@@ -59,7 +63,7 @@ const recurrenceAppointments = [{
     id: 7,
     location: 'Room 3',
     type: 'Appointment',
-    interviewer_email: 'rob_lucci@cp9.gov'
+    interlocutor_email: 'rob_lucci@cp9.gov'
   }];
 
   

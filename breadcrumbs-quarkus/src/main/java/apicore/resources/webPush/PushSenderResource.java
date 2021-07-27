@@ -23,6 +23,7 @@ public class PushSenderResource {
     /** Envoie une notification à un utilisateur */
     @POST
     @Path(("/sendPayload/{user}")) @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("collaborator")
     public Response send(Payload payload, @PathParam("user") Integer id_user) throws GeneralSecurityException, JoseException, IOException, ExecutionException, InterruptedException {
         Users user = Users.findById(id_user);
 
@@ -39,6 +40,7 @@ public class PushSenderResource {
     /** Envoie une notification à un utilisateur */
     @POST
     @Path(("/sendText/{user}")) @Consumes(MediaType.TEXT_PLAIN)
+    @RolesAllowed("collaborator")
     public Response send(String text, @PathParam("user") Integer id_user) throws GeneralSecurityException, JoseException, IOException, ExecutionException, InterruptedException {
         Users user = Users.findById(id_user);
 
@@ -65,13 +67,17 @@ public class PushSenderResource {
 
                 try {
                     PushSender pushServer = new PushSender(subscription);
-                    pushServer.sendNotification(subscription, payload);
+                    PushSender.sendNotification(subscription, payload);
                 } catch (Exception e) {
                     return Response.ok("Erreur. persone n'a reçu la notification.").status(400).build();
                 }
             }
         }
         return Response.ok("Bien envoyé").build();
+    }
+
+    public void toAllSending(String payload) {
+        toAllSending(Payload.fromString(payload));
     }
 
     @GET

@@ -56,10 +56,11 @@ public class Users extends PanacheEntityBase {
         Users.add("collaborator@breadcrumbs.com", password, "collaborator", "collaborator", "beldjilali");
         Users.add("supervisor@breadcrumbs.com", password, "supervisor", "supervisor", "beldjilali");
         Users.add("another.candidate@breadcrumbs.com", password, "candidate", "Dana", "candidate");
-        Users.add("another.collaborator@breadcrumbs.com", password, "collaborator", "collaborator", "collaborator");
-        Users.add("another.supervisor@breadcrumbs.com", password, "supervisor", "supervisor", "supervisor");
+        Users.add("another.collaborator@breadcrumbs.com", password, "collaborator", "Another", "Collaborator");
+        Users.add("another.supervisor@breadcrumbs.com", password, "supervisor", "Another", "Supervisor");
         Users.add("tenor.dubarreau@breadcrumbs.com", gura_gura, "supervisor", "Tenor", "Dubarrea");
-        Users.add("collaborat@breadcrumbs.com", beau_rat, "collaborator", "collabo", "rat");
+        Users.add("collaborat@breadcrumbs.com", beau_rat, "collaborator", "Collabo", "Rat");
+        Users.add("sengoku.le.bouddha@navy.gov", beau_rat, "collaborator", "Sengoku", "Bouddha");
     }
 
     public static void add(String email, String password, String role, String first_name, String last_name) {
