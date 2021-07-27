@@ -49,7 +49,7 @@ const TopNav = () => {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 color="inherit"
-                                title={ !context.token ? "Sign in" : `signed in as ${context.userName}` }
+                                title={ !context.token ? "Sign in" : `signed in as ${context.userName} ${context.userLastName}` }
                                 onClick={() => history.push("/user/account")}
                             >
                                 <AccountCircle/>

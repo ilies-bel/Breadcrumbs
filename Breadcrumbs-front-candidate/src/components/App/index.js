@@ -52,8 +52,8 @@ const App = () => {
                         <Route path={ROUTES.CONFIRM} component={ConfirmPage}/>
 
                         <Route path="/auth" component={OnBoardingPage} />
-                        { !token && <Route path="/login/email" component={LoginEmailPage}/>}
                     </MainNav>
+                    { !token && <Route path="/login/email" component={LoginEmailPage}/>}
                     <BottomNav/>
                 </BigProvider>
             </Router>

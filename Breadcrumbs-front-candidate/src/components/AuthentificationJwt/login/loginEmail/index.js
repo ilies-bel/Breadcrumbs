@@ -5,7 +5,9 @@ import {useAuthContext} from "components/AuthentificationJwt/context";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import { decode } from "jsonwebtoken";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
+import * as ROUTES from 'constants/routes';
 
 const LoginEmailPage = () => {
     const history = useHistory();
@@ -62,7 +64,7 @@ const BASE_API_URL = process.env.AXIOS_BASE_URL
 const jwtValidation = async(token) => {
     let payload;
 
-    const publicKeyInstance  = await axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
+    const publicKeyInstance  = axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
     publicKeyInstance.get("/key/public").then(res => payload = decode(token, res.data) )
         .catch((e) => {
             console.error("Public Key not loaded")
@@ -74,11 +76,11 @@ const jwtValidation = async(token) => {
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
     const context = useAuthContext();
+    const [ loading, setLoading ] = useState(false);
+    const history = useHistory();
 
     const onSubmit = handleSubmit((data) => {
-
-        console.log(data);
-
+        setLoading(true);
         const authInstance  = axios.create({baseURL: BASE_API_URL, method: "post"});
 
         authInstance({
@@ -93,20 +95,22 @@ const Login = () => {
                     const payload = jwtValidation(res.token);
 
                     localStorage.setItem("user", JSON.stringify(res));
-
-                    payload && console.log("login successfully"); console.log(res);
-                    //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                    payload && localStorage.setItem("user", res.user.first_name);
-                    payload && localStorage.setItem("token", res.token);
-                    payload && context.setData(res.token, res.user?.first_name);
-                    console.log(context);console.log(context.token);
+         
+                    if(payload) {
+                        console.log("login successfully");
+                        //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
+                        localStorage.setItem("user", res.user.first_name);
+                        localStorage.setItem("last_name", res.user?.last_name);
+                        localStorage.setItem("token", res.token);
+                        context.setUserData(res.token, res.user?.first_name, res.user?.last_name);
+                    }
 
                 } else if (res.status === "Connection_Failure_Wrong_Password") {
                     console.log("mail or password invalid");
                     console.log(payload);
 
                     setError("all", {
-                        type: "server",
+                        type: "invalid",
                         message: "mail or password invalid"
                     });
 
@@ -119,20 +123,21 @@ const Login = () => {
                 }
 
             })
+            .then(() => setLoading(false))
+            .then(() => history.replace(ROUTES.HIRING_PROCESS))
             .catch((e) => {
                 console.log(e);
-
+                setLoading(false)
                 setError("all", {
                     type: "server",
                     message: "unable to reach the server"
                 });
             })
-
-
     });
 
     return (
         <div className="RegisterOrLogIn">
+            { loading && <LinearProgress /> }
             <form onSubmit={onSubmit}>
                 <div>
                     <input type="email"

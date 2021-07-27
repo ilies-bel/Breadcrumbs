@@ -22,5 +22,6 @@ public class TokenResponse {
 
         this.userMap.put("email", user.email);
         this.userMap.put("first_name", user.first_name);
+        this.userMap.put("last_name", user.last_name);
     }
 }

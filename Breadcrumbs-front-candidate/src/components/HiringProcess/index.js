@@ -28,7 +28,7 @@ const HiringProcessPage = (props) => {
     return (
         <>
             <TitleSource>{HIRING_PROCESS_TITLE}</TitleSource>
-            <h2>Hey Brandon !</h2>
+            <h2>Hey {authContext.userName} !</h2>
             <Router>
                 <div>
                 <Redirect to={`${url}/hiring`} />

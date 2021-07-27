@@ -3,16 +3,17 @@ package apicore.utils;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 public class GeneratePassword {
-    private static final int intPoivre = 5;
+    private static final String intPoivre = "Mange_Mon-Poivre!";
     // Choisir un nobre d'itération suffisamment grand pour ralentir une attaque par force brute
     public static final int iteration = 400000; // Avec cette valeur l'authentification prend environ 5 secondes
-    private static byte[] poivre = ByteBuffer.allocate(4).putInt(intPoivre).array();
+    private static byte[] poivre = intPoivre.getBytes(StandardCharsets.UTF_8);
     public GeneratePassword() {
         //TODO: Générer le sel aléatoirment et le stocker en base de données.
         /*SecureRandom secureRandom = new SecureRandom();

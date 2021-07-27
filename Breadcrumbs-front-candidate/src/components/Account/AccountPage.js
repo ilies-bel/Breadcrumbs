@@ -10,17 +10,19 @@ import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
 import PushNotification from '../PushNotifications';
 import usePushNotifications from 'utils/usePushNotification.js';
+import { useAuthContext } from '../AuthentificationJwt/context';
 
 const useUser_info = () =>
     {
         const {
             userSubscription,
           } = usePushNotifications();
+          const context = useAuthContext();
 
           
         const [photo, setPhoto]= useState("https://upload.wikimedia.org/wikipedia/commons/0/04/Elon_Musk_and_Hans_Koenigsmann_at_the_SpaceX_CRS-8_post-launch_press_conference_%2826223624532%29_%28cropped%29.jpg")
-        const [first_name, setName]= useState("Brandon")
-        const [last_name]= useState("Bannon")
+        const [first_name, setName]= useState(context.userName)
+        const [last_name]= useState(context?.userLastName)
         const [email]= useState("iliesb.pro@gmail.com")
         const [notification_email, setNotifEmail]= useState(true)
         const [notification_push, setPush]= useState(userSubscription!=null);
@@ -46,18 +48,16 @@ const AccountPage = props => {
       } = usePushNotifications();
 
 
-    const {first_name, setName, notification_push, setPush, notification_email} = useUser_info();
+    const {first_name, last_name, setName, notification_push, setPush, notification_email} = useUser_info();
     useEffect(() => {
         setPush(userSubscription!=null);
     }, [userSubscription])
 
     async function togglePushNotification() {
         onClickAskUserPermission();
-        //loading && console.log("waiting for consent");
 
         !userSubscription ? await onClickSusbribeToPushNotification() : ClickToUnsubscribe();
         console.log("user dbsbsbns");console.log(userSubscription); console.log("/user dbsbsbns");
-        //await onClickSendSubscriptionToPushServer()
     }
 
     return (
@@ -86,7 +86,7 @@ const AccountPage = props => {
                         id="last_name"
                         name="last_name"
                         label="LAST NAME"
-                        defaultValue={"DEFAULT"}
+                        defaultValue={last_name}
                         fullWidth
                         margin="normal"
                     />
