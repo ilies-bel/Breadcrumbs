@@ -9,18 +9,18 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 public class GeneratePassword {
-    private static final int intSalt = 5;
+    private static final int intPoivre = 5;
     // Choisir un nobre d'itération suffisamment grand pour ralentir une attaque par force brute
     public static final int iteration = 400000; // Avec cette valeur l'authentification prend environ 5 secondes
-    private static byte[] salt = ByteBuffer.allocate(4).putInt(intSalt).array();
+    private static byte[] poivre = ByteBuffer.allocate(4).putInt(intPoivre).array();
     public GeneratePassword() {
-        salt = ByteBuffer.allocate(4).putInt(intSalt).array();
+        //TODO: Générer le sel aléatoirment et le stocker en base de données.
         /*SecureRandom secureRandom = new SecureRandom();
         salt = secureRandom.generateSeed(12);*/
     }
 
     public static String hashPassword(String password) throws InvalidKeySpecException, NoSuchAlgorithmException  {
-        PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), salt, iteration, 512);
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), poivre, iteration, 512);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
         byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
 
@@ -36,7 +36,7 @@ public class GeneratePassword {
      * @throws InvalidKeySpecException
      */
     public static boolean verifyPassword(String inputPassword, String storedHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        PBEKeySpec pbeKeySpec = new PBEKeySpec(inputPassword.toCharArray(), salt, iteration, 512);
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(inputPassword.toCharArray(), poivre, iteration, 512);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
         byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
 

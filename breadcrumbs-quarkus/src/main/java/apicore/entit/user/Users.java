@@ -43,8 +43,6 @@ public class Users extends PanacheEntityBase {
     @ManyToOne(cascade = CascadeType.ALL) @JsonIgnore
     private SubscriptionService pushSubscription;
 
-    public static enum ROLE { CANDIDATE, COLLABORATOR, SUPERVISOR, ADMIN };
-
     @Transactional
     @Startup
     public static void seed() throws InvalidKeySpecException, NoSuchAlgorithmException {
@@ -53,10 +51,10 @@ public class Users extends PanacheEntityBase {
         String gura_gura = GeneratePassword.hashPassword("gura_gura"); String beau_rat = GeneratePassword.hashPassword("beau_rat");
 
         System.out.println(password);System.out.println(gura_gura);
-        Users.add("candidate@breadcrumbs.com", password, ROLE.CANDIDATE.toString(), "Candidate", "beldjilali");
-        Users.add("collaborator@breadcrumbs.com", password, ROLE.COLLABORATOR.toString(), "collaborator", "beldjilali");
+        Users.add("candidate@breadcrumbs.com", password, "candidate", "Candidate", "beldjilali");
+        Users.add("collaborator@breadcrumbs.com", password, "collaborator", "collaborator", "beldjilali");
         Users.add("supervisor@breadcrumbs.com", password, "supervisor", "supervisor", "beldjilali");
-        Users.add("another.candidate@breadcrumbs.com", password, ROLE.CANDIDATE.toString(), "Candidate", "candidate");
+        Users.add("another.candidate@breadcrumbs.com", password, "candidate", "Candidate", "candidate");
         Users.add("another.collaborator@breadcrumbs.com", password, "collaborator", "collaborator", "collaborator");
         Users.add("another.supervisor@breadcrumbs.com", password, "supervisor", "supervisor", "supervisor");
         Users.add("tenor.dubarreau@breadcrumbs.com", gura_gura, "supervisor", "Tenor", "Dubarrea");
