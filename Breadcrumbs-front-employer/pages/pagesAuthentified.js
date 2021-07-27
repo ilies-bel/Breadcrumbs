@@ -8,19 +8,16 @@ import Tips from "./tips";
 import Office from "./office";
 import {useAuthContext} from "./Authentification/context";
 
-const publicPages = [ Tips, Office ]
 export default function RestrictedPages({children}) {
     const context = useAuthContext();
-
     const token = context.token;
 
-    if( !token && publicPages.includes(children) ) return (
-        <div className="restricted" >
-            {children}
+    if(!token) return (
+        <div>
+            <h1>Login with your collaborator credentials</h1>
+            <LoginPage />
         </div>
     )
-
-    if(!token) return <strong>You have to be signed in.<LoginPage /></strong>
     if(token) return (
         <div className="restricted" >
             {children}

@@ -12,6 +12,8 @@ import {
   DateNavigator,
   TodayButton,
   Resources,
+  AppointmentForm,
+  ConfirmationDialog,
   EditRecurrenceMenu,
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
@@ -41,6 +43,13 @@ const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
 const allowDrag = ({ type }) => type !== 'Appointment';
 
+const TimeTableCell = React.memo(({ onDoubleClick, ...restProps }) => (
+        <WeekView.TimeTableCell
+            {...restProps}
+            onDoubleClick={ onDoubleClick}
+        />
+    ))
+
 const Appointment = ({
   children, style, data, ...restProps
 }) => {
@@ -69,6 +78,8 @@ const Appointment = ({
         data: this.props.resList,
         sessionData: null,
         currentDate: this.props.resList[4].startDate,
+        addedAppointment: {},
+        appointmentChanges: {},
         isShiftPressed: false,
         mainResourceName: 'type',
         resources: [
@@ -85,12 +96,21 @@ const Appointment = ({
       this.getToken= () => {
         return getSession().then(response => this.setState({sessionData: response?.user?.name?.[3] ?? "No token" }) )
       }
-  
+
       this.commitChanges = this.commitChanges.bind(this);
+      this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
+      this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
       this.onKeyUp = this.onKeyUp.bind(this);
     }
-  
+
+    changeAddedAppointment(addedAppointment) {
+      this.setState({ addedAppointment });
+    }
+    changeAppointmentChanges(appointmentChanges) {
+      this.setState({ appointmentChanges });
+    }
+
     async componentDidMount() {
       window.addEventListener('keydown', this.onKeyDown);
       window.addEventListener('keyup', this.onKeyUp);
@@ -145,13 +165,13 @@ const Appointment = ({
         }
         
         //On envoie une requête à une api pour enregistrer les changements.
-        fetchData(data, axiosURL, this.context.token ?? "iioop").then(() => this.props.onChange());
+        fetchData(data, axiosURL, this.context.token ?? localStorage.getItem('token')).then(() => this.props.onChange());
         return { data };
       });
     }
   
     render() {
-      const { currentDate, data, resources } = this.state;
+      const { currentDate, data, resources, addedAppointment, appointmentChanges } = this.state;
   if(data){
       return (
         <Paper>
@@ -166,23 +186,33 @@ const Appointment = ({
             <WeekView
                 startDayHour={9}
                 endDayHour={18}
+                timeTableCellComponent={TimeTableCell}
             />
             <Toolbar />
             <DateNavigator />
             <TodayButton />
             <EditingState
               onCommitChanges={this.commitChanges}
+              addedAppointment={addedAppointment}
+              onAddedAppointmentChange={this.changeAddedAppointment}
+              appointmentChanges={appointmentChanges}
+              onAppointmentChangesChange={this.changeAppointmentChanges}
             />
             <IntegratedEditing />
+            <ConfirmationDialog />
 
             <Appointments appointmentComponent={Appointment} />
             <AppointmentTooltip
               showDeleteButton
             />
-            {this.props.onEdit && (<DragDropProvider allowDrag={allowDrag} />) }
+            {this.props.onEdit && <AppointmentForm/> }
+            {this.props.onEdit && <DragDropProvider allowDrag={allowDrag} />}
+
+
             <Resources
               data={resources}
             />
+
           </Scheduler>
         </Paper>
       );

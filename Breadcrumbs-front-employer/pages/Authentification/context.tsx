@@ -6,6 +6,11 @@ type authContextType = {
     loading: boolean,
 
     setToken: (token: string) => void;
+    /**
+     * Fonction qui sert à mettre à jour les données de l'utilisateur dans le context
+     * @param token : Paramètre optionnel. Correspond au JWT
+     * @param user : Paramètre optionnel. Correspond au nom de l'utilisateur
+     */
     setUserData: ({token, user}: { token?: string; user?: string; }) => {}
 };
 
