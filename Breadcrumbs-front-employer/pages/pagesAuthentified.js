@@ -11,12 +11,15 @@ import {useAuthContext} from "./Authentification/context";
 export default function RestrictedPages({children}) {
     const context = useAuthContext();
     const token = context.token;
+    console.log(context);console.log("/context")
 
     if(!token) return (
+        <>
         <div>
             <h1>Login with your collaborator credentials</h1>
             <LoginPage />
         </div>
+        </>
     )
     if(token) return (
         <div className="restricted" >

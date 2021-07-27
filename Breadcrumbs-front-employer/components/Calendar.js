@@ -71,9 +71,8 @@ const Appointment = ({
   const SHIFT_KEY = 16;
 
   export default class Demo extends React.PureComponent {
-    constructor(props) {
-      super(props);
-      this.context = AuthContext,
+    constructor(props, context) {
+      super(props, context);
       this.state = {
         data: this.props.resList,
         sessionData: null,
@@ -165,7 +164,8 @@ const Appointment = ({
         }
         
         //On envoie une requête à une api pour enregistrer les changements.
-        fetchData(data, axiosURL, this.context.token ?? localStorage.getItem('token')).then(() => this.props.onChange());
+        console.log(this.context)
+        fetchData(data, axiosURL, this.context.token ).then(() => this.props.onChange());
         return { data };
       });
     }
@@ -212,7 +212,6 @@ const Appointment = ({
             <Resources
               data={resources}
             />
-
           </Scheduler>
         </Paper>
       );
@@ -222,4 +221,5 @@ const Appointment = ({
   }
     }
   }
-  
+  // On charge les données de AuthContext dans le composant Demo
+  Demo.contextType = AuthContext;
