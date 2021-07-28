@@ -4,10 +4,11 @@ import {useHistory, Link} from "react-router-dom";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import { decode } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import * as ROUTES from 'constants/routes';
+import PaperDiv from 'littleComponents/PaperDiv'
 
 const LoginEmailPage = () => {
     const history = useHistory();
@@ -64,14 +65,17 @@ const BASE_API_URL = process.env.AXIOS_BASE_URL
 const jwtValidation = async(token) => {
     let payload;
 
+    // On récupère la clé public depuis le serveur
     const publicKeyInstance  = axios.create({baseURL: BASE_API_URL, url:"/key/public", method: "get"});
-    publicKeyInstance.get("/key/public").then(res => payload = decode(token, res.data) )
+
+    // Vérification du token à partir de la clé publique
+    return publicKeyInstance.get("/key/public").then(res => verify(token, res.data, (err, decoded) =>{
+        return decoded
+     } ) )
         .catch((e) => {
             console.error("Public Key not loaded")
             console.error(e);
         });
-
-    return payload;
 }
 const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
@@ -92,18 +96,21 @@ const Login = () => {
 
                 // handle server responses
                 if (res.status==="Success") {
-                    const payload = jwtValidation(res.token);
-
-                    localStorage.setItem("user", JSON.stringify(res));
-         
-                    if(payload) {
-                        console.log("login successfully");
-                        //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
-                        localStorage.setItem("user", res.user.first_name);
-                        localStorage.setItem("last_name", res.user?.last_name);
-                        localStorage.setItem("token", res.token);
-                        context.setUserData(res.token, res.user?.first_name, res.user?.last_name);
-                    }
+                    jwtValidation(res.token).then((payload) => {
+                        // payload = null si le token n'a pas été validé
+                        if(payload) {
+                            console.log(payload);console.log("/payload");
+                            //TODO: Pour des raisons de sécurité, le token ne doit pas être dans les localStorage mais dans un cookie HttpOnly
+                            localStorage.setItem("user", res.user.first_name);
+                            localStorage.setItem("last_name", res.user?.last_name);
+                            localStorage.setItem("token", res.token);
+                            context.setUserData(res.token, res.user?.first_name, res.user?.last_name);
+                        }
+                        else {
+                            throw "Your connection is maybe corrupted"
+                        }
+                    })
+                    
 
                 } else if (res.status === "Connection_Failure_Wrong_Password") {
                     console.log("mail or password invalid");
@@ -136,6 +143,7 @@ const Login = () => {
     });
 
     return (
+        <PaperDiv>
         <div className="RegisterOrLogIn">
             { loading && <LinearProgress /> }
             <form onSubmit={onSubmit}>
@@ -167,6 +175,7 @@ const Login = () => {
                 <button onClick={() => clearErrors()} type="submit">Submit</button>
             </form>
         </div>
+        </PaperDiv>
     );
 };
 
