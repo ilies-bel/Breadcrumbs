@@ -8,6 +8,7 @@ import {TitleTarget} from "./titleContext";
 import { AuthContext } from "components/AuthentificationJwt/context";
 import { useAuthContext } from "components/AuthentificationJwt/context";
 import {useHistory} from "react-router-dom";
+import { Avatar } from 'material-ui';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,7 +53,7 @@ const TopNav = () => {
                                 title={ !context.token ? "Sign in" : `signed in as ${context.userName} ${context.userLastName}` }
                                 onClick={() => history.push("/user/account")}
                             >
-                                <AccountCircle/>
+                                { !context.profilePicture ? <AccountCircle/> : <Avatar alt="Photo de profil" src={ context.profilePicture } /> }
                             </IconButton>
 
                         </div>

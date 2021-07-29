@@ -17,6 +17,10 @@ import {PageDescription} from "../Navigation";
 import {Grid} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import { LinkedIn } from 'react-linkedin-login-oauth2';
+import LPopup from 'components/AuthentificationJwt/login/loginEmail/popup';
+
 
 const useStyles = makeStyles((theme) => ({
     text: {
@@ -63,7 +67,7 @@ const Tips = () => {
             <PageDescription>
                 {TIPS_DESCRIPTION}
             </PageDescription>
-
+            
             {
                 data.map((tips, index) =>
                     <Accordion key={index}>

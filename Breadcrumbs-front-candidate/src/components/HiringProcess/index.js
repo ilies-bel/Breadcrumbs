@@ -21,7 +21,7 @@ const HiringProcessPage = (props) => {
     const authContext = useAuthContext();
     const [{ data, loading, error }, refetch] = useGetProcess();
 
-    if( !authContext.token ) { return  <NotFound /> }
+    if( (!authContext.token && !authContext.linkedinCode)) { return  <NotFound /> }
     if(error) {return ( <strong>Error. No found data</strong> )}
     if( loading ) { return <CircularProgress /> }
 

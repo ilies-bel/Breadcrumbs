@@ -20,6 +20,8 @@ import LoginEmailPage from "components/AuthentificationJwt/login/loginEmail";
 import OnBoardingPage from "components/AuthentificationJwt/signIn";
 import BigProvider, { AuthContext, useContextdata, useAuthContext } from 'components/AuthentificationJwt/context';
 
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
 }))
@@ -29,14 +31,15 @@ const App = () => {
     const context = useAuthContext;
 
     // On commence par charger les données du context avant de les forunir depuis le BigProvider
-    const { token, setUserData } = useContextdata();    
+    const { token, setUserData, profilePicture, linkedinCode, onConnect } = useContextdata();  
 
     return (
         <div>            
             <Router>
                 <BigProvider >
-                { !token && <Redirect to="/login/email"/>}
-                { token && <Redirect to={ROUTES.HIRING_PROCESS}/>}
+                { ((!token && !linkedinCode) && !onConnect) && <Redirect to="/login/email" search="?code="/> }
+                { ((!token && !linkedinCode) && onConnect) && <Redirect to="/login/email" search="?code="/>}
+                { (token || linkedinCode) && <Redirect to={ROUTES.HIRING_PROCESS}/>}
                     <TopNav/>
                     <MainNav>
                         <TitleSource>Breadcrumbs</TitleSource>
@@ -50,10 +53,13 @@ const App = () => {
                         <Route path={ROUTES.AMBASSADORS} component={AmbassadorsPage}/>
                         <Route path={ROUTES.SOCIAL} component={SocialPage}/>
                         <Route path={ROUTES.CONFIRM} component={ConfirmPage}/>
+                        { (!token || !linkedinCode) && <Route exact path="/login/email" component={LinkedInPopUp} /> }
 
                         <Route path="/auth" component={OnBoardingPage} />
+                        { (!token || !linkedinCode) && <Route path="/login/email" component={LoginEmailPage}/> }
+                        { (!token || !linkedinCode) && <Route path="/login/email?code=" component={LoginEmailPage}/> }
                     </MainNav>
-                    { !token && <Route path="/login/email" component={LoginEmailPage}/>}
+                    
                     <BottomNav/>
                 </BigProvider>
             </Router>

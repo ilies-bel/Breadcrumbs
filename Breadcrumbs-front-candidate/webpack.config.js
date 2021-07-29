@@ -95,6 +95,16 @@ module.exports = (env, argv) => {
                         },
                     ]
                 },
+                {
+                    test: /\.png?$/,
+                    include: [/react-linkedin-login-oauth2/],
+                    use: [
+                        {
+                            loader: 'url-loader',
+                            options: {babelrc: true},
+                        },
+                    ]
+                }
             ],
         },
         resolve: {
