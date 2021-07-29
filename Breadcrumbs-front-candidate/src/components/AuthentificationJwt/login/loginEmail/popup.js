@@ -73,7 +73,15 @@ export default function LPopup() {
         .then(res => {
             let data = res.data;
             let profilePicture = data.profilePicture.elements[0].identifiers[0].identifier;
-            context.setUserData(token, data.firstName.localized.fr_FR, data.lastName.localized.fr_FR, profilePicture.elements[0].identifiers[0].identifier);
+            
+            context.dispatchUserData({ type: 'fill-user-data', 
+                                        payload: {
+                                            token: token,
+                                            first_name: data.firstName.localized.fr_FR,
+                                            last_name: data.lastName.localized.fr_FR,
+                                            picture: profilePicture.elements[0].identifiers[0].identifier
+                                        }
+                                    })
             window.localStorage.setItem("picture_link", profilePicture);
             window.localStorage.setItem("user", data.firstName.localized.fr_FR);
         })
