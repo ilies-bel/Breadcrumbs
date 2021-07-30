@@ -8,11 +8,11 @@ import {AppBar, Avatar, Button, withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from 'prop-types';
 
-import { providers, signIn, signOut, getSession, Provider, session } from 'next-auth/client';
 import axios from 'axios'
 import Label from '../Label';
 
-import '@/styles/navigation.module.css'
+import '@/styles/navigation.module.css';
+import {AuthContext, useAuthContext} from "../../utils/context";
 
 const drawerWidth = 240;
 /*
@@ -38,14 +38,20 @@ const styles = theme => ({
     }
 });
 
+const logOut = () => {
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
+    context.setUserData({token: null});
+}
 const ProfileItem = (props) => {
     const data = props.data ?? null;
+    const context = useAuthContext();
     return (
         <div className="profile">
             <Label>{data && data.name?.[0]}</Label>
-            {data ?
-                <Button onClick={() => signOut()} title="Sign out" ><Avatar src={data.image} /></Button> :
-                <Button onClick={() => signIn()} title="Sign in"> <Avatar/> </Button>
+            {context.token ?
+                <Button onClick={() => logOut()} title="Sign out" ><Avatar /></Button> :
+                <Button onClick={()=>{}} title="Sign in"> <Avatar/> </Button>
             }
 
         </div>
@@ -62,7 +68,7 @@ class Header extends React.Component {
     }
 
     componentDidMount() {
-        const session = getSession().then(response => { this.setState({data: response}) })
+
     }
 
     render() {

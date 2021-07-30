@@ -18,6 +18,8 @@ const style = {
     }
 }
 
+const URL_SOURCE = process.env.NEXT_PUBLIC_SOURCE_URL
+
 const useEventSource = (url) => {
     let [data, updateData] = useState([]);
 
@@ -63,7 +65,7 @@ export default function Hiring({resList, error}) {
     const confirmChange = () => {
         setText("Change Saved !");
     }
-    
+
     return (
         <>
             <h1>Hiring process</h1>

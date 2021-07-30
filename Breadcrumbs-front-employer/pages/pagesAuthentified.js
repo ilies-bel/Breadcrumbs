@@ -6,7 +6,7 @@ import Link from "next/link";
 import Button from "@material-ui/core/Button";
 import Tips from "./tips";
 import Office from "./office";
-import {useAuthContext} from "./Authentification/context";
+import {useAuthContext} from "../utils/context";
 
 export default function RestrictedPages({children}) {
     const context = useAuthContext();

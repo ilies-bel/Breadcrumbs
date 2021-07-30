@@ -20,8 +20,8 @@ import {
 
 import axios from 'axios';
 import { getSession } from 'next-auth/client';
-import {AuthContext} from "../pages/Authentification/context";
-import { calendarData } from "../pages/hiring-process/CalendarData/calendarData"
+import {AuthContext} from "../utils/context";
+import { calendarData } from "../utils/calendarData"
 
 const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 

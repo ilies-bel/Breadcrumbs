@@ -1,11 +1,13 @@
 import React, { useState} from 'react';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
-import {useAuthContext} from "./context.tsx";
+import {useAuthContext} from "../../utils/context";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 export default function LoginPage() {
   const [ emailValue, setEmail ] = useState("");
   const [ passValue, setPass ] = useState();
+  const [ loading, setLoading ] = useState(false);
   const auth_url = process.env.NEXT_PUBLIC_AUTH_URL;
   const context = useAuthContext();
 
@@ -16,6 +18,7 @@ export default function LoginPage() {
   }
   function handleSubmit(event) {
       event.preventDefault();
+      setLoading(true);
       axios.post(auth_url, {email: emailValue, password: passValue})
           .then(res => {
               if(res.data.status ==='Success') {
@@ -38,10 +41,12 @@ export default function LoginPage() {
                   throw "Invalid credentials.";
               }
           })
+          .then(() => setLoading(false))
           .catch(e => console.error(e));
   }
     return (
         <div>
+            { loading && <LinearProgress /> }
             <form onSubmit={handleSubmit}>
                 <input type='text' placeholder='email adress' aria-label='email' value={emailValue} onChange={handleChange} />
                 <input type='password' placeholder='password' aria-label='password' onChange={handleChange} />
