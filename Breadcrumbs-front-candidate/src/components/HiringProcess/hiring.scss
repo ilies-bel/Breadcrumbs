@@ -37,7 +37,7 @@ h2 {
           border-color: #3572F1;
           border-style: Solid;
           border-width: 2px;
-          border-radius: 5px;
+          border-radius: 10px;
           letter-spacing: -0.01em;
 
           .buttonTitle {
@@ -56,10 +56,11 @@ h2 {
 
         &.pending, &.completed {
           .MuiButtonBase-root {
+            background-color: white;
             opacity: 50%;
           }
           .buttonTitle {
-            background-color: darkgray;
+            background-color: #EBF1FE;
           }
           &:after {
             border-color: darkgray;
@@ -94,4 +95,17 @@ h2 {
 .appointmentDetails {
   display: block;
   flex-direction: column;
+}
+.titleUnderline {
+  width: 56px;
+  height: 4px;
+  background-color: #5D8EF4;
+  border: none;
+}
+.timeItem {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 140%;
 }

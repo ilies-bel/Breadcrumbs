@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router, NavLink, Route, useRouteMatch, useHistory, Link} from 'react-router-dom';
-import useAxios from 'axios-hooks'
-import Moment from 'moment'; //TODO: essayer Luxon
+import { DateTime } from "luxon";
 
 import {CONFIRM, DISPO} from 'constants/routes';
 
@@ -22,6 +21,9 @@ export default function DateItem(props) {
     const context = useAuthContext();
     const token = window.localStorage.getItem("token");
     
+    const day =  DateTime.fromISO(props.startDate).toFormat('dd MMMM yyyy')
+    const startTime = DateTime.fromISO(props.startDate).toFormat(' hh:mm');
+    const endTime = DateTime.fromISO(props.endDate).toFormat(' hh:mm');
 
     const [{data, loading, error}, execute] = useCreateAppointment({
         startDate: props?.startDate ?? "30 february 2005",
@@ -51,7 +53,7 @@ export default function DateItem(props) {
             {({ setAppointment, setInterview}) => (
                 <Accordion>
                     <AccordionSummary>
-                        {props.startDate} to {props.endDate} <ExpandMore/>             
+                      <span className="dayItem">{ day }</span>  <span className="timeItem">  | { startTime } to {endTime}</span> <ExpandMore/>             
                     </AccordionSummary>
                     <AccordionDetails className="appointmentDetails">
                         <PageDescription>
@@ -60,7 +62,7 @@ export default function DateItem(props) {
                             </div>
 
                             <div>
-                            You’re about to book an appointment for your phone interview.<br/>
+                            You’re about to book an appointment for your { context.interviewType } on {day} from {startTime}.<br/>
 
                             Do you confirm this time slot?
                             </div>

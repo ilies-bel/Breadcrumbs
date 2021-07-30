@@ -14,6 +14,8 @@ function MilestonePage() {
         <div className="paper">
           <h1>{ authContext.interviewType ?? "" }</h1>
           <h2>what is it ? </h2>
+          <hr className="titleUnderline" />
+          
           <PageDescription>{ authContext.description ?? "" }</PageDescription>
           <FlashyButton onClick={() => history.push(DISPO)}>
             Take appointment

@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { PageDescription } from 'Navigation';
+import PaperDiv from "littleComponents/PaperDiv"
 import DateItem from './dateItem';
 
 import { useGetDisponibilities } from 'utils/axios'
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const SelectDate = () => {
     const [{ data, loading, error }] = useGetDisponibilities();
+    const context = useAuthContext();
 
     if (loading) return <CircularProgress />
     if(error) return <strong>Error. No data found</strong>
@@ -31,8 +33,9 @@ const SelectDate = () => {
     if(isdataEmpty) return <strong>table availability is empty</strong>
 
     if(!isdataEmpty) return (
-        <>
-
+        <PaperDiv>
+        <h1>{ context.interviewType } </h1>
+        <hr className="titleUnderline" />
         <PageDescription>Book your appointment</PageDescription>
             {
                 data.map((avalability, index) =>
@@ -44,7 +47,7 @@ const SelectDate = () => {
                 )
             }
         <DateItem />
-    </>
+    </PaperDiv>
     );
 }
 

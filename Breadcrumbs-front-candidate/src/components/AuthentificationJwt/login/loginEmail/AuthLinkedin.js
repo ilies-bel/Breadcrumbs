@@ -4,7 +4,6 @@ import axios from "axios";
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 
-import PaperDiv from 'littleComponents/PaperDiv'
 import { useAuthContext } from "../../context";
 import "./login.scss"
 import { useHistory } from "react-router-dom";
@@ -50,7 +49,6 @@ export default function LPopup() {
             setAll(rr.data);
         })
         .then(context.setConnect(false))
-        .then(() => data.code && history.replace(ROUTES.HIRING_PROCESS))
         .catch(e => {
             data.code && history.replace(ROUTES.HIRING_PROCESS)
             let rr = JSON.stringify(e);

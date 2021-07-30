@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import {FlashyButton, PageDescription} from "Navigation";
 import {useHistory, Link} from "react-router-dom";
 import {useAuthContext} from "components/AuthentificationJwt/context";
@@ -10,58 +10,7 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 import * as ROUTES from 'constants/routes';
 import PaperDiv from 'littleComponents/PaperDiv'
-import LPopup from './popup';
-
-const LoginEmailPage = () => {
-    const history = useHistory();
-
-    const [email, setEmail] = useState(null);
-    const [password, setPass] = useState(null);
-
-    const [formData, setData] = useState({});
-    const [error, setError] = useState(false)
-    const context = useAuthContext();
-    let storage = window.localStorage;
-    console.log(storage);
-
-    async function sendLogin(e) {
-        e.preventDefault();
-        await login(email, password).catch(e => setError(e))
-            .then(res => {
-                if (!res.token) {
-                    setError(res?.errors);
-                } else {
-                    res && storage.setItem("token", res.token);
-                    res && storage.setItem("user", res.user.first_name);
-                    res && context.setData(res.token, res.user.first_name)
-                    res && history.push("/auth/confirm");
-                }
-            });
-    }
-
-    return (
-        <div>
-            <Link to="/auth/welcome"> You don't have an account ? Let's Create one. &rarr;</Link>
-            <PageDescription>You must be connected to use this application</PageDescription>
-
-            <form onSubmit={(e) => sendLogin(e)}>
-
-                <input autoFocus={true} autoComplete="email" type="email" placeholder="your Email"
-                       aria-label="firstname"
-                       onChange={(event) => {
-                           setEmail(event.target.value);
-                       }}/><br/>
-                <input type="password" placeholder="choose your password" aria-label="password"
-                       onChange={(event) => {
-                           setPass(event.target.value);
-                       }}/><br/>
-                <FlashyButton type='submit'> LOGIN </FlashyButton>
-            </form>
-
-            {error && <div>Connection failed </div>}
-        </div>
-    )
-}
+import LPopup from './AuthLinkedin';
 
 const BASE_API_URL = process.env.AXIOS_BASE_URL
 const jwtValidation = async(token) => {
@@ -83,17 +32,7 @@ const Login = () => {
     const {register, handleSubmit, setError, errors, clearErrors} = useForm();
     const context = useAuthContext();
     const [ loading, setLoading ] = useState(false);
-    const [ linkedinCode, setCode ] = useState('');
-    const [ linkedinError, serError ] = useState('');
-
     const history = useHistory();
-
-    const handleSuccess = (data) => {
-        setCode(data.code); setError('');
-    }
-    const handleFailure = (error) => {
-        setCode(''); setError(error.errorMessage,);
-    }
 
     const onSubmit = handleSubmit((data) => {
         setLoading(true);
@@ -151,7 +90,7 @@ const Login = () => {
             })
             .then(() => setLoading(false))
             .then(() => {console.log(context.token);console.log("/context.token");})
-            .then(() => history.replace(ROUTES.HIRING_PROCESS))
+            .then(() => console.log("toujours dans router"))
             .catch((e) => {
                 console.log(e);
                 setLoading(false)
@@ -166,9 +105,10 @@ const Login = () => {
         <>
         <img src="/Logo.svg" />
 
-        <h2>Use your mail account</h2>
+        
             
         <div className="RegisterOrLogIn loginForm">
+        <h2>Use your mail account</h2>
             { loading && <LinearProgress /> }
             <form onSubmit={onSubmit}>
                 <div className='inputForm'>
@@ -199,7 +139,11 @@ const Login = () => {
                 <FlashyButton onClick={() => clearErrors()} type="submit">Submit</FlashyButton>
             </form>
         </div>
-        <div className='or'>or</div>
+        <span className='line'>
+            <hr className='or'/>
+            <span>Or</span>
+            <hr className='or'></hr>
+            </span>
         <LPopup />
 
         </>

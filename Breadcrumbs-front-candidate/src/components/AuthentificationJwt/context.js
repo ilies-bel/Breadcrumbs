@@ -31,7 +31,7 @@ export const useAuthContext = () => {
  * @returns 
  */
 export default function BigProvider(props) {
-    const { token, user, lastName, dispatchUser, linkedinCode, picture, setLinkedinCode, startDate, endDate, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useContextdata();
+    const { token, user, lastName, dispatchUser, linkedinCode, picture, setLinkedinCode, startDate, endDate, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useAuthContextData();
 
     return (
         <AuthContext.Provider value={ {
@@ -51,13 +51,13 @@ export default function BigProvider(props) {
     )
 }
 
-export const useContextdata = () => {
+export const useAuthContextData = () => {
     const [ token, setToken ] = useState(window.localStorage.getItem("token"));
     const [ user, setUser ] = useState(window.localStorage.getItem("user"));
     const [ lastName, setLast ] = useState(window.localStorage.getItem("last_name"));
     const [ picture, setPicture ] = useState(window.localStorage.getItem("picture_link"));
     const [linkedinCode, setLinkedinCode ] = useState(window.localStorage.getItem("link_code"))
-    const [ state, dispatchUser ] = useReducer(userReducer, AuthContext)
+    const [ state, dispatchUser ] = useReducer(userDataReducer, AuthContext)
     
     const [ endDate, setEnd] = useState();
     const [ startDate, setStart] = useState();

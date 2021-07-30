@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {BrowserRouter as Router, Link, NavLink, Redirect, Route, useRouteMatch, useHistory} from 'react-router-dom';
 
 import {TitleSource} from "../Navigation/titleContext";
 
-import {CONFIRM, DISPO, HIRING_PROCESS_TITLE} from "../../constants/routes";
+import {CONFIRM, DISPO, HIRING_PROCESS_TITLE, HIRING_PROCESS} from "../../constants/routes";
 
 import HiringProcess from './hiring';
 import MilestonePage from './milestone'

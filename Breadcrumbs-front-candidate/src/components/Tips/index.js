@@ -19,7 +19,6 @@ import Avatar from "@material-ui/core/Avatar";
 
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
-import LPopup from 'components/AuthentificationJwt/login/loginEmail/popup';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Tips = () => {
     const [{data, loading, error}, refetch] = useGetTips();
-    const [open, setOpen] = React.useState(true);
 
     const classes = useStyles();
 
