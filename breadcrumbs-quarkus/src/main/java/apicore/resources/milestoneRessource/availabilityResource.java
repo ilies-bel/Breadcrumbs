@@ -8,6 +8,7 @@ import apicore.resources.webPush.PushSenderResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.resteasy.annotations.SseElementType;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;

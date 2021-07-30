@@ -34,6 +34,7 @@ public class Users extends PanacheEntityBase {
 
     private String password;
     public String role;
+    public String phone;
 
     @OneToMany(mappedBy = "candidate")
     private List<Appointment> appointments;
@@ -61,9 +62,12 @@ public class Users extends PanacheEntityBase {
         Users.add("tenor.dubarreau@breadcrumbs.com", gura_gura, "supervisor", "Tenor", "Dubarrea");
         Users.add("collaborat@breadcrumbs.com", beau_rat, "collaborator", "Collabo", "Rat");
         Users.add("sengoku.le.bouddha@navy.gov", beau_rat, "collaborator", "Sengoku", "Bouddha");
+        Users.add("bois.hêtre@foret.com", gura_gura, "candidate", "Tronc", "Epais", "0612345678");
+        Users.add("marco.phenix@foret.com", gura_gura, "candidate", "Marco", "LePhénix", "0612345679");
+        Users.add("thomasx@foret.com", gura_gura, "candidate", "Thomas", "Dumont", "0612345680");
     }
 
-    public static void add(String email, String password, String role, String first_name, String last_name) {
+    public static void add(String email, String password, String role, String first_name, String last_name, String phone) {
         Users user = new Users();
         user.first_name = first_name;
         user.last_name = last_name;
@@ -71,7 +75,11 @@ public class Users extends PanacheEntityBase {
         user.password = password;
         user.email = email;
         user.role = role;
+        user.phone = phone;
         user.persist();
+    }
+    public static void add(String email, String password, String role, String first_name, String last_name) {
+        Users.add(email, password, role, first_name, last_name, "Unknwonw");
     }
     public static void add(String email, String password, String role) {
         Users.add(email, password, role, "Unknown", "Unknown");

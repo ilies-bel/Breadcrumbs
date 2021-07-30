@@ -23,4 +23,11 @@ public class userRessource {
         return Users.listAll();
     }
 
+    @Path("candidates")
+    @GET @RolesAllowed("collaborator")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Users> getCandidates() {
+        return Users.find("role", "candidate").list();
+    }
+
 }

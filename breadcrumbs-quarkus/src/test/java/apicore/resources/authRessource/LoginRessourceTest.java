@@ -1,3 +1,4 @@
+/*
 package apicore.resources.authRessource;
 
 import apicore.utils.GenerateToken;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*@QuarkusTest/*
+@QuarkusTest
 class LoginRessourceTest {
     @Inject JWTParser parser;
     @Inject JsonWebToken jwt;
