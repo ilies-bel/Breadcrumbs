@@ -13,6 +13,7 @@ export const AuthContext = React.createContext({
     interlocutor: null,
     interviewType: null,
     description: null,
+    location: null,
 
     dispatchUserData: () => {},
     setAppointment: () => {},

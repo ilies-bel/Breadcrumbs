@@ -11,12 +11,28 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
+import Button from '@material-ui/core/Button'
+import EventAvailableOutlined from '@material-ui/icons/EventAvailableOutlined';
+
+import { DateTime } from "luxon";
+import { useAuthContext } from '../../../AuthentificationJwt/context';
 
 const optionsCalendar = ['Google calendar','Outlook',]
 
-const openCalendarLink = (goo, outl) => {
-  outl && window.open('https://outlook.office.com/calendar/0/deeplink/compose?enddt=2021-06-15T08%3A45%3A00%2B00%3A00&location=Ouroffice&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2021-06-15T08%3A15%3A00%2B00%3A00&subject=Phone call');
-  goo && window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20210615T081500Z%2F20210615T084500Z&location=Ouroffice&text=Phone call')
+const openCalendarLink = (goo, outl, startTime, endTime, type) => {
+  if(outl) {
+    const forOutlookStartTime = DateTime.fromISO(startTime).toISO();
+    const forOutlookEndTime = DateTime.fromISO(endTime).toISO();
+
+    window.open(`https://outlook.office.com/calendar/0/deeplink/compose?enddt=${forOutlookEndTime}&location=Ouroffice&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=${forOutlookStartTime}&subject=${type}`);
+  }
+  if(goo) {
+    const forGoogleStartTime = DateTime.fromISO(startTime).toFormat("yyyyMMdd'T'hhmmss");
+    const forGoogleEndTime = DateTime.fromISO(endTime).toFormat("yyyyMMdd'T'hhmmss'Z'");
+
+    window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${forGoogleStartTime}%2F${forGoogleEndTime}&location=Ouroffice&text=${type}`)
+  }  
+  
 }
 
 export default function ConfirmationDialogRaw(props) {
@@ -24,6 +40,12 @@ export default function ConfirmationDialogRaw(props) {
     google: false,
     outlook: false,
   });
+  const context = useAuthContext();
+
+  const startTime = context.startDate;
+  const endTime = context.endDate;
+  const type = context.interviewType;
+  
   const handleChange = (event) => {
     setState({ ...calendarChosen, [event.target.name]: event.target.checked });
   };
@@ -32,8 +54,8 @@ export default function ConfirmationDialogRaw(props) {
     props.onClose()
   };
 
-  const handleOk = (goo, outl) => {
-    openCalendarLink(goo, outl);
+  const handleOk = (goo, outl, startTime, endTime, type) => {
+    openCalendarLink(goo, outl, startTime, endTime, type);
     props.onClose()
   };
 
@@ -58,8 +80,12 @@ export default function ConfirmationDialogRaw(props) {
           </FormControl>
       </DialogContent>
       <DialogActions>
-          <button onClick={props.onClose}>Cancel</button>
-          <button onClick={() => handleOk(calendarChosen.google, calendarChosen.outlook) }>Confirm</button>          
+        <div className='dialogButtons' >
+          <Button variant='contained' onClick={props.onClose}>Cancel</Button>
+          <Button color='primary' variant='contained' onClick={() => handleOk(calendarChosen.google, calendarChosen.outlook, startTime, endTime, type) } startIcon={<EventAvailableOutlined />} >
+            Confirm
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   )

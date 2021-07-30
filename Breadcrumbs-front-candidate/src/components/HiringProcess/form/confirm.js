@@ -45,9 +45,7 @@ const ConfirmPage = () => {
                 Add to my calendar
             </FlashyButton>
             <ConfirmationDialogRaw open={modalOpen} onClose={handleClose} />
-            <br/><br/><br/><br/>
-
-            <FlashyButton>Cancel Appointment</FlashyButton>
+            
         </PaperDiv>
     )
 }

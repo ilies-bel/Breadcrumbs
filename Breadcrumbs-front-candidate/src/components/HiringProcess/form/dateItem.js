@@ -34,7 +34,7 @@ export default function DateItem(props) {
     
     const handleConfirm = async() => {
 
-        await execute().then(res => console.log(res));
+        await execute().then(res => context.setAppointment(props.startDate, props.endDate));
 
         history.push(CONFIRM)
     }
