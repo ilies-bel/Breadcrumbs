@@ -82,16 +82,5 @@ public class appointmentRessource {
 
         return Response.ok("New appointment added : "+available.startDate+" "+available.endDate+" with "+interlocutor.first_name).build();
     }
-    @Path("/add/ava")
-    @Transactional
-    public Response addAppointment2(Appointment available) {
-        String email = token.getClaim("email");
-        Users user = Users.findUserByEmail(email);
 
-        interview_process process = interview_process.find("candidate", user).firstResult();
-        interview_milestones currentMilestone = process.getCurrentMilestone();
-
-        Appointment.addFromAppointment(available, user, currentMilestone);
-        return Response.ok("Appointment registered From an Appointment parameter").build();
-    }
 }

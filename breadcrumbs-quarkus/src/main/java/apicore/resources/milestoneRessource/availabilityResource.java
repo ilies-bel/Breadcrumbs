@@ -54,11 +54,10 @@ public class availabilityResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateAvailability(List<availability> availabilities) {
-        List<availability> a = availability.find("type", availability.SLOT_TYPE).list();
-        availability.updateAvalabilities(a);
+        availability.updateAvalabilities(availabilities);
         PushSenderResource pushResource = new PushSenderResource();
         pushResource.toAllSending("New availabilities !");
-        return Response.ok(a).build();
+        return Response.ok(availabilities).build();
     }
 
     @GET

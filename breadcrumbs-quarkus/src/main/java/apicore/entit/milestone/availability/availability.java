@@ -10,10 +10,10 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 public class availability extends PanacheEntityBase {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("id") @JsonAlias("id")
     public Long id_slot;
 
