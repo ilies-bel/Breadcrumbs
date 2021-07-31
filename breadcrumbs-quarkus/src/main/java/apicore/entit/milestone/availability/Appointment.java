@@ -73,12 +73,16 @@ public class Appointment extends availability {
         Appointment appointment = new Appointment(a, email_interlocutor, candidate);
         appointment.milestone = milestone;
         appointment.persist();
+        // Maintenant que le rendez-vous a été pris on supprime la disponibilité qui correspondait
+        availability.find("startDate = ?1 AND endDate =?2", a.startDate, a.endDate).firstResult().delete();
     }
     @Transactional
     public static void addFromAvailability(availability a, String email_candidate, interview_milestones milestone) {
         Users storedCandidate = Users.findByEmail(email_candidate);
         Appointment appointment = new Appointment(a, storedCandidate, milestone);
         appointment.persist();
+        // Maintenant que le rendez-vous a été pris on supprime la disponibilité qui correspondait
+        availability.find("startDate = ?1 AND endDate =?2", a.startDate, a.endDate).firstResult().delete();
     }
     @Transactional
     public static void addFromAppointment(Appointment a, Users user, interview_milestones milestone) {

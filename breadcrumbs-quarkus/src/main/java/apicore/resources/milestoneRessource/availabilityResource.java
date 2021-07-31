@@ -53,7 +53,8 @@ public class availabilityResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAvailability(List<availability> a) {
+    public Response updateAvailability(List<availability> availabilities) {
+        List<availability> a = availability.find("type", availability.SLOT_TYPE).list();
         availability.updateAvalabilities(a);
         PushSenderResource pushResource = new PushSenderResource();
         pushResource.toAllSending("New availabilities !");
@@ -78,5 +79,12 @@ public class availabilityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllSlot() {
         return appointmentRessource.getAllSlot();
+    }
+
+    @GET
+    @Path("/event")
+    @Produces(MediaType.SERVER_SENT_EVENTS) @SseElementType(MediaType.TEXT_PLAIN)
+    public Response srteam() {
+        return Response.ok("{\"dmmd\":\"mdmdm\"}").build();
     }
 }

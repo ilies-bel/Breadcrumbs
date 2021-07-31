@@ -14,49 +14,49 @@ services:
       - 443:443
     networks:
       - traefik-global-proxy
-  # pwa:
-  #   build: $PWA_DIR
-  #   environment:
-  #       HOST: 0.0.0.0
-  #       PORT: $PWA_PORT
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - $PWA_DIR:/usr/src/app
-  #   expose:
-  #     - $PWA_PORT
-  #   networks:
-  #     - traefik-global-proxy
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.http.routers.pwa.rule=Host(`$PWA_HOST`)
-  #     - traefik.http.routers.pwa.tls=true
-  #     - traefik.http.routers.pwa.service=pwaservice
-  #     - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
-  #     - traefik.http.routers.pwa.middlewares=errorpage@file
-  #   depends_on:
-  #     - traefik
-  # employer:
-  #   build:
-  #     context: $EMPLOYER_DIR
-  #     dockerfile: Dockerfile
-  #   environment:
-  #      HOST: 0.0.0.0
-  #      PORT: $EMPLOYER_PORT
-  #   volumes:
-  #    - ./Breadcrumbs-front-employer:/usr/src/app
-  #   working_dir: /usr/src/app
-  #   expose:
-  #    - $EMPLOYER_PORT
-  #   networks:
-  #    - traefik-global-proxy
-  #   labels:
-  #    - traefik.enable=true
-  #    - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
-  #    - traefik.http.routers.employer.tls=true
-  #    - traefik.http.services.employer.loadbalancer.server.port=$EMPLOYER_PORT
-  #    - traefik.http.routers.employer.middlewares=errorpage@file
-  #   depends_on:
-  #    - traefik
+  pwa:
+    build: $PWA_DIR
+    environment:
+        HOST: 0.0.0.0
+        PORT: $PWA_PORT
+    working_dir: /usr/src/app
+    volumes:
+      - $PWA_DIR:/usr/src/app
+    expose:
+      - $PWA_PORT
+    networks:
+      - traefik-global-proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pwa.rule=Host(`$PWA_HOST`)
+      - traefik.http.routers.pwa.tls=true
+      - traefik.http.routers.pwa.service=pwaservice
+      - traefik.http.services.pwaservice.loadbalancer.server.port=$PWA_PORT
+      - traefik.http.routers.pwa.middlewares=errorpage@file
+    depends_on:
+      - traefik
+  employer:
+    build:
+      context: $EMPLOYER_DIR
+      dockerfile: Dockerfile
+    environment:
+       HOST: 0.0.0.0
+       PORT: $EMPLOYER_PORT
+    volumes:
+     - ./Breadcrumbs-front-employer:/usr/src/app
+    working_dir: /usr/src/app
+    expose:
+     - $EMPLOYER_PORT
+    networks:
+     - traefik-global-proxy
+    labels:
+     - traefik.enable=true
+     - traefik.http.routers.employer.rule=Host(`$EMPLOYER_HOST`)
+     - traefik.http.routers.employer.tls=true
+     - traefik.http.services.employer.loadbalancer.server.port=$EMPLOYER_PORT
+     - traefik.http.routers.employer.middlewares=errorpage@file
+    depends_on:
+     - traefik
 
 
 #  breadcrumbs-api-core:

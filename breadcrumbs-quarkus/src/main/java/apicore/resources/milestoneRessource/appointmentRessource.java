@@ -16,9 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequestScoped
 @Path("/appointment")
@@ -35,12 +33,12 @@ public class appointmentRessource {
     public static Response getAllSlot() {
         List<availability> availabilityList = availability.listAll();
         List<Appointment> appoinList = Appointment.listAll();
-        List<availability> totalList = new ArrayList<availability>();
+        Set<availability> totalList = new HashSet<>();
         totalList.addAll(appoinList); totalList.addAll(availabilityList);
         return Response.ok(totalList).build();
     }
 
-    /**Cet endpoint sert à ajouter un rendez-vous
+    /**Cet endpoint sert à prendre un rendez-vous
      * Doit être utilisé depuis l'application candidate
      * Le candidat est roi, il est donc le seul à pouvoir ajouter un rendez-vous */
     @Inject JsonWebToken token;
@@ -81,7 +79,6 @@ public class appointmentRessource {
 
             Appointment.addFromAvailability(available, candidate, currentMilestone);
         }
-
 
         return Response.ok("New appointment added : "+available.startDate+" "+available.endDate+" with "+interlocutor.first_name).build();
     }

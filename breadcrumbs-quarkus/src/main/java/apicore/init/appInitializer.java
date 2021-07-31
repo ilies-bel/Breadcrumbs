@@ -45,15 +45,15 @@ public class appInitializer {
 
     @Transactional
     public static void seedAvalability() {
-        availability a = new availability("1/08/2020|14:00", "1/08/2020|15:00", "collaborat@breadcrumbs.com");
+        availability a = new availability("2021-08-30T09:43:59Z", "2021-08-30T10:00:59Z", "collaborat@breadcrumbs.com");
         a.persist();
-        a = new availability("2/08/2020|14:00", "2/08/2020|15:00", "collaborat@breadcrumbs.com");
+        a = new availability("2021-08-30T13:30:59Z", "2021-08-30T14:30:59Z", "collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("3/08/2020|08:00", "3/08/2020|09:00", "collaborator@breadcrumbs.com");
+        a = new availability("2021-08-30T15:00:59Z", "2021-10-30T16:00:59Z", "collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("3/08/2020|14:00", "3/08/2020|15:00", "collaborator@breadcrumbs.com");
+        a = new availability("2021-09-01T10:00:59Z", "2021-09-01T15:00:59Z", "another.collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("4/08/2020|14:00", "4/08/2020|15:00", "collaborat@breadcrumbs.com");
+        a = new availability("2021-09-02T08:00:59Z", "2021-09-02T12:00:59Z", "another.collaborator@breadcrumbs.com");
         a.persist();
     }
     @Transactional

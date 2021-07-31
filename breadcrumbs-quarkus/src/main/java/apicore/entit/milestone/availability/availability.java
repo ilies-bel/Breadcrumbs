@@ -10,13 +10,14 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 public class availability extends PanacheEntityBase {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id") @JsonAlias("id")
     public Long id_slot;
 
-    private static final String SLOT_TYPE = "Availability";
+    public static final String SLOT_TYPE = "Availability";
 
     public String startDate;
     public String endDate;
@@ -34,6 +35,12 @@ public class availability extends PanacheEntityBase {
     public availability() {}
 
     /** Construire une availability à partir d'un objet Users */
+    public availability(String startTime, String endTime, Users collaborator, String location) {
+        this(startTime, endTime);
+        this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
+        this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "availability_constructor_nobody@empty.fr");
+        this.location = location;
+    }
     public availability(String startTime, String endTime, Users collaborator) {
         this(startTime, endTime);
         this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
@@ -75,9 +82,14 @@ public class availability extends PanacheEntityBase {
             if(a.interlocutor==null) {
                 Users interlocutor = Users.findByEmail(a.interlocutor_email);
                 a.interlocutor = interlocutor;
-            }
 
-            a.persist();
+                availability a2 = new availability(a.startDate, a.endDate, a.interlocutor, a.location);
+                a2.persist();
+            }
+            else {
+                availability a2 = new availability(a.startDate, a.endDate, a.interlocutor, a.location);
+                a2.persist();
+            }
         }
     }
     /**
@@ -85,7 +97,7 @@ public class availability extends PanacheEntityBase {
      * Cette méthode est idempotente mais n'est pas du tout optimale */
     //TODO: Trouver une manière optimale de mettre à jour la table
     public static void updateAvalabilities(List<availability> availabilityList) {
-        availability.deleteAll();
+        availability.delete("type", availability.SLOT_TYPE);
         availability.addList(availabilityList);
     }
 }

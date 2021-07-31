@@ -11,9 +11,9 @@ import TdCheckbox from '../../components/table/TdCheckBox';
 
 axios.defaults.baseURL = process.env.BASE_API_URL;
 
-
+const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL
 const fetchData = async (token) => await
-    axios.get('http://localhost:8080/api/users/candidates', {headers: {Authorization: `Bearer ${token}`}})
+    axios.get(`${axios_url}/users/candidates`, {headers: {Authorization: `Bearer ${token}`}})
         .then(res => {
             return res.data})
         .catch((e) => console.log(e))
@@ -33,11 +33,15 @@ const Candidates = () => {
     return (
         <>
             <Head><title> Candidates view</title></Head>
-            <h1>Candidates</h1>
-            <div className="flex flex-col">
+            
+            <div className="inline">
+                <h1 className="inline font-medium text-2xl">Candidates</h1>
+                <button className="inline rounded-md shadow text-white bg-royalblue p-2 ml-20" title="Fontionnalité non-disponible">+ Invite a new candidate</button>
+            </div>
+            <div className="flex flex-col mt-10">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <DefaultThead />
                                 { udata && (
@@ -57,11 +61,6 @@ const Candidates = () => {
                                             </TdRow>
                                             <TdStatus />              
                                             <TdRow className="text-sm text-gray-500">{person.role}</TdRow>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="#" className="text-indigo-600 hover:text-indigo-900" title="Fonctionnalité non-disponible">
-                                                    Generate invitation link
-                                                </a>
-                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -71,8 +70,6 @@ const Candidates = () => {
                     </div>
                 </div>
             </div>
-
-
         </>
 
 

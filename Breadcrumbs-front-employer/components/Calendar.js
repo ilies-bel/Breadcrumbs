@@ -19,7 +19,6 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import axios from 'axios';
-import { getSession } from 'next-auth/client';
 import {AuthContext} from "../utils/context";
 import { calendarData } from "../utils/calendarData"
 
@@ -29,10 +28,6 @@ const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
   const fetchData = async (changedData, url, token="", onChange=() => {}) => {
 
     const availabilities = changedData.filter((availability) => availability.type !== 'Appointment');
-
-    for( let availability of availabilities) {
-      availability.type= "Availability"
-    }
 
     return await axios.put(url, availabilities, {
       headers: {
@@ -81,7 +76,7 @@ const Appointment = ({
       this.state = {
         data: this.props.resList,
         sessionData: null,
-        currentDate: this.props.resList[4].startDate,
+        currentDate: this.props.resList[2].startDate,
         addedAppointment: {},
         appointmentChanges: {},
         isShiftPressed: false,
@@ -107,6 +102,7 @@ const Appointment = ({
     async componentDidMount() {
       window.addEventListener('keydown', this.onKeyDown);
       window.addEventListener('keyup', this.onKeyUp);
+      console.log("data calendar");console.log(this.state.data);console.log("/data calendar");
 
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
       fetchData(this.props.resList, axiosURL, this.context?.token ?? "");
@@ -156,21 +152,20 @@ const Appointment = ({
           data = data.filter(appointment => appointment.id !== deleted);
         }
         
-        //On envoie une requête à une api pour enregistrer les changements.
-        console.log(this.context)
-        fetchData(data, axiosURL, this.context.token ).then(() => this.props.onChange());
         return { data };
       });
     }
   
     render() {
       const { currentDate, data, resources, addedAppointment, appointmentChanges } = this.state;
+      const onEdit = this.props.onEdit;
   if(data){
       return (
         <Paper>
+          
           <Scheduler
             data={data}
-            height={800}
+            height={700}
           >
             <ViewState
               currentDate={currentDate}
@@ -184,6 +179,7 @@ const Appointment = ({
             <Toolbar />
             <DateNavigator />
             <TodayButton />
+
             <EditingState
               onCommitChanges={this.commitChanges}
               addedAppointment={addedAppointment}
@@ -193,14 +189,18 @@ const Appointment = ({
             />
             <IntegratedEditing />
             <ConfirmationDialog />
-
+            <button className={`${this.props.onEdit ? 'inline' : 'hidden'} rounded-md shadow text-white bg-royalblue p-2 ml-20`}
+                    title="Fontionnalité non-disponible"
+                    onClick={() => fetchData(data, axiosURL, this.context.token ).then(() => this.props.onChange()) } >
+                      Save changes
+            </button>
             <Appointments appointmentComponent={Appointment} />
             <AppointmentTooltip
-              showDeleteButton
+              showDeleteButton={onEdit}
+              showOpenButton={onEdit}
             />
-            {this.props.onEdit && <AppointmentForm/> }
-            {this.props.onEdit && <DragDropProvider allowDrag={allowDrag} />}
-
+            {onEdit && <AppointmentForm/> }
+            {onEdit && <DragDropProvider allowDrag={allowDrag} />}
 
             <Resources
               data={resources}
