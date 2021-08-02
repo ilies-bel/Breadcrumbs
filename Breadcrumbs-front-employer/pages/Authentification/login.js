@@ -3,6 +3,9 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import {useAuthContext} from "../../utils/context";
 import LinearProgress from '@material-ui/core/LinearProgress';
+import InputEmail from 'components/Formulaire/InputEmail';
+import InputPassword from 'components/Formulaire/InputPassword';
+import Form from 'components/Formulaire/Form';
 
 export default function LoginPage() {
   const [ emailValue, setEmail ] = useState("");
@@ -14,13 +17,13 @@ export default function LoginPage() {
 
   function handleChange(event) {
       const target = event.target;
-      target.type ==='text' && setEmail(event.target.value);
+      target.type ==='email' && setEmail(event.target.value);
       target.type ==='password' && setPass(event.target.value)
   }
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
       event.preventDefault();
       setLoading(true);
-      axios.post(auth_url, {email: emailValue, password: passValue})
+      await axios.post(auth_url, {email: emailValue, password: passValue})
           .then(res => {
               if(res.data.status ==='Success') {
                   const token = res.data.token;
@@ -32,7 +35,6 @@ export default function LoginPage() {
                   if(payload.iss === 'breadcrumbs') {
                       context.setUserData({token: token, user: payload.name});
                       window.localStorage.setItem("token", token);
-                      console.log(context)
                   }
                   else {
                       throw "Invalid token"
@@ -43,18 +45,18 @@ export default function LoginPage() {
               }
           })
           .then(() => setLoading(false))
-          .catch(e => console.error(e));
+          .catch(e => {
+              console.error(e)
+              setLoading(false)
+            });
   }
     return (
         <div>
-            { loading && <LinearProgress /> }
-            <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='email adress' aria-label='email' value={emailValue} onChange={handleChange}
-                        className="focus:ring-royalblue focus:border-royalblue block w-full h-12 p-7 sm:text-sm border-gray-300 rounded-md" />
-                <input type='password' placeholder='password' aria-label='password' onChange={handleChange}
-                        className="focus:ring-royalblue focus:border-royalblue block w-full h-12 p-7 sm:text-sm border-gray-300 rounded-md" />
-                <button type="submit" className="inline rounded-md shadow text-white bg-royalblue p-2 ml-20" >Submit</button>
-            </form>
+            <Form onSubmit={handleSubmit} onLoading={loading} >
+                <InputEmail onChange={handleChange} />
+                <InputPassword onChange={handleChange} />
+                <button type="submit" className="block rounded-md shadow text-white bg-royalblue p-2 mt-10 w-1/2" >Submit</button>
+            </Form>
         </div>
             )
 }

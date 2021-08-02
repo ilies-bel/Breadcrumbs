@@ -67,6 +67,23 @@ public class Users extends PanacheEntityBase {
         Users.add("thomasx@foret.com", gura_gura, "candidate", "Thomas", "Dumont", "0612345680");
     }
 
+    public Users() {}
+    public Users(String email, String password, String role, String first_name, String last_name, String phone, Entreprise entreprise) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.phone = phone;
+        this.entreprise = entreprise;
+    }
+    public Users(String email, String password, String role, String first_name, String last_name) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = GeneratePassword.hashPassword(password);
+        this.email = email;
+        this.role = role;
+    }
     public static void add(String email, String password, String role, String first_name, String last_name, String phone) {
         Users user = new Users();
         user.first_name = first_name;

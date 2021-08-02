@@ -1,12 +1,17 @@
 package apicore.resources.authRessource;
 
+import apicore.entit.company.Entreprise;
+import apicore.entit.milestone.interview_process;
 import apicore.entit.user.Users;
+import io.quarkus.deployment.annotations.Consume;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 
@@ -30,4 +35,31 @@ public class userRessource {
         return Users.find("role", "candidate").list();
     }
 
+    @Path("collaborator")
+    @GET @RolesAllowed("collaborator")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Users> getCollaborator() {
+        return Users.find("role", "collaborator").list();
+    }
+
+    @Path("create")
+    @POST @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createUser(Users user) {
+        if(user.email != null && user.getPassword() != null && user.role !=null) {
+            Users newOne = new Users(user.email, user.getPassword(), user.role, user.first_name, user.last_name);
+
+            if(user.phone != null) {
+                newOne.phone = user.phone;
+            }
+            if(user.entreprise != null) {
+                newOne.entreprise = user.entreprise;
+            }
+            newOne.persist();
+            return Response.ok("New user added :" + newOne.email + ", role : " + newOne.role ).build();
+        }
+        else {
+            return Response.ok("Please fill all fields").status(400).build();
+        }
+    }
 }

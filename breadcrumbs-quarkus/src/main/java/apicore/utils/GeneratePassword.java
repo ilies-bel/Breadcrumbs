@@ -20,12 +20,22 @@ public class GeneratePassword {
         salt = secureRandom.generateSeed(12);*/
     }
 
-    public static String hashPassword(String password) throws InvalidKeySpecException, NoSuchAlgorithmException  {
-        PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), poivre, iteration, 512);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-        byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
+    public static String hashPassword(String password) {
+        try {
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), poivre, iteration, 512);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
 
-        return Base64.getMimeEncoder().encodeToString(hash);
+            return Base64.getMimeEncoder().encodeToString(hash);
+        }
+        catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+            return "wrong key";
+        }
+        catch (NoSuchAlgorithmException e2) {
+            e2.printStackTrace();
+            return "NoSuchAlgorithmException";
+        }
     }
 
     /**

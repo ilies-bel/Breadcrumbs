@@ -7,6 +7,10 @@ module.exports = {
         "royalblue": "#3572F1"
       }   
     },
+    fontFamily: {
+      roboto: 'Roboto',
+      quicksand: 'Quicksand'
+    }
   },
   variants: {
     extend: {},

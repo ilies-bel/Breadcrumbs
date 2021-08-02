@@ -6,12 +6,13 @@ import { Switch, FormControlLabel } from '@material-ui/core';
 import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
 import { useSession } from 'next-auth/client';
 import { useAuthContext } from '../../utils/context';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const style = {
     calendar: {
         width: "800px",
-        height: "1000px",
+        height: "800px",
         resize: "both",
     },
     form: {
@@ -61,6 +62,7 @@ export default function Hiring() {
     const [confirm, setText] = useState("Here you can edit your availabilities. Double click to add an availability");
     const [ resList, setRes ] = useState();
     const [ error, seterror ] = useState(null);
+    const [ loading, setLoading ] = useState(false)
 
     const context = useAuthContext();
 
@@ -70,11 +72,13 @@ export default function Hiring() {
       }
 
       useEffect(() => {
+          setLoading(true);
         fetchData(context.token).then((res) => {
             seterror(null)
             setRes(res)
+            setLoading(false);
           }).catch((e) => {
-              seterror(true)
+              seterror(true);setLoading(false);
               throw "axios_url"})
       }, [])
 
@@ -87,10 +91,11 @@ export default function Hiring() {
     return (
         <>
             <h1>Hiring process</h1>
-            <br/>
 
+            <br/>
             <div>
             <div><strong>{confirm}</strong></div>
+
                 <FormControlLabel
                     control={<Switch size="small" checked={checked} onChange={toggleChecked} />}
                     label={!checked ? 'Locked' : 'Editing'}
@@ -100,6 +105,9 @@ export default function Hiring() {
                     control={<Switch size="small" checked={true} onChange={toggleChecked} />}
                     label={"Ask confirmation before deleting "}
                 />
+                <br/>
+            { loading && <CircularProgress/> }
+
                 {error && <strong>Unable to reach the server</strong>}
                 {!error && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} /> </div>)}
             </div>            
