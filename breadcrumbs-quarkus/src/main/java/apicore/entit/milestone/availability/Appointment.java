@@ -5,6 +5,7 @@ import apicore.entit.milestone.interview_milestones;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +14,7 @@ public class Appointment extends availability {
 
     public String candidate_email;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Users candidate;
 
     @ManyToOne
@@ -21,13 +22,13 @@ public class Appointment extends availability {
 
 
     public Appointment() {}
-    private Appointment(String startTime, String endTime, String interlocutor_email, Users candidate) {
+    private Appointment(OffsetDateTime startTime, OffsetDateTime endTime, String interlocutor_email, Users candidate) {
         super(startTime, endTime, interlocutor_email);
         this.candidate = candidate;
         this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "appointment_se_nobody@empty.com");
         this.type = SLOT_TYPE;
     }
-    private Appointment(String startTime, String endTime, Users interlocutor, Users candidate) {
+    private Appointment(OffsetDateTime startTime, OffsetDateTime endTime, Users interlocutor, Users candidate) {
         super(startTime, endTime, interlocutor);
         this.candidate = candidate;
         this.candidate_email = Objects.requireNonNullElseGet(candidate.email, () -> "appointment_second_nobody@empty.com");
@@ -45,11 +46,11 @@ public class Appointment extends availability {
         this.candidate = candidate;
     }
 
-    public Appointment(String startTime, String endTime, Users interlocutor, Users candidate, interview_milestones milestone) {
+    public Appointment(OffsetDateTime startTime, OffsetDateTime endTime, Users interlocutor, Users candidate, interview_milestones milestone) {
         this(startTime, endTime, interlocutor, candidate);
         this.milestone = milestone;
     }
-    public Appointment(String startTime, String endTime, String email_interlocutor, Users candidate, interview_milestones milestone) {
+    public Appointment(OffsetDateTime startTime, OffsetDateTime endTime, String email_interlocutor, Users candidate, interview_milestones milestone) {
         this(startTime, endTime, email_interlocutor, candidate);
         this.milestone = milestone;
     }
@@ -59,7 +60,7 @@ public class Appointment extends availability {
         this.milestone = milestone;
     }
 
-    public static void add(String startTime, String endTime, Users interlocutor, Users user, interview_milestones milestone) {
+    public static void add(OffsetDateTime startTime, OffsetDateTime endTime, Users interlocutor, Users user, interview_milestones milestone) {
         Appointment a = new Appointment(startTime, endTime, interlocutor, user, milestone);
         a.persist();
     }
@@ -67,6 +68,8 @@ public class Appointment extends availability {
     public static void addFromAvailability(availability a, Users candidate, interview_milestones milestone) {
         Appointment appointment = new Appointment(a, candidate, milestone);
         appointment.persist();
+        // Maintenant que le rendez-vous a été pris on supprime la disponibilité qui correspondait
+        availability.find("startDate = ?1 AND endDate =?2", a.startDate, a.endDate).firstResult().delete();
     }
     @Transactional
     public static void addFromAvailability(availability a, String email_interlocutor, Users candidate, interview_milestones milestone) {

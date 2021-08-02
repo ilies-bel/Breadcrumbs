@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Link, useHistory,} from 'react-router-dom';
-
+import { DateTime } from "luxon";
 
 import {HIRING_PROCESS_TITLE, DISPO, RESERVATION, CONFIRM} from "../../constants/routes";
 import {HIRING_DESCRIPTION} from "../../constants/description";
@@ -9,28 +9,42 @@ import {TitleDescriptionSource} from "../Navigation/descriptionContext"
 import { PageDescription } from 'littleComponents';
 
 import ButtonBase from '@material-ui/core/ButtonBase';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import InsertInvitationOutlinedIcon from '@material-ui/icons/InsertInvitationOutlined';
+
 import './hiring.scss';
-import { useGetProcess, useGetMilestone } from 'utils/axios';
+import { useGetProcess, useGetMilestone, useGetMyAppointment } from 'utils/axios';
 import {HelpOutline} from "@material-ui/icons";
 import {useAuthContext} from "components/AuthentificationJwt/context";
 
 const HiringProcess = () => {
     const history = useHistory();
     
-    const [{ data, loading, error }, refetch] = useGetMilestone();
+    const [{ data, loading, error }, executeMilestone] = useGetMilestone();
     const context = useAuthContext();
     
+    const [{ data: appointmentData, loading: appointmentLoading, error: errorAppointment }, executeAppointment ] = useGetMyAppointment(context.token);
+
+    React.useEffect(() => {
+        executeMilestone()
+        executeAppointment().then(() => setInterview(appointmentData))
+    }, [])
+
     
     function setInterview(data) {
-        context.setInterview({milestone_name: data?.milestone_name, type: data?.type.title, description: data?.type.description})
-    }    
+        context.dispatchInterview({type: 'set-interview-data', payload: {
+            interviewType: data?.type.title,
+            description: data?.type.description,
+            onAppointment: appointmentData!=null,
+            startDate: appointmentData?.startDate,
+            endDate: appointmentData?.endDate,
+            interlocutor: `${appointmentData?.interlocutor?.first_name} ${appointmentData?.interlocutor?.last_name}`
+        }})
+    }
 
     const handleButtonClick = (status) => {
-        status !== 'pending' && history.push(`milestone/${process?.milestone_name}`)
+       if( status === 'inProgress' && !appointmentData) history.push(`milestone`)
+       if( status === 'inProgress' && appointmentData ) history.push(CONFIRM);
     }
 
     if (loading) return <CircularProgress />
@@ -46,10 +60,15 @@ const HiringProcess = () => {
                             process?.status=='inProgress' && handleButtonClick(process?.status);
                             process?.status=='inProgress' && setInterview(process)
                             } } >
-                            <div className="buttonTitle">Due to 2{i} november - {process?.status}</div>
+                            <div className="buttonTitle">
+                                { (process?.status==='inProgress' && !appointmentData) && 'Check out availabilities'  }
+                                {
+                                    (process?.status==='inProgress' && appointmentData) && 
+                                    `Your next appointment : ${DateTime.fromISO(appointmentData?.startDate).toLocaleString()}`
+                                }
+                                </div>
 
                                 { process?.milestone_name } -
-
 
                                 { process?.type.title }
 

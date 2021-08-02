@@ -19,12 +19,12 @@ import { useAuthContext } from '../../../AuthentificationJwt/context';
 
 const optionsCalendar = ['Google calendar','Outlook',]
 
-const openCalendarLink = (goo, outl, startTime, endTime, type) => {
+const openCalendarLink = (goo, outl, startTime, endTime, type, location='No location provided') => {
   if(outl) {
     const forOutlookStartTime = DateTime.fromISO(startTime).toISO();
     const forOutlookEndTime = DateTime.fromISO(endTime).toISO();
 
-    window.open(`https://outlook.office.com/calendar/0/deeplink/compose?enddt=${forOutlookEndTime}&location=Ouroffice&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=${forOutlookStartTime}&subject=${type}`);
+    window.open(`https://outlook.office.com/calendar/0/deeplink/compose?enddt=${forOutlookEndTime}&location=${location}&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=${forOutlookStartTime}&subject=${type}`);
   }
   if(goo) {
     const forGoogleStartTime = DateTime.fromISO(startTime).toFormat("yyyyMMdd'T'hhmmss");
@@ -45,6 +45,7 @@ export default function ConfirmationDialogRaw(props) {
   const startTime = context.startDate;
   const endTime = context.endDate;
   const type = context.interviewType;
+  const location = context.location;
   
   const handleChange = (event) => {
     setState({ ...calendarChosen, [event.target.name]: event.target.checked });
@@ -54,8 +55,8 @@ export default function ConfirmationDialogRaw(props) {
     props.onClose()
   };
 
-  const handleOk = (goo, outl, startTime, endTime, type) => {
-    openCalendarLink(goo, outl, startTime, endTime, type);
+  const handleOk = (goo, outl, startTime, endTime, type, location) => {
+    openCalendarLink(goo, outl, startTime, endTime, type, location);
     props.onClose()
   };
 
@@ -82,7 +83,7 @@ export default function ConfirmationDialogRaw(props) {
       <DialogActions>
         <div className='dialogButtons' >
           <Button variant='contained' onClick={props.onClose}>Cancel</Button>
-          <Button color='primary' variant='contained' onClick={() => handleOk(calendarChosen.google, calendarChosen.outlook, startTime, endTime, type) } startIcon={<EventAvailableOutlined />} >
+          <Button color='primary' variant='contained' onClick={() => handleOk(calendarChosen.google, calendarChosen.outlook, startTime, endTime, type, location) } startIcon={<EventAvailableOutlined />} >
             Confirm
           </Button>
         </div>

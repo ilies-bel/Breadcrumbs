@@ -14,6 +14,7 @@ export const AuthContext = React.createContext({
     interviewType: null,
     description: null,
     location: null,
+    onAppointment: null,
 
     dispatchUserData: () => {},
     setAppointment: () => {},
@@ -32,7 +33,9 @@ export const useAuthContext = () => {
  * @returns 
  */
 export default function BigProvider(props) {
-    const { token, user, lastName, dispatchUser, linkedinCode, picture, setLinkedinCode, startDate, endDate, setAppointment, interlocutor, interviewDescription, interviewType, setInterview } = useAuthContextData();
+    const { token, user, lastName, dispatchUser, linkedinCode, picture, setLinkedinCode,
+        startDate, endDate, setAppointment,
+        interlocutor, interviewDescription, interviewType, location, setInterview, dispatchInterview } = useAuthContextData();
 
     return (
         <AuthContext.Provider value={ {
@@ -46,7 +49,8 @@ export default function BigProvider(props) {
             interlocutor,
             interviewType: interviewType,
             description: interviewDescription,
-            dispatchUserData: dispatchUser, setAppointment: setAppointment, setInterview: setInterview } } >
+            location: location,
+            dispatchUserData: dispatchUser, setAppointment: setAppointment, setInterview: setInterview, dispatchInterview: dispatchInterview } } >
                 { props.children }
         </AuthContext.Provider>
     )
@@ -58,14 +62,25 @@ export const useAuthContextData = () => {
     const [ lastName, setLast ] = useState(window.localStorage.getItem("last_name"));
     const [ picture, setPicture ] = useState(window.localStorage.getItem("picture_link"));
     const [linkedinCode, setLinkedinCode ] = useState(window.localStorage.getItem("link_code"))
-    const [ state, dispatchUser ] = useReducer(userDataReducer, AuthContext)
+    const [ state, dispatchUser ] = useReducer(userDataReducer)
     
     const [ endDate, setEnd] = useState();
     const [ startDate, setStart] = useState();
+    const [location, setLocation ] = useState();
 
     const [ interlocutor, setInterlocutor ] = useState();
     const [ interviewType, setType ] = useState();
     const [ interviewDescription, setDescription ] = useState();
+    const [ onAppointment, setOnAppointment ] = useState();
+
+    const initialInterview = {
+        interlocutor: null,
+        interviewType: null,
+        interviewDescription: null,
+        onAppointment: null
+    }
+
+    const [ interviewState, dispatchInterview ] = useReducer(interviewReducer);
 
     function setAppointment(startDate, endDate) {
         setEnd(endDate);setStart(startDate);
@@ -106,11 +121,32 @@ export const useAuthContextData = () => {
         console.log(description);console.log("/description");
         description != "Votre prochain rendez-vous" && setDescription(description);
     }
+
+    function interviewReducer(interviewState, action) {
+        let payload = action.payload;
+        switch (action.type) {
+            case 'set-type':
+                return setType(action.payload)
+            case 'set-interlocutor-name':
+                return setInterlocutor(action.payload)
+            case 'set-interview-data' :
+                {
+                    setStart(payload.startDate);
+                    setEnd(payload.endDate);
+                    
+                    setType(payload.interviewType)
+                    setInterlocutor(payload.interlocutor)
+                    setDescription(payload.description);
+                    setOnAppointment(payload.count);
+                    setLocation(payload.location)
+                }
+            }                
+    }
     
     return { token, user, lastName, linkedinCode, picture,
         setLinkedinCode, dispatchUser,
-        interviewType, interviewDescription, interlocutor,
-        setInterview,
+        interviewType, interviewDescription, interlocutor, onAppointment, location,
+        setInterview, dispatchInterview,
         endDate, setEnd,
         startDate, setStart, 
         setAppointment,

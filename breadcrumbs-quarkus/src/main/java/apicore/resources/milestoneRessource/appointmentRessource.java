@@ -1,4 +1,5 @@
 package apicore.resources.milestoneRessource;
+import apicore.entit.company.Entreprise;
 import apicore.entit.milestone.availability.Appointment;
 import apicore.entit.milestone.availability.availability;
 import apicore.entit.milestone.interview_milestones;
@@ -81,6 +82,48 @@ public class appointmentRessource {
         }
 
         return Response.ok("New appointment added : "+available.startDate+" "+available.endDate+" with "+interlocutor.first_name).build();
+    }
+
+    @GET
+    @Path("/myAppointment") @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"candidate", "collaborator"})
+    public Response getMyAppointment() {
+        String email = token.getClaim(Claims.upn);
+        Users user = Users.findByEmail(email);
+        Appointment a = new Appointment() ;
+        if(user.role.equals("candidate")) {
+            a = Appointment.find("candidate", user).firstResult();
+        }
+        else if(user.role.equals("collaborator")) {
+            a = Appointment.find("interlocutor", user).firstResult();
+        }
+
+        return Response.ok(a).build();
+    }
+
+    @DELETE
+    @Path("/cancel") @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"candidate", "collaborator"})
+    @Transactional
+    public Response cancel(Appointment appointment) {
+        String email = token.getClaim(Claims.upn);
+        Users user = Users.findByEmail(email);
+        String user_role = null;
+
+        if(user.role.equals("candidate")) {
+            user_role="candidate";
+        }
+        else if(user.role.equals("collaborator")) {
+            user_role="interlocutor";
+        }
+
+        Appointment a = Appointment.find("startDate=?1 AND endDate=?2 AND "+user_role+"=?3", appointment.startDate, appointment.endDate, user).firstResult();
+
+        availability availabe = new availability(a.startDate, a.endDate, a.interlocutor, a.location);
+        availabe.persist();
+
+        a.delete();
+        return Response.ok("Appointment cancelled").build();
     }
 
 }

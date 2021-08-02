@@ -28,8 +28,12 @@ Il faut aussi s'assurer que le serveur ruby accepte les requêtes CORS, car il e
 
 ### API Quarkus
 Il faut faire un build du projet quarkus avant de son image docker.
-Pour cela il faut se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
+1. Dans le fichier application.properties (.\src\main\resources\application.properties) :
+    - Ajouter ou décommenter cette configuration pour que quarkus se connecte au conteneur docker de la base de données postgres.
+        - > quarkus.datasource.jdbc.url=jdbc\:postgresql\://breadcrumbs-api-core-database\:5432/Breadcrumbs_api_core_development
+2. Se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
 - >./mvnw package
+
 
 ## Lancer le projet traefik
 1. Modifier les variables d'environnements comme indiqués ci-dessus

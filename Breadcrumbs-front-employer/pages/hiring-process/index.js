@@ -100,7 +100,7 @@ export default function Hiring() {
                     control={<Switch size="small" checked={true} onChange={toggleChecked} />}
                     label={"Ask confirmation before deleting "}
                 />
-                {error && <div>There was an error.</div>}
+                {error && <strong>Unable to reach the server</strong>}
                 {!error && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} /> </div>)}
             </div>            
         </>

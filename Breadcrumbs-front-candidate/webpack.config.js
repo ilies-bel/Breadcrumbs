@@ -154,9 +154,6 @@ module.exports = (env, argv) => {
                 new ForkTsCheckerWebpackPlugin({
                     tsconfig: path.resolve(__dirname, './src/tsconfig.json'),
                 }),
-                new InjectManifest({
-                    swSrc: path.resolve(__dirname, './service-worker/serviceWorkerWorkbox.ts'),
-                }),
             ]),
 
         ],

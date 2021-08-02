@@ -36,7 +36,7 @@ export default function DateItem(props) {
 
         await execute().then(res => context.setAppointment(props.startDate, props.endDate));
 
-        history.push(CONFIRM)
+        history.replace(CONFIRM)
     }
     if (!(props.startDate && props.endDate)) {
         return (
@@ -58,14 +58,18 @@ export default function DateItem(props) {
                     <AccordionDetails className="appointmentDetails">
                         <PageDescription>
                             <div>
-                            with {props?.interlocutor?.first_name} {props?.interlocutor?.last_name}
-                            </div>
-
-                            <div>
                             You’re about to book an appointment for your { context.interviewType } on {day} from {startTime}.<br/>
+                            <div>
+                            with <strong> {props?.interlocutor?.first_name} {props?.interlocutor?.last_name} </strong>
+                            </div>
+                            { props?.location &&
+                            <div>
+                                in <strong> { props.location }</strong>
+                            </div> }
 
                             Do you confirm this time slot?
                             </div>
+                            
 
                             <FlashyButton onClick={() => {
                                 handleConfirm(props.startDate, props.endDate);

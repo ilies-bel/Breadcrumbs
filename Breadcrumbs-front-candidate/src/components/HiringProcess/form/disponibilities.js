@@ -23,8 +23,12 @@ const useStyles = makeStyles(theme => ({
 
 
 const SelectDate = () => {
-    const [{ data, loading, error }] = useGetDisponibilities();
+    const [{ data, loading, error }, execute] = useGetDisponibilities();
     const context = useAuthContext();
+
+    React.useEffect(() => {
+        execute()
+    }, [])
 
     if (loading) return <CircularProgress />
     if(error) return <strong>Error. No data found</strong>
@@ -43,6 +47,7 @@ const SelectDate = () => {
                     startDate={avalability?.startDate}
                     endDate={avalability?.endDate}
                     interlocutor={avalability?.interlocutor}
+                    location={avalability?.location}
                     />
                 )
             }

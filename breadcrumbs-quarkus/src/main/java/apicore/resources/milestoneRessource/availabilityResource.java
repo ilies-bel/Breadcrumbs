@@ -63,15 +63,9 @@ public class availabilityResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAvailabilities() {
-        ObjectMapper mapper = new ObjectMapper();
         List<availability> avaiList = availability.getAll();
-        try {
-            String response = mapper.writeValueAsString(avaiList);
-            return Response.ok(response).build();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return Response.ok("Parsing Error").build();
-        }
+
+        return Response.ok(avaiList).build();
     }
     @GET
     @Path("/andAppointments")

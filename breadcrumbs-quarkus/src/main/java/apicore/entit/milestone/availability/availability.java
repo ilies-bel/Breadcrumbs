@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,8 +20,8 @@ public class availability extends PanacheEntityBase {
 
     public static final String SLOT_TYPE = "Availability";
 
-    public String startDate;
-    public String endDate;
+    public OffsetDateTime startDate;
+    public OffsetDateTime endDate;
     public String location;
 
     @JsonAlias({"email", "email_interlocutor", "interviewer_email"})
@@ -35,25 +36,25 @@ public class availability extends PanacheEntityBase {
     public availability() {}
 
     /** Construire une availability à partir d'un objet Users */
-    public availability(String startTime, String endTime, Users collaborator, String location) {
+    public availability(OffsetDateTime startTime, OffsetDateTime endTime, Users collaborator, String location) {
         this(startTime, endTime);
         this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
         this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "availability_constructor_nobody@empty.fr");
         this.location = location;
     }
-    public availability(String startTime, String endTime, Users collaborator) {
+    public availability(OffsetDateTime startTime, OffsetDateTime endTime, Users collaborator) {
         this(startTime, endTime);
         this.interlocutor = Objects.requireNonNull(collaborator, "No interlocutor provided.");;
         this.interlocutor_email = Objects.requireNonNullElseGet(collaborator.email, () -> "availability_constructor_nobody@empty.fr");
     }
     /** Construire une availability à partir de l'adresse email d'un collaborateur */
-    public availability(String startTime, String endTime, String email) {
+    public availability(OffsetDateTime startTime, OffsetDateTime endTime, String email) {
         this(startTime, endTime);
         Users interlocutor = Users.findByEmail(email);
         this.interlocutor = Objects.requireNonNull(interlocutor, "No users found with this email address.");
         this.interlocutor_email = email;
     }
-    protected availability(String startTime, String endTime) {
+    protected availability(OffsetDateTime startTime, OffsetDateTime endTime) {
         this.startDate = startTime;
         this.endDate = endTime;
         this.type = SLOT_TYPE;
@@ -63,14 +64,14 @@ public class availability extends PanacheEntityBase {
      * On filtre par SLOT_TYPE pour ne pas retourner les appointments
      * */
     public static List<availability> getAll() {
-        return availability.list("type", SLOT_TYPE);
+        return availability.list("type=?1 ORDER BY startDate", SLOT_TYPE);
     }
     /** Ajoute une availability dans la table de la base de données */
-    public static void add(String startTime, String endTime, Users user) {
+    public static void add(OffsetDateTime startTime, OffsetDateTime endTime, Users user) {
         availability a = new availability(startTime, endTime, user);
         a.persist();
     }
-    public static void add(String startTime, String endTime, String email) {
+    public static void add(OffsetDateTime startTime, OffsetDateTime endTime, String email) {
         availability a = new availability(startTime, endTime, email);
         a.persist();
     }

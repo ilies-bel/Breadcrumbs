@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [ emailValue, setEmail ] = useState("");
   const [ passValue, setPass ] = useState();
   const [ loading, setLoading ] = useState(false);
+
   const auth_url = process.env.NEXT_PUBLIC_AUTH_URL;
   const context = useAuthContext();
 
@@ -48,9 +49,11 @@ export default function LoginPage() {
         <div>
             { loading && <LinearProgress /> }
             <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='email adress' aria-label='email' value={emailValue} onChange={handleChange} />
-                <input type='password' placeholder='password' aria-label='password' onChange={handleChange} />
-                <button type="submit">Submit</button>
+                <input type='text' placeholder='email adress' aria-label='email' value={emailValue} onChange={handleChange}
+                        className="focus:ring-royalblue focus:border-royalblue block w-full h-12 p-7 sm:text-sm border-gray-300 rounded-md" />
+                <input type='password' placeholder='password' aria-label='password' onChange={handleChange}
+                        className="focus:ring-royalblue focus:border-royalblue block w-full h-12 p-7 sm:text-sm border-gray-300 rounded-md" />
+                <button type="submit" className="inline rounded-md shadow text-white bg-royalblue p-2 ml-20" >Submit</button>
             </form>
         </div>
             )

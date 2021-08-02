@@ -34,6 +34,7 @@ public class GenerateToken {
                         .upn(email)
                         .audience(role.equals("candidate") ? "App_PWA_Candidate" : "APP_EMPLOYER")
                         .claim("name", name!=null ? name : "I have no name")
+                        .claim("recruiterCompany", "Breadcrumbs")//Nom de l'entreprise
                         .groups(role)
                         .expiresIn(EXPIRATION_DELAY)
                         .sign();

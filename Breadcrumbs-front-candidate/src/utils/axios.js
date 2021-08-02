@@ -8,20 +8,21 @@ const AMBASSADOR = process.env.AMBASSADOR_API;
 const PROCESS = process.env.PROCESS_API
 const MILESTONE = process.env.PROCESS_MILESTONE_API
 const APPOINTMENT = process.env.APPOINTMENT_API
+const MY_APPOINTMENT = process.env.MY_APPOINTMENT
 const INTERVIEW_TYPE = process.env.INTERVIEW_TYPE;
 const CANDIDATE_API_URL = process.env.CANDIDATE_API_URL
 
 const TOKEN_KEY = process.env.TOKEN_LOCAL_STORAGE_KEY;
 const storedToken = window.localStorage.getItem(TOKEN_KEY)
 
-export const useAPI = (path='', header={}) => {
+export const useAPI = (path='', header={}, manual=false) => {
     return useAxios({
         baseURL: BASE_API_URL,
         url: path,
         headers: header
     })
 }
-export const useSecureAPI = (path='', header={}) => {
+export const useSecureAPI = ({path='', header={}, manual=false}) => {
     header.Authorization = `Bearer ${storedToken}`;
     return useAxios({
         baseURL: BASE_API_URL,
@@ -41,7 +42,7 @@ export const useGetAccount = () => {
 }
 
 export const useGetDisponibilities = () => {
-    return useAPI(AVAILABILITY)
+    return useAPI(AVAILABILITY, {}, true)
 }
 export const useGetTips = () => {
     return useAPI(tips);
@@ -61,7 +62,7 @@ export const useInterviewType = (id='') => {
 
 
 //TODO: Fonctions à compléter en fonctions de l'API mis en place
-export const useAppointmentAPI = (path='', token='', data={}, method='get', manual=false) => {
+export const useAppointmentAPI = ({path='', token='', data={}, method='get', manual=false}) => {
     return useAxios({
         baseURL: `${BASE_API_URL}`,
         method: method,
@@ -74,14 +75,14 @@ export const useAppointmentAPI = (path='', token='', data={}, method='get', manu
 }
 
 export const useCreateAppointment = (data={}, token) => {
-    return useAppointmentAPI('add', token,data, 'post', true)
+    return useAppointmentAPI({path: 'add', token: token, data: data, method: 'post', manual: true})
 }
-export const useEditAppointment = (id, data={}) => {
-    return useAppointmentAPI(`/${id}`, data, 'put')
+export const useGetMyAppointment = (token) => {
+    return useAppointmentAPI({path: MY_APPOINTMENT, token: token, manual: true});
 }
 export const useMoveAppointment = (id, data={}) => {
     return useAppointmentAPI(`/${id}`, data, 'put')
 }
-export const useCancelAppointment = (id, data={}) => {
-    return useAppointmentAPI(`/${id}`, data, 'delete')
+export const useCancelAppointment = (token, data) => {
+    return useAppointmentAPI({path: `cancel`, token: token, data: data, method: 'delete', manual: true})
 }

@@ -36,7 +36,7 @@ public class Users extends PanacheEntityBase {
     public String role;
     public String phone;
 
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
     @OneToMany @JsonIgnore
     private List<interview_process> processes;
@@ -71,7 +71,6 @@ public class Users extends PanacheEntityBase {
         Users user = new Users();
         user.first_name = first_name;
         user.last_name = last_name;
-        //TODO: Crypter le password avant de l'ajouter dans la base données
         user.password = password;
         user.email = email;
         user.role = role;
@@ -86,7 +85,6 @@ public class Users extends PanacheEntityBase {
     }
     public static void add(String email, String password) {
         Users user = new Users();
-        //String cryptedPassword = BcryptUtil.bcryptHash(password);
         user.add(email, password, "candidate");
     }
     public static String findRoleByQuery(String queryParam, String value) {

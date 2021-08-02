@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.OffsetDateTime;
 
 @QuarkusMain
 public class appInitializer {
@@ -45,15 +46,15 @@ public class appInitializer {
 
     @Transactional
     public static void seedAvalability() {
-        availability a = new availability("2021-08-30T09:43:59Z", "2021-08-30T10:00:59Z", "collaborat@breadcrumbs.com");
+        availability a = new availability(OffsetDateTime.parse("2021-08-30T09:43:59Z"), OffsetDateTime.parse("2021-08-30T10:00:59Z"), "collaborat@breadcrumbs.com");
         a.persist();
-        a = new availability("2021-08-30T13:30:59Z", "2021-08-30T14:30:59Z", "collaborator@breadcrumbs.com");
+        a = new availability(OffsetDateTime.parse("2021-08-30T13:30:59Z"), OffsetDateTime.parse("2021-08-30T14:30:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("2021-08-30T15:00:59Z", "2021-10-30T16:00:59Z", "collaborator@breadcrumbs.com");
+        a = new availability(OffsetDateTime.parse("2021-08-30T15:00:59Z"), OffsetDateTime.parse("2021-10-30T16:00:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("2021-09-01T10:00:59Z", "2021-09-01T15:00:59Z", "another.collaborator@breadcrumbs.com");
+        a = new availability(OffsetDateTime.parse("2021-09-01T10:00:59Z"), OffsetDateTime.parse("2021-09-01T15:00:59Z"), "another.collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability("2021-09-02T08:00:59Z", "2021-09-02T12:00:59Z", "another.collaborator@breadcrumbs.com");
+        a = new availability(OffsetDateTime.parse("2021-09-02T08:00:59Z"), OffsetDateTime.parse("2021-09-02T12:00:59Z"), "another.collaborator@breadcrumbs.com");
         a.persist();
     }
     @Transactional
