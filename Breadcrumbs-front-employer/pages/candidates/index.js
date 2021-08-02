@@ -61,6 +61,7 @@ const Candidates = () => {
                                             </TdRow>
                                             <TdStatus />              
                                             <TdRow className="text-sm text-gray-500">{person.role}</TdRow>
+                                            <TdRow className="text-sm text-gray-500">{person?.position}</TdRow>
                                         </tr>
                                     ))}
                                 </tbody>

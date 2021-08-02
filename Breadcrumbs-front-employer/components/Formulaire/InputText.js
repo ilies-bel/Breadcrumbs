@@ -4,7 +4,7 @@ import React, { useState} from 'react';
 export default function InputText(props) {
 
     function isValidetype(type) {
-        if( (type===null) || (type==='text')|| (type==='email') || (type==='password')  ) {
+        if( (type===null) || (type==='text')|| (type==='email') || (type==='password') || (type==='file')  ) {
             return true
         }
         else {

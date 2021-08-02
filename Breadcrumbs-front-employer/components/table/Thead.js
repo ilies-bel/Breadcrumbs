@@ -33,8 +33,9 @@ export default function DefaultThead(props) {
                                     >
                                         Role
                                     </th>
-                                    <th scope="col" className="relative px-6 py-3">
-                                        <span className="sr-only">Generate link</span>
+                                    <th scope="col"
+                                    className="relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <span>position applied to</span>
                                     </th>
                                 </tr>
                                 </thead>
