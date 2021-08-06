@@ -10,9 +10,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const style = {
     calendar: {
-        width: "800px",
-        height: "800px",
         resize: "both",
+        borderStyle: "solid",
+        borderColor: "royalblue",
+        borderWidth: "2px",
     },
     form: {
         display: "inline-block"
@@ -77,7 +78,6 @@ export default function Hiring() {
         fetchData(context.token).then((res) => {
             seterror(null)
             setRes(res)
-            console.log(res[0]?.startDate)
             setLoading(false);
           }).catch((e) => {
               seterror(true);setLoading(false);
@@ -106,12 +106,14 @@ export default function Hiring() {
                 <FormControlLabel
                     control={<Switch size="small" checked={true} onChange={toggleChecked} />}
                     label={"Ask confirmation before deleting "}
+                    title="Fonctionnalité non disponible"
                 />
                 <br/>
-            { loading && <CircularProgress/> }
-
-                {error && <strong>Unable to reach the server</strong>}
-                {!error && !loading && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} loading={loading} /> </div>)}
+                {error && <strong>Please log in.</strong>}
+                <div style={style.calendar}>
+                { loading && <CircularProgress/> }
+                {!error && !loading && resList && (  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} loading={loading} /> )}
+                </div>
             </div>            
         </>
     );

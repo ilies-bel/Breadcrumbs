@@ -14,10 +14,12 @@ import {
   Resources,
   AppointmentForm,
   ConfirmationDialog,
+  ViewSwitcher,
+  MonthView,
   EditRecurrenceMenu,
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import {AuthContext} from "utils/context";
 import { calendarData } from "utils/calendarData"
@@ -159,24 +161,27 @@ const Appointment = ({
     render() {
       const { currentDate, data, resources, addedAppointment, appointmentChanges } = this.state;
       const onEdit = this.props.onEdit;
+      if(this.props.loading) return <CircularProgress/>
   if(data){
       return (
         <Paper>
           
           <Scheduler
             data={data}
-            height={700}
+            height={1200}
           >
             <ViewState
               currentDate={currentDate}
               onCurrentDateChange={this.currentDateChange}
             />
             <WeekView
-                startDayHour={9}
-                endDayHour={18}
+                startDayHour={8}
+                endDayHour={19}
                 timeTableCellComponent={TimeTableCell}
             />
+            <MonthView />
             <Toolbar />
+            <ViewSwitcher />
             <DateNavigator />
             <TodayButton />
 

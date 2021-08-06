@@ -87,4 +87,37 @@ public class LoginRessource {
 
         return Response.ok(response.body()).build();
     }
+
+    @Path("/mail")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
+    public Response mailauth(CodeLinkedin data) throws URISyntaxException, IOException, InterruptedException {
+        System.out.println(data.code); System.out.println(data.redirect_uri);
+        URI uri = new URI("https://api.sendinblue.com/v3/smtp/email" );
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(HttpRequest.BodyPublishers.ofString("{ \n" +
+                "# Define the campaign settings \n" +
+                "\"name\":\"Campaign sent via the API\", \n" +
+                "\"subject\":\"My subject\", \n" +
+                "\"sender\": { \"name\": \"From name\", \"email\":\"jukiture@gmail.com\" }, \n" +
+                "\"type\": \"classic\", \n" +
+                "# Content that will be sent \n" +
+                "\"htmlContent\": \"Congratulations! You successfully sent this example campaign via the Sendinblue API.\", \n" +
+                "# Select the recipients\n" +
+                "\"recipients\": { \"listIds\": [2,7] }, \n" +
+                "# Schedule the sending in one hour\n" +
+                "\"scheduledAt\": \"2018-01-01 00:00:01\", \n" +
+                "}"))
+                .header("Content-Type", "application/json")
+                .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+                .header("Access-Control-Allow-Origin", "*")
+                .header("api-key", "Xwkg7YyJTC48mBZD")
+                .build();
+
+
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        return Response.ok(response.body()).build();
+    }
 }

@@ -62,9 +62,9 @@ public class Users extends PanacheEntityBase {
         Users.add("tenor.dubarreau@breadcrumbs.com", gura_gura, "supervisor", "Tenor", "Dubarrea");
         Users.add("collaborat@breadcrumbs.com", beau_rat, "collaborator", "Collabo", "Rat");
         Users.add("sengoku.le.bouddha@navy.gov", beau_rat, "collaborator", "Sengoku", "Bouddha");
-        Users.add("bois.hêtre@foret.com", gura_gura, "candidate", "Tronc", "Epais", "0612345678");
-        Users.add("marco.phenix@foret.com", gura_gura, "candidate", "Marco", "LePhénix", "0612345679");
-        Users.add("thomasx@foret.com", gura_gura, "candidate", "Thomas", "Dumont", "0612345680");
+        Users.add("bois.hêtre@breadcrumbs.com", gura_gura, "candidate", "Tronc", "Epais", "0612345678");
+        Users.add("marco.phenix@breadcrumbs.com", gura_gura, "candidate", "Marco", "LePhénix", "0612345679");
+        Users.add("thomasx@breadcrumbs.com", gura_gura, "candidate", "Thomas", "Dumont", "0612345680");
     }
 
     public Users() {}

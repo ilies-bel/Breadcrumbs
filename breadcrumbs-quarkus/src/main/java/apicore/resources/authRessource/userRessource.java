@@ -3,7 +3,6 @@ package apicore.resources.authRessource;
 import apicore.entit.company.Entreprise;
 import apicore.entit.milestone.interview_process;
 import apicore.entit.user.Users;
-import io.quarkus.deployment.annotations.Consume;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,6 +12,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
+import io.smallrye.common.annotation.Blocking;
 
 
 @Path("/users")
@@ -62,4 +65,19 @@ public class userRessource {
             return Response.ok("Please fill all fields").status(400).build();
         }
     }
+
+    @Inject Mailer mailer;
+
+    @Path("/mail")
+    @POST
+    @Blocking
+    public void sendEmail() {
+        mailer.send(
+                Mail.withText("jukiture@gmail.com",
+                        "Ahoy from Quarkus",
+                        "A simple email sent from a Quarkus application."
+                )
+        );
+    }
+
 }

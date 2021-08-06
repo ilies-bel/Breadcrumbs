@@ -2,6 +2,7 @@ import React from 'react';
 import Brand from '../Brand';
 import {SETTINGS, SETTINGS_LABEL} from "../../constants/routes";
 import Link from "next/link";
+import { useRouter } from 'next/router'
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import {AppBar, Avatar, Button, withStyles} from "@material-ui/core";
@@ -10,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios'
 import Label from '../Label';
+import {Settings, Search, Bell } from 'tabler-icons-react'
 
 import '@/styles/navigation.module.css';
 import {AuthContext, useAuthContext} from "../../utils/context";
@@ -43,12 +45,17 @@ const logOut = () => {
     window.localStorage.removeItem("user");
     context.setUserData({token: null});
 }
-const ProfileItem = (props) => {
+const ForwardItem = React.forwardRef((props, ref) => {return (<a ref={ref} href={props.href}> {props.children} </a>)})
+const ProfileItem = (props, ref) => {
     const data = props.data ?? null;
     const context = useAuthContext();
+    const router = useRouter();
     return (
         <div className="profile">
             <Label>{data && data.name?.[0]}</Label>
+            <Search color="royalblue" />
+            <Settings color="royalblue" onClick={() => router.push(SETTINGS)} />
+            <Bell color="royalblue" />
             {context.token ?
                 <Button onClick={() => logOut()} title="Sign out" ><Avatar /></Button> :
                 <Button onClick={()=>{}} title="Sign in"> <Avatar/> </Button>
@@ -57,6 +64,7 @@ const ProfileItem = (props) => {
         </div>
     )
 }
+
 class Header extends React.Component {
     constructor(props) {
         super(props);
@@ -78,13 +86,12 @@ class Header extends React.Component {
 
         return (
             <header>
-                <AppBar position="fixed" >
+                <AppBar position="fixed" color="transparent" >
                     <Toolbar >
                         <Brand/>
                         <Typography variant="h6" noWrap>
                             {this.props.children}
-                        </Typography>
-                        <Link href={SETTINGS}>{SETTINGS_LABEL}</Link>
+                        </Typography>                        
                         <ProfileItem data={dataUser}/>
                     </Toolbar>
                 </AppBar>

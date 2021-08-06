@@ -1,7 +1,6 @@
 package apicore.utils;
 
 import apicore.entit.user.Users;
-import com.google.common.primitives.UnsignedInteger;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import io.smallrye.jwt.util.ResourceUtils;

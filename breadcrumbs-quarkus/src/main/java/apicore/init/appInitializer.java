@@ -50,7 +50,7 @@ public class appInitializer {
         a.persist();
         a = new availability(OffsetDateTime.parse("2021-08-30T13:30:59Z"), OffsetDateTime.parse("2021-08-30T14:30:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
-        a = new availability(OffsetDateTime.parse("2021-08-30T15:00:59Z"), OffsetDateTime.parse("2021-10-30T16:00:59Z"), "collaborator@breadcrumbs.com");
+        a = new availability(OffsetDateTime.parse("2021-08-30T15:00:59Z"), OffsetDateTime.parse("2021-08-30T16:00:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
         a = new availability(OffsetDateTime.parse("2021-09-01T10:00:59Z"), OffsetDateTime.parse("2021-09-01T15:00:59Z"), "another.collaborator@breadcrumbs.com");
         a.persist();

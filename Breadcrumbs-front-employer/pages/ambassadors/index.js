@@ -36,7 +36,7 @@ export default function Ambassadors() {
 
     function onSubmit(e) {
         e.preventDefault();
-        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/mail";
+        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/create";
         setLoading(true);
         axios.post(axios_url, {
             first_name: firstName,
@@ -62,7 +62,7 @@ export default function Ambassadors() {
     }
     function onSubmit2(e) {
         e.preventDefault();
-        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/mail";
+        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/create";
         axios.post(axios_url).then(res => console.log(res)).catch(e=> console.error(e))
     }
     function handleChange(event) {

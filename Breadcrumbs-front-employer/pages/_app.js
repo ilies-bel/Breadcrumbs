@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Header from '../components/Layout/Header';
+
 import BottomNav from '../components/Layout/BottomNavigation';
 
 import { Provider, getSession } from 'next-auth/client';
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     
     <div className="container">
     <BottomNav/>
-        <Header />
+        <Header/>
         <main>
             <AuthProvider>
                 <RestrictedPages children={<Component {...pageProps} />} />
