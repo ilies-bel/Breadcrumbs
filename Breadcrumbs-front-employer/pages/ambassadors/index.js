@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
 import Head from 'next/head';
-import Label from '../../components/Label';
+import Label from 'components/Label';
 import axios from 'axios';
 import Form from 'components/Formulaire/Form';
 import InputText from 'components/Formulaire/InputText';
 import InputEmail from 'components/Formulaire/InputEmail';
 import ButtonSubmit from 'components/Formulaire/ButtonSubmit';
-import { useAuthContext } from '../../utils/context';
+import { useAuthContext } from 'utils/context';
 
 const useEventSource = (url) => {
     const [data, updateData] = useState(null);
@@ -36,7 +36,7 @@ export default function Ambassadors() {
 
     function onSubmit(e) {
         e.preventDefault();
-        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/create/ambassador";
+        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/mail";
         setLoading(true);
         axios.post(axios_url, {
             first_name: firstName,
@@ -60,6 +60,11 @@ export default function Ambassadors() {
             setError(e)
         })
     }
+    function onSubmit2(e) {
+        e.preventDefault();
+        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/mail";
+        axios.post(axios_url).then(res => console.log(res)).catch(e=> console.error(e))
+    }
     function handleChange(event) {
         const target = event.target;
         const ariaLabel = target.ariaLabel;
@@ -78,13 +83,13 @@ export default function Ambassadors() {
             <Label>{AMBASSADORS_DESCRIPTION}</Label>
             <br/>
             
-            <Form onSubmit={onSubmit} onLoading={loading} title="Create a new ambassador">
+            <Form onSubmit={onSubmit2} onLoading={loading} title="Create a new ambassador">
             <Label>Ce Formulaire ne fonctionne pas</Label>
 
             { error && error?.status }
-                <InputText required ariaLabel='first name' name="dkkd" placeholder='first name' onChange={ handleChange } />
+                <InputText ariaLabel='first name' name="dkkd" placeholder='first name' onChange={ handleChange } />
                 <InputText ariaLabel='last name' placeholder='last name' onChange={ handleChange } />
-                <InputEmail required ariaLabel='email address' placeholder='email address' onChange={ handleChange } />
+                <InputEmail  ariaLabel='email address' placeholder='email address' onChange={ handleChange } />
                 <InputText ariaLabel="phone number" placeholder='phone number' onChange={ handleChange } />
                 
                 <InputText ariaLabel='Job title' placeholder='Job title' onChange={ handleChange } />

@@ -3,9 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Calendar from '@/components/Calendar';
 import axios from 'axios';
 import { Switch, FormControlLabel } from '@material-ui/core';
-import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
-import { useSession } from 'next-auth/client';
-import { useAuthContext } from '../../utils/context';
+
+import { useAuthContext } from 'utils/context';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
@@ -21,7 +20,6 @@ const style = {
 }
 
 const URL_SOURCE = process.env.NEXT_PUBLIC_SOURCE_URL
-
 
 const useEventSource = (url) => {
     let [data, updateData] = useState([]);
@@ -63,12 +61,15 @@ export default function Hiring() {
     const [ resList, setRes ] = useState();
     const [ error, seterror ] = useState(null);
     const [ loading, setLoading ] = useState(false)
+    const [ toggling, setToggling ] = useState(false)
 
     const context = useAuthContext();
 
-    const toggleChecked = () => {
+    const toggleChecked = async() => {
+        await setToggling(true);
         setChecked((prev) => !prev);
         setText("Here you can edit your availabilities.");
+        setToggling(false);
       }
 
       useEffect(() => {
@@ -76,11 +77,12 @@ export default function Hiring() {
         fetchData(context.token).then((res) => {
             seterror(null)
             setRes(res)
+            console.log(res[0]?.startDate)
             setLoading(false);
           }).catch((e) => {
               seterror(true);setLoading(false);
               throw "axios_url"})
-      }, [])
+      }, [toggling])
 
 
     const confirmChange = () => {
@@ -109,7 +111,7 @@ export default function Hiring() {
             { loading && <CircularProgress/> }
 
                 {error && <strong>Unable to reach the server</strong>}
-                {!error && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} /> </div>)}
+                {!error && !loading && resList && (<div style={style.calendar}>  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} loading={loading} /> </div>)}
             </div>            
         </>
     );

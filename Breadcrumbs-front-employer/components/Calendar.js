@@ -19,8 +19,8 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import axios from 'axios';
-import {AuthContext} from "../utils/context";
-import { calendarData } from "../utils/calendarData"
+import {AuthContext} from "utils/context";
+import { calendarData } from "utils/calendarData"
 
 const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
 
@@ -76,7 +76,7 @@ const Appointment = ({
       this.state = {
         data: this.props.resList,
         sessionData: null,
-        currentDate: this.props.resList[2].startDate,
+        currentDate: this.props.resList[0].startDate,
         addedAppointment: {},
         appointmentChanges: {},
         isShiftPressed: false,
