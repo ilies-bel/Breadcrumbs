@@ -1,17 +1,12 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 
-import {withAuthorization, withEmailVerification} from '../AuthentificationFirebase/Session';
-import * as ROUTES from '../../constants/routes';
-import SchoolOutlinedIcon from '@material-ui/icons/SchoolOutlined';
-import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import styles from './navigation.scss'
+import * as ROUTES from 'constants/routes';
 
-import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
-import {BottomNavigation, BottomNavigationAction, makeStyles} from "@material-ui/core";
-import {compose} from "recompose";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import {makeStyles} from "@material-ui/core/styles";
+
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import {Building, ClipboardList, InfoCircle, Social, School} from 'tabler-icons-react';
 

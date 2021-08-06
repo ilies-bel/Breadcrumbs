@@ -47,7 +47,7 @@ const ConfirmPage = () => {
                     <div>with {interlocutor} </div>
                 </PageDescription>
 
- 
+
             <SpacingVertical/>
 
             {
@@ -65,7 +65,7 @@ const ConfirmPage = () => {
 
             <SpacingVertical/>
 
-            <a onClick={() => history.goBack() } > {'<'} Back to home screen </a>
+            <a onClick={() => history.replace(`${HIRING_PROCESS}/hiring`) } > {'<'} Back to home screen </a>
             <SpacingVertical/>
             { dataCancel && <strong>{dataCancel}</strong>}
             { !dataCancel && <button onClick={() => cancel()} >Cancel this appointment</button>}

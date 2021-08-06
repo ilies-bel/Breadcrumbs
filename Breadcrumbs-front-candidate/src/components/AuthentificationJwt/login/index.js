@@ -27,7 +27,7 @@ const LoginPage = () => {
                 <Route path={`${url}/linkedin`} component={LinkedInPopUp} /> 
             </Switch>
             <div>
-                <img src="/Frame.svg" />
+                <img className='frame' src="/Frame.svg" />
             </div>
         </div>
     )
