@@ -28,7 +28,7 @@ export default function DateItem(props) {
     const [{data, loading, error}, execute] = useCreateAppointment({
         startDate: props?.startDate ?? "30 february 2005",
         endDate: props?.endDate ?? "30 february 202",
-        interlocutor_email: "collaborator@breadcrumbs.com"
+        interlocutor: props?.interlocutor
     }, token);
     
     

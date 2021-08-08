@@ -8,7 +8,7 @@ import { Calendar } from 'tabler-icons-react';
 import ConfirmationDialogRaw from './dialog/dialog';
 import { AuthContext, useAuthContext} from "../../AuthentificationJwt/context";
 import { useCancelAppointment } from 'utils/axios';
-import { HIRING_PROCESS } from '../../../constants/routes';
+import { HIRING_PROCESS } from 'constants/routes';
 
 const ConfirmPage = () => {
     const [modalOpen, setOpen] = useState(false);

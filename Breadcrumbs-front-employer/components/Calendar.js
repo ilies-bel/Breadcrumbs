@@ -20,27 +20,51 @@ import {
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from 'axios';
-import {AuthContext} from "utils/context";
+
+import {AuthContext, useAuthContext} from "utils/context";
 import { calendarData } from "utils/calendarData"
+import { fetchCalendarData } from 'utils/axios';
+import IconButton from '@material-ui/core/IconButton';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
+import Tooltip from '@material-ui/core/Tooltip';
+import { cancelAppointment, endAppointment } from '../utils/axios';
 
-const axiosURL = process.env.NEXT_PUBLIC_LIST_URL;
+const axiosURL = process.env.NEXT_PUBLIC_AXIOS_URL;
+const updateURL = `${axiosURL}/availability/update`
+const cancelURL = axiosURL + '/appointment/cancel'
+const endURL = axiosURL + '/appointment/end'
 
-//Requête à effectuer à chaque changement dans le calendrier
-  const fetchData = async (changedData, url, token="", onChange=() => {}) => {
 
-    const availabilities = changedData.filter((availability) => availability.type !== 'Appointment');
 
-    return await axios.put(url, availabilities, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-            .catch(e => {
-                  console.error(e);
-                }
-            )
-  };
+  const AppointHeader = ({props, children, appointmentData, classes, ...restProps}) => {
+    const context = useAuthContext();
+
+    return (
+    <AppointmentTooltip.Header {...restProps} >
+      { appointmentData.type==='Appointment' &&
+      <Tooltip title='Appointment over ?'>
+        <IconButton onClick={() =>{
+          console.log("onnclock")
+          console.log(appointmentData.type);
+          endAppointment(appointmentData, endURL, context.token)
+          }}
+          children={ <AssignmentTurnedInIcon/> }
+          />
+      </Tooltip>
+        }
+      { appointmentData.type==='Appointment' &&
+      <Tooltip title='Cancel appointment'>
+        <IconButton onClick={() =>{
+          console.log("add function to cancel")
+          cancelAppointment(appointmentData, cancelURL, context.token)
+          }}
+          children={ <CancelPresentationIcon /> }
+          />
+        </Tooltip>
+        }
+    </AppointmentTooltip.Header>)
+  }
 
 
 const allowDrag = ({ type }) => type !== 'Appointment';
@@ -104,10 +128,9 @@ const Appointment = ({
     async componentDidMount() {
       window.addEventListener('keydown', this.onKeyDown);
       window.addEventListener('keyup', this.onKeyUp);
-      console.log("data calendar");console.log(this.state.data);console.log("/data calendar");
 
       //Les données du calendrier sont mis à jour en base de donnée à chaque fois que l'on charge ce calendrier
-      fetchData(this.props.resList, axiosURL, this.context?.token ?? "");
+      //fetchCalendarData(this.props.resList, updateURL, this.context?.token ?? "");
     }
   
     componentWillUnmount() {
@@ -168,7 +191,7 @@ const Appointment = ({
           
           <Scheduler
             data={data}
-            height={1200}
+            height={800}
           >
             <ViewState
               currentDate={currentDate}
@@ -196,13 +219,14 @@ const Appointment = ({
             <ConfirmationDialog />
             <button className={`${this.props.onEdit ? 'inline' : 'hidden'} rounded-md shadow text-white bg-royalblue p-2 ml-20`}
                     title="Fontionnalité non-disponible"
-                    onClick={() => fetchData(data, axiosURL, this.context.token ).then(() => this.props.onChange()) } >
+                    onClick={() => fetchCalendarData(data, updateURL, this.context.token ).then(() => this.props.onChange()) } >
                       Save changes
             </button>
             <Appointments appointmentComponent={Appointment} />
             <AppointmentTooltip
               showDeleteButton={onEdit}
               showOpenButton={onEdit}
+              headerComponent={ AppointHeader }
             />
             {onEdit && <AppointmentForm/> }
             {onEdit && <DragDropProvider allowDrag={allowDrag} />}

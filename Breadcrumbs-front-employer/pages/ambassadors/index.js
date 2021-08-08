@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
+import {AMBASSADORS_DESCRIPTION} from "constants/description"
 import Head from 'next/head';
 import Label from 'components/Label';
 import axios from 'axios';
@@ -62,8 +62,21 @@ export default function Ambassadors() {
     }
     function onSubmit2(e) {
         e.preventDefault();
-        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/users/create";
-        axios.post(axios_url).then(res => console.log(res)).catch(e=> console.error(e))
+        const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL+"/auth/mail";
+        axios.post(axios_url, {  
+            "sender":{  
+               "name":"Ture Juki",
+               "email":"jukiture@gmail.com"
+            },
+            "to":[  
+               {  
+                  "email":"jukiture@gmail.com",
+                  "name":"Ture Juki"
+               }
+            ],
+            "subject":"Helrld",
+            "htmlContent":"<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Sendinblue.</p></body></html>"
+         }).then(res => console.log(res)).catch(e=> console.error(e))
     }
     function handleChange(event) {
         const target = event.target;

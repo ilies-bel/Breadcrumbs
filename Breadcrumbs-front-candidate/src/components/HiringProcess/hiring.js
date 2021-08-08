@@ -43,8 +43,8 @@ const HiringProcess = () => {
     }
 
     const handleButtonClick = (status) => {
-       if( status === 'inProgress' && !appointmentData) history.push(`milestone`)
-       if( status === 'inProgress' && appointmentData ) history.push(CONFIRM);
+       if( status === 'IN_PROGRESS' && !appointmentData) history.push(`milestone`)
+       if( status === 'IN_PROGRESS' && appointmentData ) history.push(CONFIRM);
     }
 
     if (loading) return <CircularProgress />
@@ -57,13 +57,13 @@ const HiringProcess = () => {
                 {data && data.map((process, i) =>
                     <li key={i} className={process?.status} >
                         <ButtonBase onClick={() => {
-                            process?.status=='inProgress' && handleButtonClick(process?.status);
-                            process?.status=='inProgress' && setInterview(process)
+                            process?.status=='IN_PROGRESS' && handleButtonClick(process?.status);
+                            process?.status=='IN_PROGRESS' && setInterview(process)
                             } } >
                             <div className="buttonTitle">
-                                { (process?.status==='inProgress' && !appointmentData) && 'Check out availabilities'  }
+                                { (process?.status==='IN_PROGRESS' && !appointmentData) && 'Check out availabilities'  }
                                 {
-                                    (process?.status==='inProgress' && appointmentData) && 
+                                    (process?.status==='IN_PROGRESS' && appointmentData) && 
                                     `Your next appointment : ${DateTime.fromISO(appointmentData?.startDate).toLocaleString()}`
                                 }
                                 </div>

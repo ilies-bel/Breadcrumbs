@@ -112,7 +112,7 @@ export default function Hiring() {
                 {error && <strong>Please log in.</strong>}
                 <div style={style.calendar}>
                 { loading && <CircularProgress/> }
-                {!error && !loading && resList && (  <Calendar onChange={confirmChange} resList={resList} onEdit={checked} loading={loading} /> )}
+                {!error && !loading && resList && ( <Calendar onChange={confirmChange} resList={resList} onEdit={checked} loading={loading} /> )}
                 </div>
             </div>            
         </>

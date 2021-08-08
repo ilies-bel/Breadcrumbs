@@ -70,7 +70,6 @@ public class userRessource {
 
     @Path("/mail")
     @POST
-    @Blocking
     public void sendEmail() {
         mailer.send(
                 Mail.withText("jukiture@gmail.com",

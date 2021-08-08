@@ -81,7 +81,12 @@ class BottomNav extends React.Component {
                     </span>
 
             </BottomLink>
-            <BottomLink selected={selectedTab[5]} index={4} onChange={handleChange} href={SOCIAL}>{SOCIAL_LABEL} </BottomLink>
+            <BottomLink selected={selectedTab[5]} index={5} onChange={handleChange} href={SOCIAL}>
+                <span className='spanLink'>
+                    <Social size={30} strokeWidth={1} color={!selectedTab[5] ? 'royalblue' : 'white'} className="ml-14" />
+                    {SOCIAL_LABEL}
+                </span>
+            </BottomLink>
             <BottomLink selected={selectedTab[6]} index={4} onChange={handleChange} href={INSIGHT}>{INSIGHT_LABEL} </BottomLink>
 
             <style jsx>{`

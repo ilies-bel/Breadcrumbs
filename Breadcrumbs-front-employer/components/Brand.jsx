@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image'
 import Link from 'next/link';
 import Button from '@material-ui/core/Button';
+import {CANDIDATES} from 'constants/routes'
 
 class Brand extends React.Component {
     constructor() {
@@ -9,8 +10,8 @@ class Brand extends React.Component {
     }
     render() {
         return (
-            <Link href='/'>
-                <img src='/icon-512x512.png' alt='logo' width="50px" height="50px"/>
+            <Link href={CANDIDATES}>
+                <a><img src='/LogoHeader.png' alt='logo'/></a>
             </Link>
             
         )

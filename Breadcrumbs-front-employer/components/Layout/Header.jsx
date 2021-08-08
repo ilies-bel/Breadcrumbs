@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router'
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
-import {AppBar, Avatar, Button, withStyles} from "@material-ui/core";
+import {AppBar, Avatar, Button, IconButton, withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from 'prop-types';
 
@@ -43,7 +43,6 @@ const styles = theme => ({
 const logOut = () => {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("user");
-    context.setUserData({token: null});
 }
 const ForwardItem = React.forwardRef((props, ref) => {return (<a ref={ref} href={props.href}> {props.children} </a>)})
 const ProfileItem = (props, ref) => {
@@ -53,9 +52,11 @@ const ProfileItem = (props, ref) => {
     return (
         <div className="profile">
             <Label>{data && data.name?.[0]}</Label>
-            <Search color="royalblue" />
-            <Settings color="royalblue" onClick={() => router.push(SETTINGS)} />
-            <Bell color="royalblue" />
+
+            <IconButton title="Fonctionnalité non-disponible"> <Search color="royalblue" /></IconButton>
+            <IconButton onClick={() => router.push(SETTINGS)}> <Settings color="royalblue" /></IconButton>
+            <IconButton title="Fonctionnalité non-disponible"><Bell color="royalblue" /></IconButton>
+            
             {context.token ?
                 <Button onClick={() => logOut()} title="Sign out" ><Avatar /></Button> :
                 <Button onClick={()=>{}} title="Sign in"> <Avatar/> </Button>
@@ -86,8 +87,8 @@ class Header extends React.Component {
 
         return (
             <header>
-                <AppBar position="fixed" color="transparent" >
-                    <Toolbar >
+                <AppBar position="fixed" color="inherit" >
+                    <Toolbar>
                         <Brand/>
                         <Typography variant="h6" noWrap>
                             {this.props.children}

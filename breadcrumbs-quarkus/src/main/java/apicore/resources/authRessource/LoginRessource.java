@@ -3,6 +3,7 @@ package apicore.resources.authRessource;
 import apicore.entit.user.CodeLinkedin;
 import apicore.utils.GeneratePassword;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import apicore.utils.GenerateToken;
 import apicore.entit.user.TokenResponse;
@@ -91,27 +92,17 @@ public class LoginRessource {
     @Path("/mail")
     @POST
     @Consumes(MediaType.APPLICATION_JSON) @Produces(MediaType.APPLICATION_JSON)
-    public Response mailauth(CodeLinkedin data) throws URISyntaxException, IOException, InterruptedException {
-        System.out.println(data.code); System.out.println(data.redirect_uri);
+    public Response mailauth(String req) throws URISyntaxException, IOException, InterruptedException {
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(req);
         URI uri = new URI("https://api.sendinblue.com/v3/smtp/email" );
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(HttpRequest.BodyPublishers.ofString("{ \n" +
-                "# Define the campaign settings \n" +
-                "\"name\":\"Campaign sent via the API\", \n" +
-                "\"subject\":\"My subject\", \n" +
-                "\"sender\": { \"name\": \"From name\", \"email\":\"jukiture@gmail.com\" }, \n" +
-                "\"type\": \"classic\", \n" +
-                "# Content that will be sent \n" +
-                "\"htmlContent\": \"Congratulations! You successfully sent this example campaign via the Sendinblue API.\", \n" +
-                "# Select the recipients\n" +
-                "\"recipients\": { \"listIds\": [2,7] }, \n" +
-                "# Schedule the sending in one hour\n" +
-                "\"scheduledAt\": \"2018-01-01 00:00:01\", \n" +
-                "}"))
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(HttpRequest.BodyPublishers.ofString(req))
                 .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
                 .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
                 .header("Access-Control-Allow-Origin", "*")
-                .header("api-key", "Xwkg7YyJTC48mBZD")
+                .header("api-key", "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")
                 .build();
 
 

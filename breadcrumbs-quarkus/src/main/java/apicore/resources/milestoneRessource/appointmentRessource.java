@@ -5,6 +5,7 @@ import apicore.entit.milestone.availability.availability;
 import apicore.entit.milestone.interview_milestones;
 import apicore.entit.milestone.interview_process;
 import apicore.entit.user.Users;
+import apicore.resources.webPush.PushSenderResource;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -70,10 +71,12 @@ public class appointmentRessource {
             Appointment.addFromAvailability(available, available.interlocutor_email, candidate, currentMilestone);
         }
         else {
+            System.out.println("dans else");
             interlocutor = Users.findUserByEmail(available.interlocutor.email);
 
             process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
-            System.out.println(process.getCurrentMilestone().milestone_name);
+            System.out.println(process.id_process);System.out.println("/process");
+            System.out.println(process.currentMilestoneIndex);System.out.println("/add milestone name");
             interview_milestones currentMilestone = process.getCurrentMilestone();
 
             System.out.println(currentMilestone.milestone_name);
@@ -115,6 +118,7 @@ public class appointmentRessource {
         }
         else if(user.role.equals("collaborator")) {
             user_role="interlocutor";
+            user = appointment.interlocutor;
         }
 
         Appointment a = Appointment.find("startDate=?1 AND endDate=?2 AND "+user_role+"=?3", appointment.startDate, appointment.endDate, user).firstResult();
@@ -123,7 +127,38 @@ public class appointmentRessource {
         availabe.persist();
 
         a.delete();
+
+        if(user.role.equals("collaborator")) {
+            PushSenderResource pushResource = new PushSenderResource();
+            pushResource.toAllSending("Appointment Canceled");
+        }
         return Response.ok("Appointment cancelled").build();
+    }
+
+    @Path("/end")
+    @DELETE
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("collaborator")
+    public Response endAppointment(Appointment appointment, @Context SecurityContext ctx) {
+        String email = token.getClaim(Claims.upn);
+
+        Users interlocutor;
+        interview_process process;
+
+        interlocutor = Users.findUserByEmail(appointment.interlocutor.email);
+
+        process = interview_process.find("candidate = ?1 AND entreprise = ?2", appointment.candidate, interlocutor.entreprise).firstResult();
+
+        interview_milestones currentMilestone = process.getCurrentMilestone();
+
+        process.incrementCurrentMilestone();
+
+        Appointment a = Appointment.find("startDate=?1 AND endDate=?2 AND interlocutor=?3", appointment.startDate, appointment.endDate, interlocutor).firstResult();
+        a.delete();
+
+        return Response.ok("appointment ended : ").build();
     }
 
 }

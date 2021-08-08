@@ -66,36 +66,37 @@ public class appInitializer {
         collaborator.entreprise = entreprise; collaborator.persist();
         Users collaborator2 = Users.find("email", "another.collaborator@breadcrumbs.com").firstResult();
         collaborator2.entreprise = entreprise; collaborator2.persist();
+        Users collaborator3 = Users.find("email", "sengoku.le.bouddha@navy.gov").firstResult();
+        collaborator3.entreprise = entreprise; collaborator2.persist();
     }
     @Transactional
     public static void seedProcess() {
         Entreprise e = Entreprise.findById("Breadcrumbs");
         Users u = Users.findByEmail("candidate@breadcrumbs.com");
-        List<interview_milestones> milestones = new ArrayList<interview_milestones>(interview_milestones.listAll());
-        interview_process process = new interview_process(e, u); process.milestones = milestones; process.currentMilestoneIndex=2; process.persist();
-        interview_process process2 = new interview_process(e, u); process2.milestones = milestones; process.currentMilestoneIndex=2; process2.persist();
-        interview_process process3 = new interview_process(e, u);process3.persist();
-        interview_process process4 = new interview_process(e, u);process4.persist();
+        Users u2 = Users.findByEmail("another.candidate@breadcrumbs.com");
+        Users u3 = Users.findByEmail("bois.hêtre@breadcrumbs.com");
+        List<interview_milestones> milestones = interview_milestones.listAll();
+
+        interview_process process = new interview_process(e, u, milestones); process.persist();
+        interview_process process2 = new interview_process(e, u2); process2.persist();
+        interview_process process3 = new interview_process(e, u3);process3.persist();
 
     }
     @Transactional
     public static void seedMilestone() {
-        interview_milestones im = new interview_milestones();
-        im.milestone_name="Step 1";
-        im.statusStr= interview_milestones.STATUS.COMPLETED.toStsing();im.type = interview_type.find("title", "Phone Call").firstResult();  im.persist();
-
-        interview_milestones im2 = new interview_milestones();
-        im2.milestone_name="Step 2";im2.statusStr= interview_milestones.STATUS.IN_PROGRESS.toStsing() ;im2.type = interview_type.find("title", "Phone Call").firstResult();im2.persist();
-
-        interview_milestones im3 = new interview_milestones();
-        im3.milestone_name="Step 3";im3.statusStr= interview_milestones.STATUS.PENDING.toStsing();im3.type = interview_type.find("title", "EscargoPhone Call").firstResult(); im3.persist();
-
-        interview_milestones im4 = new interview_milestones();im4.persist();
-        im4.milestone_name="Step 4";im4.statusStr= interview_milestones.STATUS.PENDING.toStsing();im4.type = interview_type.find("title", "EscargoPhone Call").firstResult();im4.persist();
+        interview_type type1 = interview_type.find("title", "Phone Call").firstResult();
+        interview_milestones milestone1 = new interview_milestones(type1, 0, interview_milestones.STATUS.IN_PROGRESS, "Step 1");
+        milestone1.persist();
+        interview_type type2 = interview_type.find("title", "Teams Meeting").firstResult();
+        interview_milestones milestone2 = new interview_milestones(type2, 1, interview_milestones.STATUS.PENDING, "Step 2");
+        milestone2.persist();
+        interview_type type3 = interview_type.find("title", "EscargoPhone Call").firstResult();
+        interview_milestones milestone3 = new interview_milestones(type3, 2, interview_milestones.STATUS.PENDING, "Step 3");
+        milestone3.persist();
     }
     @Transactional
     public static void seedType() {
-        interview_type type = new interview_type("Phone Call", "Call me from the other side"); type.persist();
+        interview_type type = new interview_type("Teams Meeting", "Call me from the other side"); type.persist();
         interview_type type2 = new interview_type("EscargoPhone Call", "Call me from Grand Line"); type2.persist();
     }
 }
