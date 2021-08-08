@@ -77,7 +77,9 @@ public class availability extends PanacheEntityBase {
     }
     /**
      * Ajoute plusieurs avalabilities dans la table.
-     *  Cette méthode n'est pas imdempotente */
+     * <br/>
+     *  Cette méthode n'est pas imdempotente
+     *  */
     public static void addList(List<availability> availabilityList) {
         for(availability a : availabilityList) {
             if(a.interlocutor==null) {
@@ -95,6 +97,7 @@ public class availability extends PanacheEntityBase {
     }
     /**
      * Met à jour la table des availability avec les valeurs contenues dans la list passé en paramètre.
+     * <br/>
      * Cette méthode est idempotente mais n'est pas du tout optimale */
     //TODO: Trouver une manière optimale de mettre à jour la table
     public static void updateAvalabilities(List<availability> availabilityList) {

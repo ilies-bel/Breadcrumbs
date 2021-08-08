@@ -1,4 +1,3 @@
-/*
 package apicore.resources.authRessource;
 
 import apicore.utils.GenerateToken;
@@ -44,4 +43,4 @@ class LoginRessourceTest {
         assertEquals(jwt.getIssuer(), ISSUER);
         assertEquals(jwt.getClaim(Claims.upn), user.email);
     }
-}*/
+}
