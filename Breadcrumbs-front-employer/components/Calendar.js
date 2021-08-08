@@ -39,15 +39,12 @@ const endURL = axiosURL + '/appointment/end'
 
   const AppointHeader = (props) => {
     const context = useAuthContext();
-    console.log(props);console.log("/props")
 
     return (
     <AppointmentTooltip.Header {...props} >
       { props?.appointmentData.type==='Appointment' &&
       <Tooltip title='Appointment over ?'>
         <IconButton onClick={() =>{
-          console.log("onnclock")
-          console.log(props?.appointmentData.type);
           endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("Appointment Over !"))
           }}
           children={ <AssignmentTurnedInIcon/> }
@@ -57,7 +54,6 @@ const endURL = axiosURL + '/appointment/end'
       { props?.appointmentData.type==='Appointment' &&
       <Tooltip title='Cancel appointment'>
         <IconButton onClick={() =>{
-          console.log("add function to cancel")
           cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment Cancelled !"))
           }}
           children={ <CancelPresentationIcon /> }
