@@ -37,27 +37,27 @@ const endURL = axiosURL + '/appointment/end'
 
 
 
-  const AppointHeader = ({props, children, appointmentData, classes, ...restProps}) => {
+  const AppointHeader = (props) => {
     const context = useAuthContext();
 
     return (
-    <AppointmentTooltip.Header {...restProps} >
-      { appointmentData.type==='Appointment' &&
+    <AppointmentTooltip.Header {...props} >
+      { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Appointment over ?'>
         <IconButton onClick={() =>{
           console.log("onnclock")
-          console.log(appointmentData.type);
-          endAppointment(appointmentData, endURL, context.token)
+          console.log(props.appointmentData.type);
+          endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("We hope you enjoyed your appointment."))
           }}
           children={ <AssignmentTurnedInIcon/> }
           />
       </Tooltip>
         }
-      { appointmentData.type==='Appointment' &&
+      { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Cancel appointment'>
         <IconButton onClick={() =>{
           console.log("add function to cancel")
-          cancelAppointment(appointmentData, cancelURL, context.token)
+          cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment cancelled"))
           }}
           children={ <CancelPresentationIcon /> }
           />
@@ -226,7 +226,7 @@ const Appointment = ({
             <AppointmentTooltip
               showDeleteButton={onEdit}
               showOpenButton={onEdit}
-              headerComponent={ AppointHeader }
+              headerComponent={ (props) => <AppointHeader {...props } onChange={ this.props.onChange } /> }
             />
             {onEdit && <AppointmentForm/> }
             {onEdit && <DragDropProvider allowDrag={allowDrag} />}
