@@ -85,9 +85,11 @@ export default function Hiring() {
       }, [toggling])
 
 
-    const confirmChange = () => {
-        setText("Change Saved !");
+    const confirmChange = async(message="Change Saved !") => {
+        setText(message);
+        await setToggling(true);
         setChecked(false);
+        setToggling(false);
     }
 
     return (
