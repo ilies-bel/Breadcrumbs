@@ -66,6 +66,7 @@ const HiringProcess = () => {
                                     (process?.status==='IN_PROGRESS' && appointmentData) && 
                                     `Your next appointment : ${DateTime.fromISO(appointmentData?.startDate).toLocaleString()}`
                                 }
+                                { process.status=='COMPLETED' && "Milestone Completed" }
                                 </div>
 
                                 { process?.milestone_name } -

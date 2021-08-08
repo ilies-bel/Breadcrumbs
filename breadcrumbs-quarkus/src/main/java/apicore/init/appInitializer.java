@@ -46,7 +46,7 @@ public class appInitializer {
 
     @Transactional
     public static void seedAvalability() {
-        availability a = new availability(OffsetDateTime.parse("2021-08-30T09:43:59Z"), OffsetDateTime.parse("2021-08-30T10:00:59Z"), "collaborat@breadcrumbs.com");
+        availability a = new availability(OffsetDateTime.parse("2021-08-30T09:43:59Z"), OffsetDateTime.parse("2021-08-30T10:00:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
         a = new availability(OffsetDateTime.parse("2021-08-30T13:30:59Z"), OffsetDateTime.parse("2021-08-30T14:30:59Z"), "collaborator@breadcrumbs.com");
         a.persist();
@@ -93,10 +93,14 @@ public class appInitializer {
         interview_type type3 = interview_type.find("title", "EscargoPhone Call").firstResult();
         interview_milestones milestone3 = new interview_milestones(type3, 2, interview_milestones.STATUS.PENDING, "Step 3");
         milestone3.persist();
+        interview_type type4 = interview_type.find("title", "Coffee Meeting").firstResult();
+        interview_milestones milestone4 = new interview_milestones(type4, 3, interview_milestones.STATUS.PENDING, "Step 3");
+        milestone4.persist();
     }
     @Transactional
     public static void seedType() {
         interview_type type = new interview_type("Teams Meeting", "Call me from the other side"); type.persist();
         interview_type type2 = new interview_type("EscargoPhone Call", "Call me from Grand Line"); type2.persist();
+        interview_type type3 = new interview_type("Coffee Meeting", "Did a recruiter ever invite you to drink coffee ?"); type3.persist();
     }
 }

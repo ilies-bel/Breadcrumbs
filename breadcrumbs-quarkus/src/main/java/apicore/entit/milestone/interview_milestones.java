@@ -60,7 +60,12 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
     }
     @Override
     public int compareTo(interview_milestones m) {
-        return index.compareTo(m.index);
+        try {
+            return index.compareTo(m.index);
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new BadRequestException("It's a sad error");
+        }
     }
 
     public void setStatus(STATUS newStatus) {

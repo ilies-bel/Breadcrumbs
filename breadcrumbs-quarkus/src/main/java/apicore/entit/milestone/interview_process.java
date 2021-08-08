@@ -7,6 +7,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import java.util.*;
 
 @Entity
@@ -21,7 +23,7 @@ public class interview_process extends PanacheEntityBase {
     @ManyToOne
     public Entreprise entreprise;
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<interview_milestones> milestones = new LinkedList<>();
+    public List<interview_milestones> milestones = new ArrayList<>();
 
     public interview_process() {}
     public interview_process(Entreprise e, Users candidates, interview_milestones milestone) {
@@ -48,17 +50,26 @@ public class interview_process extends PanacheEntityBase {
 
     @JsonIgnore
     public interview_milestones getCurrentMilestone() {
-        return milestones.get(currentMilestoneIndex);
+        try {
+            return milestones.get(currentMilestoneIndex);
+        }
+        catch (Exception e) {
+            throw new BadRequestException("Aucun milestone avec cet index dan le process");
+        }
     }
     @Transactional
     public void incrementCurrentMilestone() {
-        ListIterator<interview_milestones> iterator;
-        interview_milestones currentMilestone = this.getCurrentMilestone();
-        currentMilestone.incrementStatus(); currentMilestone.persist();
-        this.currentMilestoneIndex = this.currentMilestoneIndex+1;
-        currentMilestone = this.getCurrentMilestone();
-        currentMilestone.incrementStatus(); currentMilestone.persist();
-        Collections.sort(this.milestones);
+        Collections.sort(milestones);
+
+        ListIterator<interview_milestones> iterator = milestones.listIterator();
+        interview_milestones current = this.getCurrentMilestone();
+        current.incrementStatus(); current.persist();
+
+        this.currentMilestoneIndex++;
+        if( currentMilestoneIndex < milestones.size()) {
+            current = this.getCurrentMilestone();
+            current.incrementStatus(); current.persist();
+        }
     }
 
     public static interview_process getProcess(Users candidate, Entreprise entreprise) {

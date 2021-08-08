@@ -95,6 +95,7 @@ public class LoginRessource {
     public Response mailauth(String req) throws URISyntaxException, IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(req);
+
         URI uri = new URI("https://api.sendinblue.com/v3/smtp/email" );
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(HttpRequest.BodyPublishers.ofString(req))

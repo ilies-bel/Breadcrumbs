@@ -72,18 +72,18 @@ public class appointmentRessource {
         }
         else {
             System.out.println("dans else");
+
             interlocutor = Users.findUserByEmail(available.interlocutor.email);
 
             process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
-            System.out.println(process.id_process);System.out.println("/process");
-            System.out.println(process.currentMilestoneIndex);System.out.println("/add milestone name");
+            System.out.println("current inde x miletgx"); System.out.println(process.currentMilestoneIndex);System.out.println("/current inde x miletgx");
+
             interview_milestones currentMilestone = process.getCurrentMilestone();
 
             System.out.println(currentMilestone.milestone_name);
 
             Appointment.addFromAvailability(available, candidate, currentMilestone);
         }
-
         return Response.ok("New appointment added : "+available.startDate+" "+available.endDate+" with "+interlocutor.first_name).build();
     }
 

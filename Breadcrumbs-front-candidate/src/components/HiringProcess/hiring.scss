@@ -27,7 +27,8 @@ h2 {
           color: #3572F1;
           width: 100%;
           height: 50px;
-          padding: 50px;
+          padding-top: 50px;
+          padding-bottom: 60px;
           font-size: 20px;
           background: #EBF1FE;
           font-style: normal;
@@ -39,6 +40,8 @@ h2 {
           border-width: 2px;
           border-radius: 10px;
           letter-spacing: -0.01em;
+          overflow: hidden;
+          align-items: start;
 
           .buttonTitle {
             width: 100%;
@@ -50,6 +53,7 @@ h2 {
             font-style: normal;
             font-weight: 300;
             font-size: 12px;
+            letter-spacing: 2px;
             color: white;
           }
         }
@@ -64,6 +68,13 @@ h2 {
           }
           &:after {
             border-color: darkgray;
+          }
+        }
+        &.COMPLETED {
+          .buttonTitle {
+            background-color: royalblue;
+            letter-spacing: 3px;
+            font-weight: bold;
           }
         }
         
