@@ -1,12 +1,7 @@
 package apicore.resources.milestoneRessource;
-import apicore.entit.WebPush.PushSender;
 import apicore.entit.milestone.availability.availability;
-import apicore.entit.milestone.interview_process;
-import apicore.resources.milestoneRessource.appointmentRessource;
 import apicore.entit.user.Users;
 import apicore.resources.webPush.PushSenderResource;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.SseElementType;
 

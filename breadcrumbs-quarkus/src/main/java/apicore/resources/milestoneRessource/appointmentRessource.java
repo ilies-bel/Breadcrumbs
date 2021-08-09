@@ -57,14 +57,13 @@ public class appointmentRessource {
         Users interlocutor;
         interview_process process;
         if(available.endDate==null || available.startDate==null || (available.interlocutor==null && available.interlocutor_email==null)) {
-            //throw new BadRequestException();
             return Response.ok("Failed request. Please fill all fields").status(Response.Status.BAD_REQUEST).build();
         }
 
         if(available.interlocutor == null) {
             interlocutor = Users.findUserByEmail(available.interlocutor_email);
 
-            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+            process = interview_process.findProcess(candidate, interlocutor.entreprise);
 
             interview_milestones currentMilestone = process.getCurrentMilestone();
 
@@ -75,7 +74,7 @@ public class appointmentRessource {
 
             interlocutor = Users.findUserByEmail(available.interlocutor.email);
 
-            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+            process = interview_process.findProcess(candidate, interlocutor.entreprise);
             interview_milestones currentMilestone = process.getCurrentMilestone();
 
             Appointment.addFromAvailability(available, candidate, currentMilestone);
@@ -128,8 +127,7 @@ public class appointmentRessource {
         interview_process process;
 
         interlocutor = Users.findUserByEmail(appointment.interlocutor.email);
-        process = interview_process.find("candidate = ?1 AND entreprise = ?2", appointment.candidate, interlocutor.entreprise).firstResult();
-
+        process = interview_process.findProcess(appointment.candidate, interlocutor.entreprise);
         process.incrementCurrentMilestone();
 
         appointment.end();

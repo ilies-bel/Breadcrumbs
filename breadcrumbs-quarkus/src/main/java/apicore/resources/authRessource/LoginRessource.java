@@ -43,8 +43,6 @@ public class LoginRessource {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        System.out.println(GeneratePassword.verifyPassword(requestedPassword, storedPassword));
-
         if( GeneratePassword.verifyPassword(requestedPassword, storedPassword) ) {
             token = GenerateToken.generateUserToken(user);
             TokenResponse t_response = new TokenResponse(token, storedUser);

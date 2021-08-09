@@ -30,9 +30,10 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
 
     @ManyToOne
     public interview_type type;
+    @ManyToOne
+    public interview_milestones next;
 
     public String milestone_name;
-    public Integer index;
 
     public STATUS status;
 
@@ -41,27 +42,40 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
     }
 
     public interview_milestones() {}
-    public interview_milestones(interview_type type, Integer index, STATUS status, String milestone_name) {
+    public interview_milestones(interview_type type, STATUS status, String milestone_name) {
         this.type = type;
-        this.index = index;
         this.milestone_name = milestone_name;
         this.status= status;
     }
-    public interview_milestones(interview_type type, Integer index, String milestone_name) {
+    public interview_milestones(interview_type type, String milestone_name) {
         this.type = type;
-        this.index = index;
         this.milestone_name = milestone_name;
-        if(this.index == 0) {
-            this.status=STATUS.IN_PROGRESS;
+        this.status=STATUS.PENDING;
+    }
+    public boolean containsAmongNexts(interview_milestones maybeInNext) {
+        interview_milestones current = this;
+        if(current.next == null) {
+            return false;
+        }
+        else if(current.next.id_milestone.equals(maybeInNext.id_milestone)) {
+            return true;
         }
         else {
-            this.status=STATUS.PENDING;
+            return current.next.containsAmongNexts(maybeInNext);
         }
     }
     @Override
     public int compareTo(interview_milestones m) {
         try {
-            return index.compareTo(m.index);
+            if(this.id_milestone.equals(m.id_milestone)) {
+                return 0;
+            }
+            else if(this.containsAmongNexts(m)) {
+                return -1;
+            }
+            else {
+                return 1;
+            }
         }
         catch (IndexOutOfBoundsException e) {
             throw new BadRequestException("It's a sad error");
@@ -86,5 +100,9 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
                 this.setStatus(STATUS.COMPLETED);
                 break;
         }
+    }
+
+    public void setNext(interview_milestones milestone) {
+        this.next = milestone;
     }
 }
