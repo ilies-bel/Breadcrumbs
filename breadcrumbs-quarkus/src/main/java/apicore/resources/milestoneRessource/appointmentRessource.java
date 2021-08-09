@@ -57,14 +57,13 @@ public class appointmentRessource {
         Users interlocutor;
         interview_process process;
         if(available.endDate==null || available.startDate==null || (available.interlocutor==null && available.interlocutor_email==null)) {
-            //throw new BadRequestException();
             return Response.ok("Failed request. Please fill all fields").status(Response.Status.BAD_REQUEST).build();
         }
 
         if(available.interlocutor == null) {
             interlocutor = Users.findUserByEmail(available.interlocutor_email);
 
-            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
+            process = interview_process.findProcess(candidate, interlocutor.entreprise);
 
             interview_milestones currentMilestone = process.getCurrentMilestone();
 
@@ -75,12 +74,8 @@ public class appointmentRessource {
 
             interlocutor = Users.findUserByEmail(available.interlocutor.email);
 
-            process = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, interlocutor.entreprise).firstResult();
-            System.out.println("current inde x miletgx"); System.out.println(process.currentMilestoneIndex);System.out.println("/current inde x miletgx");
-
+            process = interview_process.findProcess(candidate, interlocutor.entreprise);
             interview_milestones currentMilestone = process.getCurrentMilestone();
-
-            System.out.println(currentMilestone.milestone_name);
 
             Appointment.addFromAvailability(available, candidate, currentMilestone);
         }
@@ -111,22 +106,8 @@ public class appointmentRessource {
     public Response cancel(Appointment appointment) {
         String email = token.getClaim(Claims.upn);
         Users user = Users.findByEmail(email);
-        String user_role = null;
 
-        if(user.role.equals("candidate")) {
-            user_role="candidate";
-        }
-        else if(user.role.equals("collaborator")) {
-            user_role="interlocutor";
-            user = appointment.interlocutor;
-        }
-
-        Appointment a = Appointment.find("startDate=?1 AND endDate=?2 AND "+user_role+"=?3", appointment.startDate, appointment.endDate, user).firstResult();
-
-        availability availabe = new availability(a.startDate, a.endDate, a.interlocutor, a.location);
-        availabe.persist();
-
-        a.delete();
+        appointment.cancel(user);
 
         if(user.role.equals("collaborator")) {
             PushSenderResource pushResource = new PushSenderResource();
@@ -142,21 +123,14 @@ public class appointmentRessource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("collaborator")
     public Response endAppointment(Appointment appointment, @Context SecurityContext ctx) {
-        String email = token.getClaim(Claims.upn);
-
         Users interlocutor;
         interview_process process;
 
         interlocutor = Users.findUserByEmail(appointment.interlocutor.email);
-
-        process = interview_process.find("candidate = ?1 AND entreprise = ?2", appointment.candidate, interlocutor.entreprise).firstResult();
-
-        interview_milestones currentMilestone = process.getCurrentMilestone();
-
+        process = interview_process.findProcess(appointment.candidate, interlocutor.entreprise);
         process.incrementCurrentMilestone();
 
-        Appointment a = Appointment.find("startDate=?1 AND endDate=?2 AND interlocutor=?3", appointment.startDate, appointment.endDate, interlocutor).firstResult();
-        a.delete();
+        appointment.end();
 
         return Response.ok("appointment ended : ").build();
     }

@@ -42,19 +42,22 @@ const endURL = axiosURL + '/appointment/end'
 
     return (
     <AppointmentTooltip.Header {...props} >
-      { props?.appointmentData.type==='Appointment' &&
+      { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Appointment over ?'>
         <IconButton onClick={() =>{
-          endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("Appointment Over !"))
+          console.log("onnclock")
+          console.log(props.appointmentData.type);
+          endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("We hope you enjoyed your appointment."))
           }}
           children={ <AssignmentTurnedInIcon/> }
           />
       </Tooltip>
         }
-      { props?.appointmentData.type==='Appointment' &&
+      { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Cancel appointment'>
         <IconButton onClick={() =>{
-          cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment Cancelled !"))
+          console.log("add function to cancel")
+          cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment cancelled"))
           }}
           children={ <CancelPresentationIcon /> }
           />
@@ -223,8 +226,7 @@ const Appointment = ({
             <AppointmentTooltip
               showDeleteButton={onEdit}
               showOpenButton={onEdit}
-              onChange={() => this.props.onChange()}
-              headerComponent={ (props) => <AppointHeader { ...props} onChange={this.props.onChange} /> }
+              headerComponent={ (props) => <AppointHeader {...props } onChange={ this.props.onChange } /> }
             />
             {onEdit && <AppointmentForm/> }
             {onEdit && <DragDropProvider allowDrag={allowDrag} />}

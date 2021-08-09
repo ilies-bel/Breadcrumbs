@@ -85,16 +85,16 @@ public class appInitializer {
     @Transactional
     public static void seedMilestone() {
         interview_type type1 = interview_type.find("title", "Phone Call").firstResult();
-        interview_milestones milestone1 = new interview_milestones(type1, 0, interview_milestones.STATUS.IN_PROGRESS, "Step 1");
+        interview_milestones milestone1 = new interview_milestones(type1, interview_milestones.STATUS.IN_PROGRESS, "Step 1");
         milestone1.persist();
         interview_type type2 = interview_type.find("title", "Teams Meeting").firstResult();
-        interview_milestones milestone2 = new interview_milestones(type2, 1, interview_milestones.STATUS.PENDING, "Step 2");
+        interview_milestones milestone2 = new interview_milestones(type2, interview_milestones.STATUS.PENDING, "Step 2");
         milestone2.persist();
         interview_type type3 = interview_type.find("title", "EscargoPhone Call").firstResult();
-        interview_milestones milestone3 = new interview_milestones(type3, 2, interview_milestones.STATUS.PENDING, "Step 3");
+        interview_milestones milestone3 = new interview_milestones(type3, interview_milestones.STATUS.PENDING, "Step 3");
         milestone3.persist();
         interview_type type4 = interview_type.find("title", "Coffee Meeting").firstResult();
-        interview_milestones milestone4 = new interview_milestones(type4, 3, interview_milestones.STATUS.PENDING, "Step 3");
+        interview_milestones milestone4 = new interview_milestones(type4, interview_milestones.STATUS.PENDING, "Step 4");
         milestone4.persist();
     }
     @Transactional

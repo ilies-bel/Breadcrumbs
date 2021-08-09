@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
@@ -52,12 +53,9 @@ public class userRessource {
         if(user.email != null && user.getPassword() != null && user.role !=null) {
             Users newOne = new Users(user.email, user.getPassword(), user.role, user.first_name, user.last_name);
 
-            if(user.phone != null) {
-                newOne.phone = user.phone;
-            }
-            if(user.entreprise != null) {
-                newOne.entreprise = user.entreprise;
-            }
+            newOne.phone = Objects.requireNonNullElseGet(user.phone, () -> "No phone");
+            newOne.entreprise = Objects.requireNonNullElseGet(user.entreprise, () -> new Entreprise());
+
             newOne.persist();
             return Response.ok("New user added :" + newOne.email + ", role : " + newOne.role ).build();
         }

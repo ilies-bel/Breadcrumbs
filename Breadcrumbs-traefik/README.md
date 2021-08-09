@@ -32,7 +32,7 @@ Il faut faire un build du projet quarkus avant de son image docker.
     - Ajouter ou décommenter cette configuration pour que quarkus se connecte au conteneur docker de la base de données postgres.
         - > quarkus.datasource.jdbc.url=jdbc\:postgresql\://breadcrumbs-api-core-database\:5432/Breadcrumbs_api_core_development
 2. Se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
-- >./mvnw package
+- >./mvnw package -DskipTests
 
 
 ## Lancer le projet traefik

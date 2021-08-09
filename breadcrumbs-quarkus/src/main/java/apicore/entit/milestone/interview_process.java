@@ -4,11 +4,12 @@ import apicore.entit.company.Entreprise;
 import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.NotFoundException;
+
 import java.util.*;
 
 @Entity
@@ -32,16 +33,31 @@ public class interview_process extends PanacheEntityBase {
         this.milestones.add(milestone);
         this.currentMilestoneIndex=0;
     }
+
+    /**
+     * Constructeur qui crée un process à partir des milestones qui le composent.
+     * Un process lie une entreprise à un utilisateur.
+     * @param e
+     * @param candidates
+     * @param milestones Milestones préalablements ordonnées
+     */
     public interview_process(Entreprise e, Users candidates, List<interview_milestones> milestones) {
         this.entreprise = e;
         this.candidate = candidates;
-        Collections.sort(milestones);
+        //Collections.sort(milestones);
         if(!milestones.isEmpty()) {
             this.milestones.addAll(milestones);
         }
         ListIterator<interview_milestones> iterator = milestones.listIterator();
-        while (iterator.hasNext() && iterator.next().status!= interview_milestones.STATUS.IN_PROGRESS) {
-            this.currentMilestoneIndex = iterator.next().index;
+        while (iterator.hasNext() ) {
+            try {
+                iterator.next();
+                milestones.get(iterator.nextIndex()-1).setNext(milestones.get(iterator.nextIndex()));
+            }
+            catch (IndexOutOfBoundsException ioobe) {
+
+                System.out.println("index : " + iterator.nextIndex());
+            }
         }
     }
     public interview_process(Entreprise e, Users candidates) {
@@ -50,30 +66,46 @@ public class interview_process extends PanacheEntityBase {
 
     @JsonIgnore
     public interview_milestones getCurrentMilestone() {
-        try {
-            return milestones.get(currentMilestoneIndex);
+        ListIterator<interview_milestones> iterator = milestones.listIterator();
+        interview_milestones res = new interview_milestones();
+        while ( iterator.hasNext() && res.status!= interview_milestones.STATUS.IN_PROGRESS ) {
+            res = iterator.next();
         }
-        catch (Exception e) {
-            throw new BadRequestException("Aucun milestone avec cet index dan le process");
-        }
+        return res;
     }
     @Transactional
     public void incrementCurrentMilestone() {
-        Collections.sort(milestones);
-
-        ListIterator<interview_milestones> iterator = milestones.listIterator();
         interview_milestones current = this.getCurrentMilestone();
-        current.incrementStatus(); current.persist();
-
-        this.currentMilestoneIndex++;
-        if( currentMilestoneIndex < milestones.size()) {
-            current = this.getCurrentMilestone();
-            current.incrementStatus(); current.persist();
+        current.incrementStatus();
+        if(current.next != null) {
+            current.next.incrementStatus();
         }
     }
 
-    public static interview_process getProcess(Users candidate, Entreprise entreprise) {
-        interview_process p1 = interview_process.find("candidate = ?1 AND  entreprise = ?2", candidate, entreprise).firstResult();
-        return p1;
+    /**
+     * Vérifie si tous les milestone ont le statut COMPLETED. Le process sera alors considéré comme terminé.
+     * @return <em>true</em> si tous les milestones sont COMPLETED.
+     */
+    public boolean isOver() {
+        ListIterator<interview_milestones> iterator = milestones.listIterator();
+        boolean isOver = true;
+        while (iterator.hasNext()) {
+            isOver = isOver && iterator.next().status == interview_milestones.STATUS.COMPLETED;
+        }
+        return isOver;
+    }
+
+    /**
+     * Trouve le process qui lie le candidat à l'entreprise.
+     * @return Une entité <em>interview_process</em>
+     */
+    public static interview_process findProcess(Users candidate, Entreprise entreprise) {
+        PanacheQuery<interview_process> query = interview_process.find("candidate = ?1 AND entreprise = ?2", candidate, entreprise);
+        if(query.count() == 1) {
+            return query.firstResult();
+        }
+        else {
+            throw new BadRequestException("findProcess : there must be only one result, but there are "+query.count()+" results");
+        }
     }
 }
