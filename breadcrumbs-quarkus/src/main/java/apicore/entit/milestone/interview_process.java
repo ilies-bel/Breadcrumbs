@@ -17,8 +17,6 @@ public class interview_process extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_process;
 
-    public int currentMilestoneIndex;
-
     @ManyToOne
     public Users candidate;
     @ManyToOne
@@ -31,7 +29,6 @@ public class interview_process extends PanacheEntityBase {
         this.entreprise = e;
         this.candidate = candidates;
         this.milestones.add(milestone);
-        this.currentMilestoneIndex=0;
     }
 
     /**
@@ -55,7 +52,6 @@ public class interview_process extends PanacheEntityBase {
                 milestones.get(iterator.nextIndex()-1).setNext(milestones.get(iterator.nextIndex()));
             }
             catch (IndexOutOfBoundsException ioobe) {
-
                 System.out.println("index : " + iterator.nextIndex());
             }
         }
@@ -68,7 +64,7 @@ public class interview_process extends PanacheEntityBase {
     public interview_milestones getCurrentMilestone() {
         ListIterator<interview_milestones> iterator = milestones.listIterator();
         interview_milestones res = new interview_milestones();
-        while ( iterator.hasNext() && res.status!= interview_milestones.STATUS.IN_PROGRESS ) {
+        while ( iterator.hasNext() && (res.status!= interview_milestones.STATUS.IN_PROGRESS && res.status!= interview_milestones.STATUS.ON_APPROVAL ) ) {
             res = iterator.next();
         }
         return res;
@@ -78,7 +74,9 @@ public class interview_process extends PanacheEntityBase {
         interview_milestones current = this.getCurrentMilestone();
         current.incrementStatus();
         if(current.next != null) {
-            current.next.incrementStatus();
+            if(current.status!= interview_milestones.STATUS.ON_APPROVAL) {
+                current.next.incrementStatus();
+            }
         }
     }
 

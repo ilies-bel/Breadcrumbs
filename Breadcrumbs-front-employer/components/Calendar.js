@@ -29,6 +29,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import Tooltip from '@material-ui/core/Tooltip';
 import { cancelAppointment, endAppointment } from '../utils/axios';
+import Dialog from "./Dialog";
 
 const axiosURL = process.env.NEXT_PUBLIC_AXIOS_URL;
 const updateURL = `${axiosURL}/availability/update`
@@ -39,15 +40,22 @@ const endURL = axiosURL + '/appointment/end'
 
   const AppointHeader = (props) => {
     const context = useAuthContext();
+    const [ endDialog, setEndDialog ] = React.useState(false)
+    const [ cancelDialog, setCancelDialog ] = React.useState(false)
+
+    function confirmEnd() {
+      endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("We hope you enjoyed your appointment."))
+    }
+    function cancel() {
+      cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment cancelled"));
+    }
 
     return (
     <AppointmentTooltip.Header {...props} >
       { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Appointment over ?'>
         <IconButton onClick={() =>{
-          console.log("onnclock")
-          console.log(props.appointmentData.type);
-          endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("We hope you enjoyed your appointment."))
+          setEndDialog(true)
           }}
           children={ <AssignmentTurnedInIcon/> }
           />
@@ -56,14 +64,25 @@ const endURL = axiosURL + '/appointment/end'
       { props.appointmentData.type==='Appointment' &&
       <Tooltip title='Cancel appointment'>
         <IconButton onClick={() =>{
-          console.log("add function to cancel")
-          cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment cancelled"))
+          setCancelDialog(true);
           }}
           children={ <CancelPresentationIcon /> }
           />
         </Tooltip>
         }
-    </AppointmentTooltip.Header>)
+
+        <Dialog title="Appointment ending" onConfirm={() => endAppointment(props.appointmentData, endURL, context.token).then(() => props.onChange("We hope you enjoyed your appointment.")) }
+                open={endDialog}
+                onClose={() => setEndDialog(false)}>
+          <p>Do you confirm the end of this appointment</p>
+        </Dialog>
+      <Dialog title="Cancellation" onConfirm={() => cancelAppointment(props.appointmentData, cancelURL, context.token).then(() => props.onChange("Appointment cancelled")) }
+              open={cancelDialog}
+              onClose={() => setCancelDialog(false) }>
+        <p>Do you want to cancel this appointment ?</p>
+      </Dialog>
+    </AppointmentTooltip.Header>
+    )
   }
 
 

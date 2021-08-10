@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {useAuthContext} from "utils/context";
 
-export default function TdRow(props) {
+export default function TdItem(props) {
     return (
         <td className={props.className + " px-6 py-4 whitespace-nowrap"}>
             {props.children}

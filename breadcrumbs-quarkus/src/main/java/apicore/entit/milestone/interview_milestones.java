@@ -14,7 +14,23 @@ import java.util.Objects;
 @Entity
 public class interview_milestones extends PanacheEntityBase implements Comparable<interview_milestones> {
     public enum STATUS {
-        PENDING("pending"), IN_PROGRESS("inProgress"), INCOMING, COMPLETED("completed");
+        /**
+         * <strong>pending</strong> : Le milestone n'a pas commencé</li>
+         */
+        PENDING("pending"),
+        /**
+         * <h3>In propgress</h3>
+         * Le milestone est en cours. Le candidat peut choisir ces parmi les disponibilités.</br>
+         *      Le premier milestone d'un process nouvellement initialisé doit être en pending
+         */
+        IN_PROGRESS("inProgress"),
+        /**
+         * Le candidat attend la réponse du recruteur pour passer à la suite.
+         * <li>L'état qui suit est COMPLETED</li>
+         * <li>L'état qui précède est IN_PROGRESS</li>
+         */
+        ON_APPROVAL,
+        COMPLETED("completed");
         STATUS() {}
         STATUS(String val) {
             value=val;
@@ -92,8 +108,9 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
                 this.setStatus(STATUS.IN_PROGRESS);
                 break;
             case IN_PROGRESS:
-                this.setStatus(STATUS.COMPLETED);
-            case INCOMING:
+                this.setStatus(STATUS.ON_APPROVAL);
+                break;
+            case ON_APPROVAL:
                 this.setStatus(STATUS.COMPLETED);
                 break;
             case COMPLETED:

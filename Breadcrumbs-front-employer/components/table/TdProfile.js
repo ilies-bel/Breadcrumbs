@@ -1,11 +1,11 @@
 
 import Link from 'next/link';
 
-import TdRow from './TdRow';
+import TdItem from './TdItem';
 
 export default function TdProfile(props) {
     return (
-        <TdRow>
+        <TdItem>
             <div className="flex items-center">
                 <div className="flex-shrink-0 h-10 w-10">
                     <img className="h-10 w-10 rounded-full"
@@ -22,6 +22,6 @@ export default function TdProfile(props) {
                     </Link>
                 </div>
              </div>
-        </TdRow>
+        </TdItem>
     )
 }

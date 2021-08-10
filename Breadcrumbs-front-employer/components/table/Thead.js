@@ -1,3 +1,4 @@
+import {ChevronDown, Search} from "tabler-icons-react";
 
 export default function DefaultThead(props) {
     return (
@@ -11,9 +12,9 @@ export default function DefaultThead(props) {
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Name
+                                        Name <ChevronDown className="inline cursor-pointer" />
                                     </th>
                                     <th
                                         scope="col"
@@ -25,13 +26,19 @@ export default function DefaultThead(props) {
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Status
+                                        Interview Process <ChevronDown className="inline cursor-pointer" />
                                     </th>
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Role
+                                        Connexion <ChevronDown className="inline cursor-pointer" />
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Role <ChevronDown className="inline cursor-pointer" />
                                     </th>
                                     <th scope="col"
                                     className="relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

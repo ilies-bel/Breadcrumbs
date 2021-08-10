@@ -4,10 +4,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {useAuthContext} from "utils/context";
 import DefaultThead from 'components/table/Thead';
-import TdProfile from '../../components/table/TdProfile';
-import TdStatus from '../../components/table/TdStatus';
-import TdRow from '../../components/table/TdRow';
-import TdCheckbox from '../../components/table/TdCheckBox';
+import TdProfile from 'components/table/TdProfile';
+import TdStatus from 'components/table/TdStatus';
+import TdItem from 'components/table/TdItem';
+import TdCheckbox from 'components/table/TdCheckBox';
+import MilestoneButton from "./milestonButton";
 
 axios.defaults.baseURL = process.env.BASE_API_URL;
 
@@ -51,17 +52,20 @@ const Candidates = () => {
                                             <TdCheckbox />
                                             <TdProfile first_name={person?.first_name} last_name={person?.last_name} email={person.email} image={person?.image} />
                
-                                            <TdRow className="px-6 py-4 whitespace-nowrap">
+                                            <TdItem className="px-6 py-4 whitespace-nowrap">
                                                 <Link href={`tel:${person?.phone}`}>
                                                     <a
                                                         className={`text-sm text-gray-500 ${person?.phone && 'hover:text-gray-700 cursor-pointer '}`}>
                                                         {person?.phone ?? "unknown"}
                                                     </a>
                                                 </Link>
-                                            </TdRow>
+                                            </TdItem>
+                                            <TdItem>
+                                                <MilestoneButton user={person} />
+                                            </TdItem>
                                             <TdStatus />              
-                                            <TdRow className="text-sm text-gray-500">{person.role}</TdRow>
-                                            <TdRow className="text-sm text-gray-500">{person?.position}</TdRow>
+                                            <TdItem className="text-sm text-gray-500">{person.role}</TdItem>
+                                            <TdItem className="text-sm text-gray-500">{person?.position}</TdItem>
                                         </tr>
                                     ))}
                                 </tbody>
