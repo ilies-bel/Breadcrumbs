@@ -1,10 +1,5 @@
 import React from 'react';
 import Label from '../../components/Label';
-import BottomNav from '../../components/Layout/DrawerLeft';
-import Header from '../../components/Layout/Header';
-import {AMBASSADORS_DESCRIPTION} from "../../constants/description"
-
-
 
 export default function Ambassadors() {
 

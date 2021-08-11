@@ -15,10 +15,8 @@ export default function RestrictedPages({children}) {
 
     if(!token) return (
         <>
-        <div>
-            <h1>Login with your collaborator credentials</h1>
+            <h2>Login with your collaborator credentials</h2>
             <LoginPage />
-        </div>
         </>
     )
     if(token) return (

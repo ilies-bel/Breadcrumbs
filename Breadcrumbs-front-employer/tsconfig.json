@@ -19,10 +19,18 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/Layout*": ["components/Layout/*"],
-      "@/constants/*": ["constants/*"],
-      "@/styles/*": ["styles/*"]
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/Layout*": [
+        "components/Layout/*"
+      ],
+      "@/constants/*": [
+        "constants/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ]
     }
   },
   "include": [

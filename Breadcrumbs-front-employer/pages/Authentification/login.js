@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import {useAuthContext} from "../../utils/context";
@@ -15,6 +15,9 @@ export default function LoginPage() {
   const auth_url = process.env.NEXT_PUBLIC_AUTH_URL;
   const context = useAuthContext();
 
+  useEffect(() => {
+      return () => {}
+  }, [])
   function handleChange(event) {
       const target = event.target;
       target.type ==='email' && setEmail(event.target.value);
@@ -48,7 +51,7 @@ export default function LoginPage() {
           .catch(e => {
               console.error(e)
               setLoading(false)
-            });
+            }).then(() => console.log("Connexion réussi"));
   }
     return (
         <div>
@@ -61,9 +64,3 @@ export default function LoginPage() {
             )
 }
 
-export const getServerSideProps = async (context) => {
-    return {
-        props: {
-        },
-    };
-}

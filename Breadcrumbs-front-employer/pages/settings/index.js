@@ -1,32 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
+import dynamic from 'next/dynamic';
+
 import SettingsNavigation from 'components/Layout/SettingsNavigation';
 
 import Head from 'next/head';
-import { SETTINGS } from "../../constants/title"
-import { useThemeEvent } from 'utils/eventSource';
+import {SETTINGS} from "constants/title"
+import {fetchCalendarData} from "utils/axios";
+import AppEditor from "./appEditor";
 
-const url_source = process.env.NEXT_PUBLIC_THEME_SOURCE
+
 
 function Settings() {
-    const theme = useThemeEvent();
+    const theme = "useThemeEvent();"
 
     return (
         <>
-        <Head>
-            <title>{SETTINGS}</title>
-        </Head>
-        <SettingsNavigation/>
-        {
-            theme.data &&
-            <ul>
-            <li>
-                {theme?.data?.fontSize}
-            </li>
-            <li>
-                {theme?.data?.bgColor}
-            </li>
+            <Head>
+                <title>{SETTINGS}</title>
+            </Head>
+            <div>
+                <SettingsNavigation/>
+                {
+                    theme.data &&
+                    <ul>
+                        <li>
+                            {theme?.data?.fontSize}
+                        </li>
+                        <li>
+                            {theme?.data?.bgColor}
+                        </li>
 
-        </ul>}
+                    </ul>}
+            </div>
+
+            <br/>
+            <hr className="border-2 border-royalblue" />
+            <br/>
+
+            <AppEditor theme={theme} />
+
         </>
 
     );

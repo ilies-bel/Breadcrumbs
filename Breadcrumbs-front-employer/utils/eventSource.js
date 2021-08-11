@@ -10,7 +10,6 @@ export const useThemeEvent = (url_source) => {
     useEffect(() => {
         let source = new EventSource(URL_SOURCE);
         
-        
         source.onerror = function logError(e) {    
             setError(e)
         }
