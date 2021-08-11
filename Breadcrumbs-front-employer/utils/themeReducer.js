@@ -2,7 +2,6 @@ import {useReducer} from "react";
 
 function handleColor(state, action) {
     const payload = action.payload;
-    console.log(action.payload);console.log(state)
     switch (action.type) {
         case 'header':
             state.header= {bgColor: action.payload?.bgColor, fontColor: action.payload?.fontColor ?? state?.header?.fontColor}

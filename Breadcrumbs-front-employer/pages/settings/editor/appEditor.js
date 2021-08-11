@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import {HexColorPicker, HexColorInput} from "react-colorful";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import {fetchCalendarData} from "../../utils/axios";
+import {fetchCalendarData} from "../../../utils/axios";
 
 const Stage = dynamic(() => import('react-konva').then((module) => module.Stage), {ssr: false});
 const Layer = dynamic(() => import('react-konva').then((module) => module.Layer), {ssr: false});
@@ -12,8 +12,8 @@ const Text = dynamic(() => import('react-konva').then((module) => module.Text), 
 const Line = dynamic(() => import('react-konva').then((module) => module.Line), {ssr: false});
 
 import {ArrowBackUp} from "tabler-icons-react";
-import {drawerReducer} from "../../utils/themeReducer";
-import Dialog from "../../components/Dialog";
+import {drawerReducer} from "../../../utils/themeReducer";
+import Dialog from "../../../components/Dialog";
 
 
 export default function AppEditor(props) {

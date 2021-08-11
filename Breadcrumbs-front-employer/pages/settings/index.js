@@ -6,12 +6,12 @@ import SettingsNavigation from 'components/Layout/SettingsNavigation';
 import Head from 'next/head';
 import {SETTINGS} from "constants/title"
 import {fetchCalendarData} from "utils/axios";
-import AppEditor from "./appEditor";
-
+import AppEditor from "./editor/appEditor";
+import {useThemeEvent} from "utils/eventSource";
 
 
 function Settings() {
-    const theme = "useThemeEvent();"
+    const theme = useThemeEvent();
 
     return (
         <>
