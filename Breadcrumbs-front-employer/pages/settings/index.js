@@ -11,7 +11,7 @@ import {useThemeEvent} from "utils/eventSource";
 
 
 function Settings() {
-    const theme = useThemeEvent();
+    const theme = "useThemeEvent()";
 
     return (
         <>

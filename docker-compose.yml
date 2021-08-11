@@ -102,11 +102,31 @@ services:
     restart: always
     labels:
       - traefik.enable=true
-      - traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && PathPrefix(`/api/`, `/auth/`)
+      - traefik.http.routers.quarkus.rule=Host(`$PWA_HOST`) && PathPrefix(`/api/`, `/theme/`)
       - traefik.http.routers.quarkus.tls=true
       - traefik.http.routers.quarkus.service=quarkusservice
       - traefik.http.services.quarkusservice.loadbalancer.server.port=$QUARKUS_PORT
       - traefik.http.routers.quarkus.middlewares=errorpage@file
+
+  other:
+    build:
+      context: ./other/themer
+      dockerfile: src/main/docker/Dockerfile.jvm
+    expose:
+      - 8081
+    depends_on:
+      - traefik
+      - breadcrumbs-api-core-database
+    networks:
+      - traefik-global-proxy
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.other.rule=Host(`$EMPLOYER_HOST`) && PathPrefix(`/api/`, `/theme/`)
+      - traefik.http.routers.other.tls=true
+      - traefik.http.routers.other.service=otherservice
+      - traefik.http.services.otherservice.loadbalancer.server.port=8081
+      - traefik.http.routers.other.middlewares=errorpage@file
 
   # quarkus-auth:
   #   build:
