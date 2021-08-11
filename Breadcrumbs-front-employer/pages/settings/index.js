@@ -1,11 +1,14 @@
 import React from 'react';
-import SettingsNavigation from '../../components/Layout/SettingsNavigation';
-import BottomNav from '../../components/Layout/SettingsNavigation'
-import Header from '../../components/Layout/Header'
+import SettingsNavigation from 'components/Layout/SettingsNavigation';
+
 import Head from 'next/head';
 import { SETTINGS } from "../../constants/title"
+import { useThemeEvent } from 'utils/eventSource';
+
+const url_source = process.env.NEXT_PUBLIC_THEME_SOURCE
 
 function Settings() {
+    const theme = useThemeEvent();
 
     return (
         <>
@@ -13,9 +16,17 @@ function Settings() {
             <title>{SETTINGS}</title>
         </Head>
         <SettingsNavigation/>
-        <ul>
+        {
+            theme.data &&
+            <ul>
+            <li>
+                {theme?.data?.fontSize}
+            </li>
+            <li>
+                {theme?.data?.bgColor}
+            </li>
 
-        </ul>
+        </ul>}
         </>
 
     );

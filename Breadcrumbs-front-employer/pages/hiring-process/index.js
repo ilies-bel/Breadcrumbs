@@ -29,11 +29,10 @@ const useEventSource = (url) => {
         let source = new EventSource(url);
         
         source.onerror = function logError(e) {    
-            updateData("e - eeerero")
+            updateData(e)
         }
         source.onmessage = function logEvents(event) {      
             updateData(JSON.parse(event.data));
-            console.log(event);
         }
         return () => {
             source.close();
@@ -65,6 +64,9 @@ export default function Hiring() {
     const [ toggling, setToggling ] = useState(false)
 
     const context = useAuthContext();
+
+    const data = useEventSource(URL_SOURCE);
+    console.log(data);console.log("/use event");
 
     const toggleChecked = async() => {
         await setToggling(true);
