@@ -1,21 +1,21 @@
-import React, {useState, useEffect, useRef} from 'react';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
-import axios from 'axios';
-import Button from '@material-ui/core/Button'
-import EventAvailableOutlined from '@material-ui/icons/EventAvailableOutlined';
+import React, {useState, useEffect, lazy, Suspense } from 'react';
 
-import { DateTime } from "luxon";
-import { useAuthContext } from '../../../AuthentificationJwt/context';
+const DialogTitle = lazy(() => import('@material-ui/core/DialogTitle'));
+const DialogContent = lazy(() => import('@material-ui/core/DialogContent'));
+const DialogActions = lazy(() => import('@material-ui/core/DialogActions'));
+const Dialog = lazy(() => import('@material-ui/core/Dialog'));
+const RadioGroup = lazy(() => import('@material-ui/core/RadioGroup'));
+const Radio = lazy(() => import('@material-ui/core/Radio'));
+const FormControlLabel = lazy(() => import('@material-ui/core/FormControlLabel'));
+const FormLabel = lazy(() => import('@material-ui/core/FormLabel'));
+const FormControl = lazy(() => import('@material-ui/core/FormControl'));
+const FormGroup = lazy(() => import('@material-ui/core/FormGroup'));
+const Checkbox = lazy(() => import('@material-ui/core/Checkbox'));
+const Button = lazy(() => import('@material-ui/core/Button'));
+const EventAvailableOutlined = lazy(() => import('@material-ui/icons/EventAvailableOutlined'));
+
+import DateTime from "luxon/src/datetime";
+import { useAuthContext } from 'components/AuthentificationJwt/context';
 
 const optionsCalendar = ['Google calendar','Outlook',]
 
@@ -61,6 +61,7 @@ export default function ConfirmationDialogRaw(props) {
   };
 
   return (
+    <Suspense fallback={ <p>Wait ...</p> } >
   <Dialog
       maxWidth="xs"
       aria-labelledby="confirmation-dialog-title"
@@ -89,5 +90,6 @@ export default function ConfirmationDialogRaw(props) {
         </div>
       </DialogActions>
     </Dialog>
+    </Suspense>
   )
 }

@@ -1,8 +1,6 @@
-import React, {memo, useCallback, useState} from 'react'
-import {GoogleMap, useJsApiLoader} from '@react-google-maps/api';
+import React, {memo, lazy, Suspense, useCallback, useState} from 'react'
 
-import GoogleMapReact from 'google-map-react';
-import FlashyButton from 'littleComponents/flashyButton'
+const GoogleMapReact = lazy(() =>  import('google-map-react'));
 
 import './office.scss';
 
@@ -18,18 +16,20 @@ const pos_pwc = {
 
 function OfficeMap() {
     return (
-        <div className='mapContainer'>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyCK1h2givbm_74EEN77-iGnKUz52sQaIgk" }}
-          defaultCenter={pos_pwc}
-          defaultZoom={10}
-        >
-          <img src='/Pinlet Marker.svg'
-            lat={45.76231}
-            lng={4.920307}
-            text="My Marker"
-          />
-        </GoogleMapReact>
+      <div className='mapContainer'>
+        <Suspense fallback={ <p>Wait ...</p> }>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: "AIzaSyCK1h2givbm_74EEN77-iGnKUz52sQaIgk" }}
+            defaultCenter={pos_pwc}
+            defaultZoom={10}
+          >
+            <img src='/Pinlet Marker.svg'
+              lat={45.76231}
+              lng={4.920307}
+              text="My Marker"
+            />
+          </GoogleMapReact>
+        </Suspense>
       </div>
     )
 }

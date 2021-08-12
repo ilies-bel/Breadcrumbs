@@ -8,9 +8,9 @@ import {HIRING_DESCRIPTION} from "../../constants/description";
 import {TitleDescriptionSource} from "../Navigation/descriptionContext"
 import { PageDescription } from 'littleComponents';
 
-import ButtonBase from '@material-ui/core/ButtonBase';
+const ButtonBase = React.lazy(() => import( '@material-ui/core/ButtonBase') )
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InsertInvitationOutlinedIcon from '@material-ui/icons/InsertInvitationOutlined';
+const InsertInvitationOutlinedIcon = React.lazy(() =>  import('@material-ui/icons/InsertInvitationOutlined'));
 
 import './hiring.scss';
 import { useGetProcess, useGetMilestone, useGetMyAppointment } from 'utils/axios';
@@ -54,8 +54,10 @@ const HiringProcess = () => {
         <>
             <PageDescription>{HIRING_DESCRIPTION.PROCESS}</PageDescription>
             <ol className="timeline">
+            <React.Suspense fallback={<CircularProgress/> } >
                 {data && data.map((process, i) =>
                     <li key={i} className={process?.status} >
+                        
                         <ButtonBase onClick={() => {
                             process?.status=='IN_PROGRESS' && handleButtonClick(process?.status);
                             process?.status=='IN_PROGRESS' && setInterview(process)
@@ -79,8 +81,10 @@ const HiringProcess = () => {
                                 <InsertInvitationOutlinedIcon color="primary" />
                             </Link>
                         </ButtonBase>
+                        
                     </li>)
                 }
+            </React.Suspense>
             </ol>
         </>
     );

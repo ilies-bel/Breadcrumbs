@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import {withAuthorization, withEmailVerification} from '../AuthentificationFirebase/Session';
 
 import {compose} from "recompose";
-import {AppBar, IconButton, makeStyles, Toolbar, Typography} from "@material-ui/core";
-import {AccountCircle} from "@material-ui/icons";
+import {makeStyles} from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/ToolBar";
+const AccountCircle = React.lazy(() => import( "@material-ui/icons/AccountCircle"));
 import {TitleTarget} from "./titleContext";
 import { AuthContext } from "components/AuthentificationJwt/context";
 import { useAuthContext } from "components/AuthentificationJwt/context";
 import {useHistory} from "react-router-dom";
-import { Avatar } from 'material-ui';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +41,7 @@ const TopNav = () => {
 
 
     return (
+        <React.Suspense fallback={<p>Wait ...</p>}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
 
@@ -60,6 +65,7 @@ const TopNav = () => {
 
                     </Toolbar>
                 </AppBar>
+        </React.Suspense>
 
     )
 }

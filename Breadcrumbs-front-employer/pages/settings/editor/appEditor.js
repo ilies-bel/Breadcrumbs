@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import {HexColorPicker, HexColorInput} from "react-colorful";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import {fetchCalendarData} from "../../../utils/axios";
+import { usePostTheme } from "utils/axios";
 
 const Stage = dynamic(() => import('react-konva').then((module) => module.Stage), {ssr: false});
 const Layer = dynamic(() => import('react-konva').then((module) => module.Layer), {ssr: false});
@@ -14,12 +14,13 @@ const Line = dynamic(() => import('react-konva').then((module) => module.Line), 
 import {ArrowBackUp} from "tabler-icons-react";
 import {drawerReducer} from "../../../utils/themeReducer";
 import Dialog from "../../../components/Dialog";
+import ColorPicker from './colorPicker';
 
 
 export default function AppEditor(props) {
     const theme = props?.theme;
 
-    const [stageWidth] = useState({width: 375, height: 800});
+    const [stageSize] = useState({width: 375, height: 800});
     const [color, setColor] = useState("#aabbcc");
     const [fontColor, setFontColor] = useState("#aabbcc");
     const [selectedLayout, setSelected] = useState("")
@@ -30,6 +31,8 @@ export default function AppEditor(props) {
 
     const [ openDialog, setDialog ] = React.useState(false)
     const [ cancelDialog, setCancelDialog ] = React.useState(false)
+
+    const [ { loading }, execute ] = usePostTheme()
 
     const colorPickerState = {
         header: {
@@ -46,9 +49,10 @@ export default function AppEditor(props) {
 
 
     //Si le switch est activé, on active les événements passés en props
-    let mouseEventsProps = checked && {
+    const mouseEventsProps = (layout) => checked && {
         onMouseOver:  ()=> setPointer(true),
-        onMouseLeave: () => setPointer(false)
+        onMouseLeave: () => setPointer(false),
+        onClick: () => setSelected(layout)
     }
 
     const toggleChecked = async () => {
@@ -56,6 +60,10 @@ export default function AppEditor(props) {
         setChecked((prev) => !prev);
         //setText("Here you can edit your availabilities.");
         setToggling(false);
+    }
+
+    function onConfirm(data) {
+        execute({data: state}).then(res => console.log(res.data)).catch(e => console.error(e))
     }
 
     return (
@@ -82,72 +90,53 @@ export default function AppEditor(props) {
             {checked && <p className="font-roboto font-medium text-2xl"> {selectedLayout}</p>}
             <div className="flex justify-between w-1/2">
                 <div className="inline">
-                    <Stage className={ pointer ? `cursor-pointer` : '' } width={stageWidth.width} height={stageWidth.height} drawBorder>
-                        <Layer>
-                            <Rect x={0} y={0} width={stageWidth.width} height={stageWidth.height} stroke="black"
+                    <Stage className={ pointer ? `cursor-pointer` : '' } width={stageSize.width} height={stageSize.height} drawBorder>
+                        <Layer >
+                            {/* TODO: former de meilleurs groupements par Layer */}
+                            <Rect x={0} y={0} width={stageSize.width} height={stageSize.height} stroke="black"
                                   strokeWidth={4}/>
 
-                            <Rect className="Header"  {...mouseEventsProps}
+                            <Rect className="Header"  {...mouseEventsProps("header") }
                                   x={4} y={30} width={300} height={100} fill={ state.header.bgColor ?? "royalblue"}
-                                  onClick={() => setSelected("header") }/>
+                                  />
                             <Text {...mouseEventsProps} text="Welcome" x={30} y={50} fontFamily="Roboto" fontSize={50} fill={ state.header.fontColor ?? "white"}/>
 
-                            <Rect className="MainBody"  {...mouseEventsProps}
-                                  x={4} y={140} width={stageWidth.width-8} height={550} fill={ state.mainBody.bgColor ?? "white"}
-                                  onClick={() => setSelected("mainBody") }/>
+                            <Rect className="MainBody"  {...mouseEventsProps("mainBody") }
+                                  x={4} y={140} width={stageSize.width-8} height={550} fill={ state.mainBody.bgColor ?? "white"}
+                                  />
                             <Text {...mouseEventsProps}
                                   text="some text" x={30} y={250}
                                   fontFamily="Roboto" fontSize={50}
                                   fill={ state.mainBody.fontColor ?? "black"}/>
-
-                            <Line points={[ 4, 700, stageWidth.width-4, 700 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
-                            <Text {...mouseEventsProps}
-                                  onClick={() => setSelected("sidebar") }
-                                  text="Hiring process" x={20} y={730} width={100}
-                                  fontFamily="Roboto" fontSize={20}
-                                  fill={ state.sidebar.fontColor ?? "black"}/>
-                            <Line points={[ 110, 705, 110, 790 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
-
-
+                        
                         </Layer>
+
+                            <Layer x={2} y={stageSize.height-100}>
+                            <Line points={[ 4, 0, stageSize.width-4, 0 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
+                            
+                            <Rect x={35} y={25} width={15} height={30} fill="white"
+                                  stroke={ state.sidebar.fontColor ?? "black"} strokeWidth={2}
+                                  { ...mouseEventsProps("sidebar")}/>
+                            <Line points={ [35, 30, 47, 38, 59, 45, 60, 50]} stroke={ state.sidebar.fontColor ?? "black"} strokeWidth={2} />
+                                  
+                            <Text {...mouseEventsProps("sidebar") }                 
+                                  text="Application" x={20} y={70} width={100}
+                                  fontFamily="Roboto" fontSize={15}
+                                  fill={ state.sidebar.fontColor ?? "black"}/>
+                            <Line points={[ 110, 5, 110, 90 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
+                            </Layer>
+
+
+                        
                     </Stage>
                 </div>
 
                 { (checked && selectedLayout) &&
-                    <div className="block">
-                <div className="block p-4">
-                    <p className="bg-gray-300 rounded-md text-gray-700" > {selectedLayout} </p>
-                    <HexColorPicker color={color} onChange={(newColor) => {
-                                                            setColor(newColor);
-                                                            dispatch({ type: selectedLayout , payload: { bgColor: newColor } })
-                                                        }  }
-                    />
-                    <HexColorInput color={color}
-                                   onChange={(newColor) => {
-                                       setColor(newColor);
-                                       dispatch({ type: selectedLayout , payload: { bgColor: newColor } })
-                                   }  }
-                                   className="focus:ring-royalblue focus:border-royalblue w-32 border-2 border-gray-300 rounded-md text-2xl text-center font-roboto"
-                                   prefixed/>
-                </div>
-                        <div className="font-color block p-4">
-                            <p className="bg-gray-300 rounded-md text-gray-700" >Font color of {selectedLayout} </p>
-                            <HexColorPicker color={fontColor} onChange={(newColor) => {
-                                                                        setFontColor(newColor);
-                                                                        dispatch({ type: selectedLayout , payload: { fontColor: newColor } })
-                                                                        }  }
-                            />
-                            <HexColorInput color={fontColor} onChange={(newColor) => {
-                                                                        setFontColor(newColor);
-                                                                        dispatch({ type: selectedLayout , payload: { fontColor: newColor } })
-                                                                    }  }
-                                           className="focus:ring-royalblue focus:border-royalblue w-32 border-2 border-gray-300 rounded-md text-2xl text-center font-roboto"
-                                           prefixed/>
-                        </div>
-                    </div>
+                <ColorPicker theme={theme} selectedLayout={selectedLayout} dispatch={dispatch} />
                 }
 
-                <Dialog title="Changement de thème" open={openDialog} onClose={() => setDialog(false)} >
+                <Dialog title="Changement de thème" open={openDialog} onClose={() => setDialog(false)} 
+                onConfirm={onConfirm} >
                     Enregistrer le thème pour le candidat.
                     Fonctionnalité non-disponible.
                 </Dialog>

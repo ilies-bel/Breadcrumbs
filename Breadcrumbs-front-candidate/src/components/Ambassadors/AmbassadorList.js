@@ -1,11 +1,11 @@
 import React from 'react';
 import {TitleSource} from "../Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "../../constants/routes";
-import {AMBASSADORS_DESCRIPTION} from "../../constants/description";
+import {AMBASSADORS_DESCRIPTION} from "constants/description";
 import {PageDescription} from '../Navigation';
 
 import Avatar from '@material-ui/core/Avatar';
-import {Label} from '@material-ui/icons';
+import Label from '@material-ui/icons/Label';
 import "./ambassador.scss"
 import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import Box from "@material-ui/core/Box";

@@ -1,14 +1,17 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { lazy, useState, useEffect, Suspense } from 'react';
 
-import {withFirebase} from '../Firebase';
-import {Box, FormControlLabel, Switch, TextField} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+const Box = lazy(() => import("@material-ui/core/Box"));
+const FormControlLabel = lazy(() => import("@material-ui/core/FormControlLabel"));
+const Switch = lazy(() => import("@material-ui/core/Switch"));
+const TextField = lazy(() => import("@material-ui/core/TextField"));
+const Button = lazy(() => import("@material-ui/core/Button"));
+
 import CircularProgress from "@material-ui/core/CircularProgress";
-import FlashyButton from "../littleComponents/flashyButton";
+import FlashyButton from "littleComponents/flashyButton";
 import "./accountPage.scss"
 import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
-import PushNotification from '../PushNotifications';
+
 import usePushNotifications from 'utils/usePushNotification.js';
 import { useAuthContext } from '../AuthentificationJwt/context';
 
@@ -71,6 +74,7 @@ const AccountPage = props => {
                 </h2>
 
                 <form>
+                    <Suspense fallback={<CircularProgress />}>
                     <TextField
 
                         id="first_name"
@@ -162,6 +166,7 @@ const AccountPage = props => {
                         </FlashyButton>
                     </Box>
 
+                    </Suspense>
 
                 </form>
 
@@ -169,7 +174,6 @@ const AccountPage = props => {
 
             </span>
             </div>
-
             
         </div>
 

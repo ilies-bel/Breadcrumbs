@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import dynamic from 'next/dynamic';
 
 import SettingsNavigation from 'components/Layout/SettingsNavigation';
 
 import Head from 'next/head';
 import {SETTINGS} from "constants/title"
-import {fetchCalendarData} from "utils/axios";
+
 import AppEditor from "./editor/appEditor";
 import {useThemeEvent} from "utils/eventSource";
 
 
 function Settings() {
-    const theme = "useThemeEvent()";
+    const theme = useThemeEvent();
+    const memo = useCallback
 
     return (
         <>
@@ -37,7 +38,7 @@ function Settings() {
             <hr className="border-2 border-royalblue" />
             <br/>
 
-            <AppEditor theme={theme} />
+            { memo( <AppEditor theme={theme} />, [])}
 
         </>
 

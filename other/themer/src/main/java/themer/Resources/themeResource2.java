@@ -8,6 +8,7 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import themer.ThemeResponse;
 import themer.Themer;
+import themer.layouts.Layout;
 import themer.layouts.buttons;
 import themer.layouts.header;
 
@@ -27,8 +28,7 @@ public class themeResource2 {
     public Multi<PanacheEntityBase> getThemer() {
         Themer themer = new Themer("white", "grren", 12, "bold");
 
-        Uni<PanacheEntityBase> theme = Themer.findAll().firstResult();//.onItem().transform(res -> Response.ok(themer).build());
-        return Panache.withTransaction(themer::persist).toMulti();
+        return Panache.withTransaction(themer::persist).toMulti().onItem().invoke(t -> Panache.withTransaction(t::delete) );
     }
 
     @GET
@@ -63,6 +63,25 @@ public class themeResource2 {
                 Panache.withTransaction(t::delete)) ;
         Panache.withTransaction(tr::delete);
         return operation ;
+    }
+
+    @POST
+    @Path("/1")
+    public Multi<ThemeResponse> postdTheme(Themer theme) {
+        ThemeResponse tr = new ThemeResponse();
+        header he = new header();
+        he.theme = theme;
+        tr.header = he;
+
+        return Multi.createFrom().item(tr).onItem().call(item -> Panache.withTransaction(tr::persist));
+    }
+    @POST
+    @Path("/2")
+    public Multi<ThemeResponse> postTheme2(Layout layout) {
+        ThemeResponse tr = new ThemeResponse();
+        System.out.println(layout.getClass());
+
+        return Multi.createFrom().item(tr).onItem().call(item -> Panache.withTransaction(tr::persist));
     }
 
 }

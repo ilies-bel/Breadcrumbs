@@ -6,10 +6,7 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import { verify } from "jsonwebtoken";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import { LinkedIn } from 'react-linkedin-login-oauth2';
-import * as ROUTES from 'constants/routes';
-import PaperDiv from 'littleComponents/PaperDiv'
+
 import LPopup from './AuthLinkedin';
 
 const BASE_API_URL = process.env.AXIOS_BASE_URL

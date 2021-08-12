@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Link, NavLink, Redirect, Route, useRouteMatch, 
 
 import {TitleSource} from "../Navigation/titleContext";
 
-import {CONFIRM, DISPO, HIRING_PROCESS_TITLE, HIRING_PROCESS} from "../../constants/routes";
+import {CONFIRM, DISPO, HIRING_PROCESS_TITLE, HIRING_PROCESS} from "constants/routes";
 
 import HiringProcess from './hiring';
 import MilestonePage from './milestone'

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {createMuiTheme, ThemeProvider} from '@material-ui/core/';
+import {createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+//const ThemeProvider = React.lazy(() => import('@material-ui/core/styles').then((module) => module.MuiThemeProvider) )
+
 import {red} from '@material-ui/core/colors';
 import App from './components/App';
 import {register} from './ServiceWorker';
-import Firebase, {FirebaseContext} from './components/Firebase';
 
 
 // Building theme
@@ -84,9 +85,11 @@ const theme = createMuiTheme({
 });
 
 ReactDOM.render(
+  <React.Suspense fallback={<div>Wait ...</div>} >
     <ThemeProvider theme={theme}>
       <App />
-    </ThemeProvider>,
+    </ThemeProvider>
+    </React.Suspense>,
   document.getElementById('root'),
 );
 

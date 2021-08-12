@@ -3,16 +3,17 @@ import useAxios from 'axios-hooks'
 import {useAuthContext} from "./context";
 
 const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL;
+const theme_url = process.env.NEXT_PUBLIC_THEME_SOURCE;
 
 const apiInstance = axios.create({
     baseURL: axios_url
 })
-export const useSecureAPI = ({path='', data={}, method='post', header={}, manual=false}) => {
+export const useSecureAPI = ({path='', data={}, method='post', header={}, manual=false, baseURL=axios_url}) => {
     const context = useAuthContext();
     const storedToken = context.token;
     header.Authorization = `Bearer ${storedToken}`;
     return useAxios({
-        baseURL: axios_url,
+        baseURL: baseURL,
         url: path,
         headers: header,
         method: method
@@ -75,4 +76,8 @@ export const fetchCalendarData = async (changedData, url, token="", onChange=() 
 
   export const useIncrementProcess = (user) => {
       return useSecureAPI({path: '/milestone/increment', data: user, manual: true})
+}
+
+export const usePostTheme = (theme) => {
+  return useSecureAPI({ path: '/themer/2', data: theme, manual: true, baseURL: theme_url });
 }

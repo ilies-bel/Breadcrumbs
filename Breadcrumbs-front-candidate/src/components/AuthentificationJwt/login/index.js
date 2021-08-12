@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { PageDescription} from "Navigation";
+
 import {BrowserRouter as Switch, Route, useHistory, useRouteMatch, Redirect} from "react-router-dom";
-import { SignInGoogleBase, SignInLinkedinBase} from "littleComponents";
+
 import LoginEmailPage from "./loginEmail"
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import * as ROUTES from 'constants/routes';

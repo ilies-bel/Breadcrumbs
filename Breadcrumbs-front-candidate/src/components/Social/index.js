@@ -1,17 +1,17 @@
 import React from 'react';
 import {BrowserRouter as Router, Link, Route, useRouteMatch, Redirect} from 'react-router-dom';
-import {TitleSource} from "../Navigation/titleContext";
-import {SOCIAL_TITLE} from "../../constants/routes";
+import {TitleSource} from "Navigation/titleContext";
+import {SOCIAL_TITLE} from "constants/routes";
 import { Timeline, Tweet } from 'react-twitter-widgets';
 import TweetFeed from './tweets/index'
 import LinkedFeed from './linked/index'
-import Box from '@material-ui/core/Box';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+const Box = React.lazy(() => import('@material-ui/core/Box'));
+const Tabs = React.lazy(() => import('@material-ui/core/Tabs'));
+const Tab = React.lazy(() => import('@material-ui/core/Tab'));
 
-import Paper from '@material-ui/core/Paper';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
+const Paper = React.lazy(() => import('@material-ui/core/Paper'));
+const TwitterIcon = React.lazy(() => import('@material-ui/icons/Twitter'));
+const LinkedInIcon = React.lazy(() => import('@material-ui/icons/LinkedIn'));
 import {useAuthContext} from "components/AuthentificationJwt/context";
 import NotFound from "components/NotFound";
 
@@ -42,9 +42,11 @@ function TabPanel(props) {
         {...other}
       >
         {value === index && (
+          <React.Suspense fallback={<></> } >
           <Box p={3}>
             {children}
           </Box>
+          </React.Suspense>
         )}
       </div>
     );
@@ -67,6 +69,7 @@ const SocialPage = () => {
         <Router>
             <TitleSource>{SOCIAL_TITLE}</TitleSource>
 
+            <React.Suspense fallback={<p>Wait ...</p> } >
             <Paper >
                 
             <Tabs
@@ -83,6 +86,7 @@ const SocialPage = () => {
             </Tabs>
             
             </Paper>
+            </React.Suspense>
             
             <div>
                 <h1>Social</h1>

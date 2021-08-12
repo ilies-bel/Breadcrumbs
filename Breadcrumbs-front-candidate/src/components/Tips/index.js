@@ -1,24 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {TitleSource} from 'Navigation/titleContext'
 import {TitleDescriptionSource} from 'Navigation/descriptionContext';
 import {TIPS_TITLE} from "constants/routes";
 import {TIPS_DESCRIPTION} from "constants/description"
 
 import {makeStyles} from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
+const Accordion = React.lazy(() => import('@material-ui/core/Accordion'));
+const AccordionDetails = React.lazy(() => import('@material-ui/core/AccordionDetails'));
+const AccordionSummary = React.lazy(() => import("@material-ui/core/AccordionSummary"));
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+const ExpandMore = React.lazy(() => import('@material-ui/icons/ExpandMore'));
 
 import {useGetTips} from 'utils/axios';
 
 import {PageDescription} from "../Navigation";
-import {Grid} from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
+const Grid = React.lazy(() => import("@material-ui/core/Grid"));
 
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import { LinkedIn } from 'react-linkedin-login-oauth2';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +62,7 @@ const Tips = () => {
             <PageDescription>
                 {TIPS_DESCRIPTION}
             </PageDescription>
-            
+            <React.Suspense fallback={<CircularProgress/> } >
             {
                 data.map((tips, index) =>
                     <Accordion key={index}>
@@ -97,6 +94,7 @@ const Tips = () => {
                     </Accordion>
                 )
             }
+            </React.Suspense>
         </>
 
     );

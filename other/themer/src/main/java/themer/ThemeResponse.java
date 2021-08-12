@@ -2,10 +2,7 @@ package themer;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
-import themer.layouts.header;
-import themer.layouts.inputForm;
-import themer.layouts.mainBody;
-import themer.layouts.sidebar;
+import themer.layouts.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,6 +13,8 @@ public class ThemeResponse extends PanacheEntity {
     @ManyToOne
     public Entreprise entreprise;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    public Layout layout;
     @ManyToOne(cascade = CascadeType.PERSIST)
     public header header;
     @ManyToOne(cascade = CascadeType.PERSIST) @JsonAlias("mainBody")

@@ -3,8 +3,8 @@ import {useHistory} from 'react-router-dom';
 
 import * as ROUTES from 'constants/routes';
 
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+const BottomNavigation = React.lazy(() => import("@material-ui/core/BottomNavigation") );
+const BottomNavigationAction = React.lazy(() => import("@material-ui/core/BottomNavigationAction"));
 import {makeStyles} from "@material-ui/core/styles";
 
 import {useAuthContext} from "components/AuthentificationJwt/context";
@@ -41,6 +41,7 @@ const BottomNav = () => {
 
     if(!context.token && !context.linkedinCode) return ( <p>No access</p>)
     if(context.token || context.linkedinCode) return (
+        <React.Suspense fallback={<span className={classes.BottomNavigation} >Wait ...</span> } >
             <BottomNavigation
                 className={classes.BottomNavigation}
                 value={value}
@@ -79,6 +80,7 @@ const BottomNav = () => {
                                                 />}/>
 
             </BottomNavigation>
+            </React.Suspense>
 
     );
 
