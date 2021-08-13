@@ -1,12 +1,51 @@
 import React, { useContext, useReducer, useState } from "react";
 
-export const AuthContext = React.createContext({
+type payloadContextAction = {
+    token: string,
+    userName: string,
+    userLastName?: string,
+    profilePicture?: string,
+    linkedinCode?: string,
+
+    startDate: string,
+    endDate: string,
+
+    interlocutor: string,
+    interviewType?: string,
+    description: string,
+    location?: string,
+    onAppointment?: string,
+}
+type contextState = Objects.assign()
+{
+    token: string,
+    userName: string,
+    userLastName?: string,
+    profilePicture?: string,
+    linkedinCode?: string,
+
+    startDate: string,
+    endDate: string,
+
+    interlocutor: string,
+    interviewType?: string,
+    description: string,
+    location?: string,
+    onAppointment?: string,
+
+    dispatchUserData: () => void,
+    setAppointment: () => void,
+    setEnd: () => void,
+    setInteview: () => void,
+}
+
+const initialState: contextState = {
     token: null,
     userName: null,
     userLastName: null,
     profilePicture: null,
     linkedinCode: null,
-    
+
     startDate: null,
     endDate: null,
 
@@ -19,8 +58,10 @@ export const AuthContext = React.createContext({
     dispatchUserData: () => {},
     setAppointment: () => {},
     setEnd: () => {},
-    setInteview: () => {},
-});
+    setInteview: () => {}
+}
+
+export const AuthContext = React.createContext(initialState);
 
 export const useAuthContext = () => {
     return useContext(AuthContext);
@@ -35,7 +76,7 @@ export const useAuthContext = () => {
 export default function BigProvider(props) {
     const { token, user, lastName, dispatchUser, linkedinCode, picture, setLinkedinCode,
         startDate, endDate, setAppointment,
-        interlocutor, interviewDescription, interviewType, location, setInterview, dispatchInterview } = useAuthContextData();
+        interlocutor, interviewDescription, interviewType, location, dispatchInterview } = useAuthContextData();
 
     return (
         <AuthContext.Provider value={ {
@@ -62,7 +103,7 @@ export const useAuthContextData = () => {
     const [ lastName, setLast ] = useState(window.localStorage.getItem("last_name"));
     const [ picture, setPicture ] = useState(window.localStorage.getItem("picture_link"));
     const [linkedinCode, setLinkedinCode ] = useState(window.localStorage.getItem("link_code"))
-    const [ state, dispatchUser ] = useReducer(userDataReducer)
+    const [ state, dispatchUser ] = useReducer<any>(userDataReducer, initialState)
     
     const [ endDate, setEnd] = useState();
     const [ startDate, setStart] = useState();
@@ -108,19 +149,7 @@ export const useAuthContextData = () => {
                 throw new Error("reducer invalid");
         }        
     }
-    
-    /**
-     * Méthode qui sert à changer les caractéristiques d'un type d'interview : type, interlocuteur et description
-     * cette méthode est retourné parmi les states.
-     * TODO: remplacer par un useReducer.
-     * @param {*} param0 
-     */
-    function setInterview({type=null, interviewer=null, milestone_name=null, description="Votre prochain rendez-vous"}) {
-        setType(type);
-        interviewer && setInterlocutor(interviewer);
-        console.log(description);console.log("/description");
-        description != "Votre prochain rendez-vous" && setDescription(description);
-    }
+
 
     function interviewReducer(interviewState, action) {
         let payload = action.payload;
@@ -146,9 +175,8 @@ export const useAuthContextData = () => {
     return { token, user, lastName, linkedinCode, picture,
         setLinkedinCode, dispatchUser,
         interviewType, interviewDescription, interlocutor, onAppointment, location,
-        setInterview, dispatchInterview,
+         dispatchInterview,
         endDate, setEnd,
         startDate, setStart, 
-        setAppointment,
-        interlocutor, setInterlocutor }
+        setAppointment, setInterlocutor }
 }

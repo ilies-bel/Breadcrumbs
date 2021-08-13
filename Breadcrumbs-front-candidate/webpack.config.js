@@ -157,18 +157,18 @@ module.exports = (env, argv) => {
             ]),
 
         ],
-        optimization: {
-            minimize: true,
-            minimizer: [
+         optimization: {
+            minimize: !isProduction,
+            minimizer: isProduction ? [
                 new TerserPlugin({
                  parallel: true,
                     terserOptions: {
                      compress: {
-                         drop_console: false
+                         drop_console: true
                      }
                     }
              })
-            ]
+            ] : []
         },
         devServer: {
             port: 5000,
