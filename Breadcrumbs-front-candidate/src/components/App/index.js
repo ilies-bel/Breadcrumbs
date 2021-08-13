@@ -19,7 +19,7 @@ import {makeStyles} from "@material-ui/core";
 import LoginPage from "components/AuthentificationJwt/login/";
 import LoginEmailPage from "components/AuthentificationJwt/login/loginEmail";
 import OnBoardingPage from "components/AuthentificationJwt/signIn";
-import BigProvider, { AuthContext, useAuthContextData, useAuthContext } from 'components/AuthentificationJwt/context';
+import BigProvider, { AuthContext, useAuthContextData, useAuthContext } from 'utils/context';
 
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -29,10 +29,10 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
     const classes = useStyles();
-    const context = useAuthContext;
+    const context = useAuthContext();
 
-    // On commence par charger les données du context avant de les forunir depuis le BigProvider
-    const { token, profilePicture, linkedinCode, onConnect } = useAuthContextData();  
+    const token = context.token;
+
 
     return (
         <div>            
@@ -58,7 +58,6 @@ const App = () => {
                         { !token &&  <Route path="/login" component={LoginPage}/> }
                         
                     </MainNav>
-                    
                     <BottomNav/>
                 </BigProvider>
             </Router>

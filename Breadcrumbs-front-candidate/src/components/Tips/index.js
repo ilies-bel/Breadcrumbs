@@ -75,7 +75,6 @@ const Tips = () => {
 
                                 <Grid item xs={8}>
                                     <p className={classes.text}>{tips.title}</p>
-
                                 </Grid>
 
                                 <Grid item xs={2}>

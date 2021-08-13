@@ -6,13 +6,13 @@ import {HIRING_DESCRIPTION} from "constants/description";
 import {FlashyButton, PaperDiv, SpacingVertical} from "littleComponents";
 import { Calendar } from 'tabler-icons-react';
 import ConfirmationDialogRaw from './dialog/dialog';
-import { AuthContext, useAuthContext} from "../../AuthentificationJwt/context";
+import { AuthContext, useInterviewContext} from "../../../utils/context";
 import { useCancelAppointment } from 'utils/axios';
 import { HIRING_PROCESS } from 'constants/routes';
 
 const ConfirmPage = () => {
     const [modalOpen, setOpen] = useState(false);
-    const context = useAuthContext();
+    const context = useInterviewContext();
     const history = useHistory();
 
     const [{data: dataCancel}, execute] = useCancelAppointment(context.token, {

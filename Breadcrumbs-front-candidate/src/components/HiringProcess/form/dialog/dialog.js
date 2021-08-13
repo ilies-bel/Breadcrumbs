@@ -15,7 +15,7 @@ const Button = lazy(() => import('@material-ui/core/Button'));
 const EventAvailableOutlined = lazy(() => import('@material-ui/icons/EventAvailableOutlined'));
 
 import DateTime from "luxon/src/datetime";
-import { useAuthContext } from 'components/AuthentificationJwt/context';
+import { useInterviewContext } from 'utils/context';
 
 const optionsCalendar = ['Google calendar','Outlook',]
 
@@ -40,7 +40,7 @@ export default function ConfirmationDialogRaw(props) {
     google: false,
     outlook: false,
   });
-  const context = useAuthContext();
+  const context = useInterviewContext();
 
   const startTime = context.startDate;
   const endTime = context.endDate;

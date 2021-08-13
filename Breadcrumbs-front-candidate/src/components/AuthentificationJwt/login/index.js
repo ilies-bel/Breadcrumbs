@@ -5,7 +5,7 @@ import {BrowserRouter as Switch, Route, useHistory, useRouteMatch, Redirect} fro
 import LoginEmailPage from "./loginEmail"
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import * as ROUTES from 'constants/routes';
-import { useAuthContext } from "../context";
+import { useAuthContext } from "../../../utils/context";
 
 
 const LoginPage = () => {

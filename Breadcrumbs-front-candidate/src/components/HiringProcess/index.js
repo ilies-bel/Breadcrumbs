@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {BrowserRouter as Router, Link, NavLink, Redirect, Route, useRouteMatch, useHistory} from 'react-router-dom';
 
-import {TitleSource} from "../Navigation/titleContext";
+import {TitleSource} from "Navigation/titleContext";
 
 import {CONFIRM, DISPO, HIRING_PROCESS_TITLE, HIRING_PROCESS} from "constants/routes";
 
@@ -9,12 +9,13 @@ import HiringProcess from './hiring';
 import MilestonePage from './milestone'
 import SelectDate from './form/disponibilities';
 import ConfirmPage from './form/confirm';
-import {useGetMyAppointment, useGetProcess} from "../../utils/axios";
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useGetMyAppointment, useGetProcess} from "utils/axios";
+import {useInterviewContext} from "utils/context";
 import NotFound from "components/NotFound";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { PageDescription } from 'Navigation';
+import {useAuthContext} from "../../utils/context";
 
 const HiringProcessPage = (props) => {
     const {path, url} = useRouteMatch();
@@ -28,7 +29,7 @@ const HiringProcessPage = (props) => {
     return (
         <>
             <TitleSource>{HIRING_PROCESS_TITLE}</TitleSource>
-            <h2>Hey {authContext.userName} !</h2>
+            <h2>Hey {authContext.userFirstName} !</h2>
             <Router>
                 <div>
                 <Redirect to={`${url}/hiring`} />

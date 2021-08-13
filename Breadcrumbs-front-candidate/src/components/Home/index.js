@@ -3,7 +3,7 @@ import {compose} from 'recompose';
 
 import {withAuthorization, withEmailVerification} from '../AuthentificationFirebase/Session';
 import Messages from '../Messages';
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useAuthContext} from "utils/context";
 import NotFound from "components/NotFound";
 import {PageDescription} from "littleComponents";
 

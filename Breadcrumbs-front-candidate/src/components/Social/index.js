@@ -12,7 +12,7 @@ const Tab = React.lazy(() => import('@material-ui/core/Tab'));
 const Paper = React.lazy(() => import('@material-ui/core/Paper'));
 const TwitterIcon = React.lazy(() => import('@material-ui/icons/Twitter'));
 const LinkedInIcon = React.lazy(() => import('@material-ui/icons/LinkedIn'));
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useAuthContext} from "utils/context";
 import NotFound from "components/NotFound";
 
 const style = {

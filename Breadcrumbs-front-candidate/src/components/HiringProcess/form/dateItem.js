@@ -11,7 +11,7 @@ const AccordionSummary = React.lazy(() => import("@material-ui/core/AccordionSum
 const ExpandMore = React.lazy(() => import("@material-ui/icons/ExpandMore"));
 
 import { useCreateAppointment } from 'utils/axios';
-import {AuthContext, useAuthContext} from "../../AuthentificationJwt/context";
+import {AuthContext, InterviewContext, useInterviewContext} from "utils/context";
 import {FlashyButton} from "littleComponents";
 import { PageDescription } from 'Navigation';
 
@@ -19,7 +19,7 @@ import { PageDescription } from 'Navigation';
 export default function DateItem(props) {
     const history = useHistory();    
 
-    const context = useAuthContext();
+    const context = useInterviewContext();
     const token = window.localStorage.getItem("token");
     
     const day =  DateTime.fromISO(props.startDate).toFormat('dd MMMM yyyy')
@@ -35,7 +35,7 @@ export default function DateItem(props) {
     
     const handleConfirm = async() => {
 
-        await execute().then(res => context.setAppointment(props.startDate, props.endDate));
+        await execute().then(res => context.dispatchInterview({type: 'set-interview-data', payload: {startDate: props.startDate, endDate: props.endDate} }) /*context.setAppointment(props.startDate, props.endDate)*/);
 
         history.replace(CONFIRM)
     }
@@ -52,9 +52,9 @@ export default function DateItem(props) {
     }
     else {
         return (
-            <AuthContext.Consumer>
-            {({ setAppointment, setInterview}) => (
-                <React.Suspense fallback={<p>No data found</p>} >
+            <InterviewContext.Consumer>
+            {({ dispatchInterview}) => (
+                <React.Suspense fallback={<p></p>} >
                     <Accordion>
                         <AccordionSummary>
                         <span className="dayItem">{ day }</span>  <span className="timeItem">  | { startTime } to {endTime}</span> <ExpandMore/>             
@@ -77,8 +77,11 @@ export default function DateItem(props) {
 
                                 <FlashyButton onClick={() => {
                                     handleConfirm(props.startDate, props.endDate);
-                                    setInterview({ interviewer: props?.interlocutor?.first_name})
-                                    setAppointment(props.startDate, props.endDate);
+                                    dispatchInterview({ type: 'set-interview-data', payload: {
+                                            interlocutor: props?.interlocutor?.first_name,
+                                            startDate: props.startDate,
+                                            endDate: props.endDate
+                                    } })
                                 }} > Confirm appointment 
                                 </FlashyButton>
                             </PageDescription>
@@ -86,7 +89,7 @@ export default function DateItem(props) {
                     </Accordion>
                 </React.Suspense>
             )}
-            </AuthContext.Consumer>
+            </InterviewContext.Consumer>
         )
     }
 }

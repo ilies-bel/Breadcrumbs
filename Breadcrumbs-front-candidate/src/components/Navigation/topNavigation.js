@@ -7,11 +7,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/ToolBar";
+import Toolbar from "@material-ui/core/Toolbar";
 const AccountCircle = React.lazy(() => import( "@material-ui/icons/AccountCircle"));
 import {TitleTarget} from "./titleContext";
-import { AuthContext } from "components/AuthentificationJwt/context";
-import { useAuthContext } from "components/AuthentificationJwt/context";
+import { AuthContext } from "utils/context";
+import { useAuthContext } from "utils/context";
 import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +55,7 @@ const TopNav = () => {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 color="inherit"
-                                title={ !context.token ? "Sign in" : `signed in as ${context.userName} ${context.userLastName}` }
+                                title={ !context.token ? "Sign in" : `signed in as ${context.userFirstName} ${context.userLastName}` }
                                 onClick={() => history.push("/user/account")}
                             >
                                 { !context.profilePicture ? <AccountCircle/> : <Avatar alt="Photo de profil" src={ context.profilePicture } /> }
@@ -72,7 +72,7 @@ const TopNav = () => {
 /*
                 <ul>
                 <li>
-                <Link to={ROUTES.ACCOUNT}>Hello {authUser.username}</Link>
+                <Link to={ROUTES.ACCOUNT}>Hello {authUser.userFirstName}</Link>
                 </li>
                 <li>
                 <SignOutButton/>

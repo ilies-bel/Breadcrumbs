@@ -132,7 +132,7 @@ export default function AppEditor(props) {
                 </div>
 
                 { (checked && selectedLayout) &&
-                <ColorPicker theme={theme} selectedLayout={selectedLayout} dispatch={dispatch} />
+                <ColorPicker theme={theme}  selectedLayout={selectedLayout} dispatch={dispatch} />
                 }
 
                 <Dialog title="Changement de thème" open={openDialog} onClose={() => setDialog(false)} 

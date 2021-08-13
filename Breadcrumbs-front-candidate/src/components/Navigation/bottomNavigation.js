@@ -7,7 +7,7 @@ const BottomNavigation = React.lazy(() => import("@material-ui/core/BottomNaviga
 const BottomNavigationAction = React.lazy(() => import("@material-ui/core/BottomNavigationAction"));
 import {makeStyles} from "@material-ui/core/styles";
 
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useAuthContext} from "utils/context";
 import {Building, ClipboardList, InfoCircle, Social, School} from 'tabler-icons-react';
 
 const useStyles = makeStyles((theme) => ({

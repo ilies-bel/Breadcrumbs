@@ -13,7 +13,7 @@ import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
 
 import usePushNotifications from 'utils/usePushNotification.js';
-import { useAuthContext } from '../AuthentificationJwt/context';
+import { useAuthContext } from '../../utils/context';
 
 const useUser_info = () =>
     {
@@ -24,7 +24,7 @@ const useUser_info = () =>
 
           
         const [photo, setPhoto]= useState("https://upload.wikimedia.org/wikipedia/commons/0/04/Elon_Musk_and_Hans_Koenigsmann_at_the_SpaceX_CRS-8_post-launch_press_conference_%2826223624532%29_%28cropped%29.jpg")
-        const [first_name, setName]= useState(context.userName)
+        const [first_name, setName]= useState(context.userFirstName)
         const [last_name]= useState(context?.userLastName)
         const [email]= useState("iliesb.pro@gmail.com")
         const [notification_email, setNotifEmail]= useState(true)

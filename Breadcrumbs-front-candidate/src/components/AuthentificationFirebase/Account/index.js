@@ -36,7 +36,7 @@ const AccountPage = () => {
                         Account:
                         {authUser.email}
                     </h3>
-                    <h3>{authUser.username}</h3>
+                    <h3>{authUser.userFirstName}</h3>
                     <PasswordForgetForm/>
                     <PasswordChangeForm/>
                     <LoginManagement authUser={authUser}/>

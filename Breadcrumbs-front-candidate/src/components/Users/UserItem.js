@@ -65,7 +65,7 @@ class UserItem extends Component {
             <span>
               <strong>Username:</strong>
               {' '}
-              {user.username}
+              {user.userFirstName}
             </span>
             <span>
               <button

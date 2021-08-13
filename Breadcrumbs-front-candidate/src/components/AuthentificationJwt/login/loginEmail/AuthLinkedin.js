@@ -4,7 +4,7 @@ import axios from "axios";
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 
-import { useAuthContext } from "../../context";
+import { useAuthContext } from "../../../../utils/context";
 import "./login.scss"
 import { useHistory } from "react-router-dom";
 import * as ROUTES from 'constants/routes';
@@ -22,13 +22,7 @@ export default function LPopup() {
 
     const main_url = process.env.MAIN_URL
     const handleSuccess = async(data) => {
-        console.log(context.onConnect);console.log("context.onConnect")
-        context.setConnect(true);
         setCode(data.code); setError('');
-        context.setLinkedinCode(data.code);
-        context.setConnect(true);
-        console.log(context.onConnect);console.log("context.onConnect")
-        console.log(data.code)
         
         window.localStorage.setItem("link_code", data.code);
         axios.post(`/auth/linkedin`, {

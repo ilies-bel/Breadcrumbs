@@ -2,12 +2,13 @@ import { useParams ,useHistory } from 'react-router-dom';
 import {DISPO} from "constants/routes";
 import React from 'react';
 import {PageDescription, FlashyButton} from 'littleComponents';
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useInterviewContext} from "utils/context";
 
 
 function MilestonePage() {  
-  const authContext = useAuthContext();
+  const authContext = useInterviewContext();
   const history = useHistory();
+  console.log(authContext);console.log("/milestone.js context")
   
   return (
       <div>

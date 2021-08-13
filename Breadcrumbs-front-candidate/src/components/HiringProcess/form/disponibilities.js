@@ -9,7 +9,7 @@ import DateItem from './dateItem';
 
 import { useGetDisponibilities } from 'utils/axios'
 
-import { useAuthContext} from "../../AuthentificationJwt/context";
+import { useInterviewContext} from "../../../utils/context";
 
 const useStyles = makeStyles(theme => ({
     dispoInput: theme.element.button.big,
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const SelectDate = () => {
     const [{ data, loading, error }, execute] = useGetDisponibilities();
-    const context = useAuthContext();
+    const context = useInterviewContext();
 
     React.useEffect(() => {
         execute()

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {FlashyButton, PageDescription} from "Navigation";
 import {useHistory, Link} from "react-router-dom";
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useAuthContext} from "utils/context";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import { verify } from "jsonwebtoken";
@@ -53,11 +53,11 @@ const Login = () => {
                             localStorage.setItem("last_name", res.user?.last_name);
                             localStorage.setItem("token", res.token);
 
-                            context.dispatchUserData({ type: 'fill-user-data', 
+                            context.dispatchUserData({ type: 'fill-user-data',
                                                         payload: {
                                                             token: res.token,
-                                                            first_name: res.user.first_name,
-                                                            last_name: res.user.last_name
+                                                            userFirstName: res.user.first_name,
+                                                            userLastName: res.user.last_name
                                                         }
                                                     })
                         }

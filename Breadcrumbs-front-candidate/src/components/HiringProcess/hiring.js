@@ -2,10 +2,10 @@ import React from 'react';
 import {BrowserRouter as Link, useHistory,} from 'react-router-dom';
 import { DateTime } from "luxon";
 
-import {HIRING_PROCESS_TITLE, DISPO, RESERVATION, CONFIRM} from "../../constants/routes";
-import {HIRING_DESCRIPTION} from "../../constants/description";
+import {HIRING_PROCESS_TITLE, DISPO, RESERVATION, CONFIRM} from "constants/routes";
+import {HIRING_DESCRIPTION} from "constants/description";
 
-import {TitleDescriptionSource} from "../Navigation/descriptionContext"
+import {TitleDescriptionSource} from "Navigation/descriptionContext"
 import { PageDescription } from 'littleComponents';
 
 const ButtonBase = React.lazy(() => import( '@material-ui/core/ButtonBase') )
@@ -15,15 +15,16 @@ const InsertInvitationOutlinedIcon = React.lazy(() =>  import('@material-ui/icon
 import './hiring.scss';
 import { useGetProcess, useGetMilestone, useGetMyAppointment } from 'utils/axios';
 import {HelpOutline} from "@material-ui/icons";
-import {useAuthContext} from "components/AuthentificationJwt/context";
+import {useInterviewContext, useAuthContext } from "utils/context";
 
 const HiringProcess = () => {
     const history = useHistory();
     
     const [{ data, loading, error }, executeMilestone] = useGetMilestone();
-    const context = useAuthContext();
+    const context = useInterviewContext();
+    const authContext = useAuthContext();
     
-    const [{ data: appointmentData, loading: appointmentLoading, error: errorAppointment }, executeAppointment ] = useGetMyAppointment(context.token);
+    const [{ data: appointmentData, loading: appointmentLoading, error: errorAppointment }, executeAppointment ] = useGetMyAppointment(authContext.token);
 
     React.useEffect(() => {
         executeMilestone()
