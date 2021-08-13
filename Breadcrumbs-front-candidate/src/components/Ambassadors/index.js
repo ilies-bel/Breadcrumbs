@@ -48,8 +48,8 @@ const AmbassadorsPage = () => {
                 aria-label="full width tabs example"
                 >
 
-                <Tab style={ value===0 ? style.tab : {}} label={<Link style={ style.link} to={`${url}/ambassadors`}>Ambassadors</Link>} />
-                <Tab style={ value===1 ? style.tab : {}} label={<Link style={ style.link} to={`${url}/questions`}>Questions</Link>} />
+                <Tab style={ value===0 ? style.tab : {}} label={<Link style={ style.link} to={`${url}/ambassadors`} replace >Ambassadors</Link>} />
+                <Tab style={ value===1 ? style.tab : {}} label={<Link style={ style.link} to={`${url}/questions`} replace >Questions</Link>} />
             </Tabs>
                 <PageDescription>{AMBASSADORS_DESCRIPTION}</PageDescription>
 

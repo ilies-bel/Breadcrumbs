@@ -33,9 +33,13 @@ const BottomNav = () => {
     const [value, setValue] = React.useState(0);
 
     const history = useHistory();
+    const location = history.location.pathname;
+    // On considère la page ROUTES.HIRING_PROCESS comme étant la page d'accuil
+    const onHomePage = location.search(/hiring/) > 0;
 
     const handleChange = (event, newValue) => {
-        history.replace(newValue);
+        onHomePage ? history.push(newValue) : history.replace(newValue);
+        newValue.search(/hiring/) > 0 && history.goBack()
         setValue(newValue);
     };
 
