@@ -13,9 +13,10 @@ import { HIRING_PROCESS } from 'constants/routes';
 const ConfirmPage = () => {
     const [modalOpen, setOpen] = useState(false);
     const context = useInterviewContext();
+    const authContext = useInterviewContext();
     const history = useHistory();
 
-    const [{data: dataCancel}, execute] = useCancelAppointment(context.token, {
+    const [{data: dataCancel}, execute] = useCancelAppointment(authContext.token, {
         startDate: context.startDate,
         endDate: context.endDate
     });

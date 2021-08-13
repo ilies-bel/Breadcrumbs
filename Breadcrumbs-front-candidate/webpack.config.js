@@ -158,7 +158,7 @@ module.exports = (env, argv) => {
 
         ],
          optimization: {
-            minimize: !isProduction,
+            minimize: isProduction,
             minimizer: isProduction ? [
                 new TerserPlugin({
                  parallel: true,
