@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, useHistory } from 'react-router-dom';
-import { DateTime } from "luxon";
+//TODO: remplacer luxon par day.js pour alléger la stack ( npm install dayjs )
+import { DateTime } from "luxon/src/luxon";
 
 import {CONFIRM, DISPO} from 'constants/routes';
 
@@ -9,6 +10,7 @@ const AccordionDetails = React.lazy(() => import('@material-ui/core/AccordionDet
 const AccordionSummary = React.lazy(() => import("@material-ui/core/AccordionSummary"));
 
 const ExpandMore = React.lazy(() => import("@material-ui/icons/ExpandMore"));
+
 
 import { useCreateAppointment } from 'utils/axios';
 import {AuthContext, InterviewContext, useInterviewContext} from "utils/context";

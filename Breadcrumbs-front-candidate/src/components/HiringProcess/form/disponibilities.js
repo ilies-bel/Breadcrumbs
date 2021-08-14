@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { PageDescription } from 'Navigation';
@@ -9,14 +8,7 @@ import DateItem from './dateItem';
 
 import { useGetDisponibilities } from 'utils/axios'
 
-import { useInterviewContext} from "../../../utils/context";
-
-const useStyles = makeStyles(theme => ({
-    dispoInput: theme.element.button.big,
-    link: theme.element.link.secondary,
-    
-}))
-
+import { useInterviewContext} from "utils/context";
 
 const SelectDate = () => {
     const [{ data, loading, error }, execute] = useGetDisponibilities();

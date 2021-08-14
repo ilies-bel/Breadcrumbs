@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Link, useHistory,} from 'react-router-dom';
-import { DateTime } from "luxon";
+import { DateTime } from "luxon/src/luxon";
 
 import {HIRING_PROCESS_TITLE, DISPO, RESERVATION, CONFIRM} from "constants/routes";
 import {HIRING_DESCRIPTION} from "constants/description";
@@ -17,6 +17,7 @@ import { useGetProcess, useGetMilestone, useGetMyAppointment } from 'utils/axios
 import {HelpOutline} from "@material-ui/icons";
 import {useInterviewContext, useAuthContext } from "utils/context";
 
+
 const HiringProcess = () => {
     const history = useHistory();
     
@@ -25,6 +26,7 @@ const HiringProcess = () => {
     const authContext = useAuthContext();
     
     const [{ data: appointmentData, loading: appointmentLoading, error: errorAppointment }, executeAppointment ] = useGetMyAppointment(authContext.token);
+
 
     React.useEffect(() => {
         executeMilestone()

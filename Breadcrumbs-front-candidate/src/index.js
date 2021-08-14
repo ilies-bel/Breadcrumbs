@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/index';
 
 import {createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 //const ThemeProvider = React.lazy(() => import('@material-ui/core/styles').then((module) => module.MuiThemeProvider) )
@@ -86,9 +86,9 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.Suspense fallback={<div>Wait ...</div>} >
-    <ThemeProvider theme={theme}>
+
       <App />
-    </ThemeProvider>
+
     </React.Suspense>,
   document.getElementById('root'),
 );

@@ -13,7 +13,8 @@ import {TitleSource} from "Navigation/titleContext";
 import {AMBASSADORS_TITLE} from "constants/routes";
 
 import usePushNotifications from 'utils/usePushNotification.js';
-import { useAuthContext } from '../../utils/context';
+import { useAuthContext } from 'utils/context';
+import { usePostTheme } from 'utils/eventSource';
 
 const useUser_info = () =>
     {
@@ -50,6 +51,8 @@ const AccountPage = props => {
         loading
       } = usePushNotifications();
 
+      
+    const {data: dataTheme, error: errorTheme } = usePostTheme();
 
     const {first_name, last_name, setName, notification_push, setPush, notification_email} = useUser_info();
     useEffect(() => {
