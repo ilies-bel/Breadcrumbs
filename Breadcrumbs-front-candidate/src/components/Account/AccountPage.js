@@ -30,8 +30,13 @@ const useUser_info = () =>
         const [email]= useState("iliesb.pro@gmail.com")
         const [notification_email, setNotifEmail]= useState(true)
         const [notification_push, setPush]= useState(userSubscription!=null);
+        const [synchronisation, setSynchro]= useState(false);
 
-        return {photo, setPhoto, first_name, setName, last_name, email, notification_push, setPush, notification_email, setNotifEmail}
+        return {photo, setPhoto,
+            first_name, setName, last_name,
+            email, notification_push, setPush,
+            notification_email, setNotifEmail,
+            synchronisation, setSynchro }
     }
 
 const onSendPasswordResetEmail = () => {
@@ -52,18 +57,23 @@ const AccountPage = props => {
       } = usePushNotifications();
 
       
-    const {data: dataTheme, error: errorTheme } = usePostTheme();
+    
 
-    const {first_name, last_name, setName, notification_push, setPush, notification_email} = useUser_info();
+    const {first_name, last_name, setName, notification_push, setPush, notification_email, synchronisation, setSynchro} = useUser_info();
     useEffect(() => {
         setPush(userSubscription!=null);
     }, [userSubscription])
+
+    const {data: dataTheme, error: errorTheme } = usePostTheme(synchronisation);
 
     async function togglePushNotification() {
         onClickAskUserPermission();
 
         !userSubscription ? await onClickSusbribeToPushNotification() : ClickToUnsubscribe();
         console.log("user dbsbsbns");console.log(userSubscription); console.log("/user dbsbsbns");
+    }
+    function toggleSynchro() {
+        setSynchro(previousState => !previousState)
     }
 
     return (
@@ -75,6 +85,7 @@ const AccountPage = props => {
                 <h2 className={"main_title"}>
                     Personal information
                 </h2>
+                <h3>{ dataTheme ? (dataTheme.main?.theme?.bgColor ?? "No bg Color") : "no data" }</h3>
 
                 <form>
                     <Suspense fallback={<CircularProgress />}>
@@ -144,7 +155,7 @@ const AccountPage = props => {
                             PUSH NOTIFICATIONS
                         </h3>
 
-                        {<FormControlLabel
+                        <FormControlLabel
                             value="start"
                             control={   
                                 <Switch
@@ -159,7 +170,20 @@ const AccountPage = props => {
                                                           : `Allow Breadcrumbs to send push notifications`
                                                         }
                             labelPlacement="start"
-                        />}
+                        />
+                        <FormControlLabel
+                            value="start"
+                            control={   
+                                <Switch
+                                    checked={synchronisation}
+                                    onChange={toggleSynchro}
+                                    color="primary"
+                                    name="synchronisation"
+                                    inputProps={{'aria-label': 'enable synchronisation'}}/>
+                                }
+                            label={ synchronisation ? `Synchronisation enabeld` : `Synchronisation disabled`}
+                            labelPlacement="start"
+                        />
 
                     </div>
 

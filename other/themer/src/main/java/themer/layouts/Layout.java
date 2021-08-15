@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Cacheable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Layout extends PanacheEntityBase {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     public Themer theme;
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_lay;

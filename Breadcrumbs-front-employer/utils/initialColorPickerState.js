@@ -1,15 +1,15 @@
 export const initialColorPickerState = {
     header: {
-        bgColor: "royalblue", fontColor: "red"
+        theme: { bgColor: "royalblue", fontColor: "red"}
     },
     sidebar: {
-        bgColor: "red", fontColor: "royalblue"
+        theme: { bgColor: "red", fontColor: "royalblue"}
     },
     mainBody: {
-        bgColor: "royalblue", fontColor: "black"
+        theme: { bgColor: "royalblue", fontColor: "black"}
     },
     button: {
-        bgColor: "royalblue", fontColor: "black"
+        theme: { bgColor: "royalblue", fontColor: "black"}
     }
 }
 

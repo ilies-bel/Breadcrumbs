@@ -10,9 +10,6 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class processorresource {
 
-
-    @Incoming("layout")
-    @Blocking
     public Layout pprocess(Layout layout) {
         return layout;
     }

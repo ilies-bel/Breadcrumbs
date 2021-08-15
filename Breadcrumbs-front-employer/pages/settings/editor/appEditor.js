@@ -64,8 +64,8 @@ export default function AppEditor(props) {
         await setPicker(false)
         
         setSelected(layout)
-        setColor( state?.[layout]?.bgColor )
-        setFontColor( state?.[layout]?.fontColor);
+        setColor( state?.[layout]?.theme.bgColor )
+        setFontColor( state?.[layout]?.theme.fontColor);
 
         setPicker(true)
     }
@@ -101,11 +101,11 @@ export default function AppEditor(props) {
                                   strokeWidth={4}/>
 
                             <Rect layoutName="header"  {...mouseEventsProps("header") }
-                                  x={4} y={30} width={stageSize.width-8} height={100} fill={ state.header.bgColor ?? "royalblue"}
+                                  x={4} y={30} width={stageSize.width-8} height={100} fill={ state.header.theme.bgColor ?? "royalblue"}
                                   />
                             <Text {...mouseEventsProps}
                                   text="Welcome" x={60} y={60} 
-                                  fontFamily="Roboto" fontSize={40} fill={ state.header.fontColor ?? "white"}
+                                  fontFamily="Roboto" fontSize={40} fill={ state.header.theme.fontColor ?? "white"}
                                   layoutName="header"/>
 
                             <Rect layoutName="mainBody"  {...mouseEventsProps("mainBody") }
@@ -114,32 +114,32 @@ export default function AppEditor(props) {
 
                             <Rect layoutName="mainBody"  {...mouseEventsProps("header") }
                                   cornerRadius={15}
-                                  x={60} y={250} width={250} height={100} fill={ state.mainBody.bgColor ?? "royalblue"}
+                                  x={60} y={250} width={250} height={100} fill={ state.mainBody.theme.bgColor ?? "royalblue"}
                                   />
-                            <Circle  x={40} y={300} width={20} fill={ "white"} stroke={ state.mainBody.bgColor ?? "royalblue"} strokeWidth={4} />
+                            <Circle  x={40} y={300} width={20} fill={ "white"} stroke={ state.mainBody.theme.bgColor ?? "royalblue"} strokeWidth={4} />
                             <Text {...mouseEventsProps}
                                   layoutName="mainBody"
                                   text="Milestone" x={80} y={280}
                                   fontFamily="Roboto" fontSize={40}
-                                  fill={ state.mainBody.fontColor ?? "black"}/>
+                                  fill={ state.mainBody.theme.fontColor ?? "black"}/>
                         
                         </Layer>
 
                             <Layer x={2} y={stageSize.height-100}>
-                            <Line points={[ 4, 0, stageSize.width-4, 0 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
+                            <Line points={[ 4, 0, stageSize.width-4, 0 ]} stroke={ state.sidebar.theme.bgColor ?? 'red'}/>
                             
                             <Rect x={35} y={25} width={15} height={30} fill="white"
                                   layoutName="sidebar"
-                                  stroke={ state.sidebar.fontColor ?? "black"} strokeWidth={2}
+                                  stroke={ state.sidebar.theme.fontColor ?? "black"} strokeWidth={2}
                                   { ...mouseEventsProps("sidebar")}/>
-                            <Line points={ [35, 30, 47, 38, 59, 45, 60, 50]} stroke={ state.sidebar?.fontColor ?? "black"} strokeWidth={2} />
+                            <Line points={ [35, 30, 47, 38, 59, 45, 60, 50]} stroke={ state.sidebar?.theme.fontColor ?? "black"} strokeWidth={2} />
                                   
                             <Text {...mouseEventsProps("sidebar") }
                                   layoutName="sidebar"        
                                   text="Application" x={20} y={70} width={100}
                                   fontFamily="Roboto" fontSize={15}
-                                  fill={ state.sidebar.fontColor ?? "black"}/>
-                            <Line points={[ 110, 5, 110, 90 ]} stroke={ state.sidebar.bgColor }/>
+                                  fill={ state.sidebar.theme.fontColor ?? "black"}/>
+                            <Line points={[ 110, 5, 110, 90 ]} stroke={ state.sidebar.theme.bgColor }/>
                             </Layer>
 
 
@@ -154,7 +154,7 @@ export default function AppEditor(props) {
                 }
 
                 <Dialog title="Changement de thème" open={openDialog} onClose={() => setDialog(false)} 
-                onConfirm={onConfirm} >
+                onConfirm={() => { onConfirm(); setDialog(false)}} >
                     Enregistrer le thème pour le candidat.
                     Fonctionnalité non-disponible.
                 </Dialog>

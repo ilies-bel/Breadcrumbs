@@ -86,9 +86,9 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.Suspense fallback={<div>Wait ...</div>} >
-
+    <ThemeProvider>
       <App />
-
+      </ThemeProvider>
     </React.Suspense>,
   document.getElementById('root'),
 );

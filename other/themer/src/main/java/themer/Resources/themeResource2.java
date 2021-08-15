@@ -3,6 +3,7 @@ package themer.Resources;
 import io.quarkus.hibernate.reactive.panache.Panache;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Sort;
 import io.smallrye.common.annotation.Blocking;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -19,8 +20,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Duration;
 import java.util.List;
 
+@ApplicationScoped
 @Path("/themer")
 public class themeResource2 {
     @GET
@@ -45,9 +48,7 @@ public class themeResource2 {
     @GET
     @Path("/2")
     public Uni<List<PanacheEntityBase>> getTheme2() {
-        Themer themer = new Themer("yellow", "orange", 30, "bold");
-
-        Uni<List<PanacheEntityBase>> theme = Themer.listAll();
+        Uni<List<PanacheEntityBase>> theme = ThemeResponse.listAll(Sort.by("timestamp").descending());
         return theme;
     }
 
@@ -66,22 +67,30 @@ public class themeResource2 {
     }
 
     @POST
-    @Path("/1")
-    public Multi<ThemeResponse> postdTheme(Themer theme) {
-        ThemeResponse tr = new ThemeResponse();
-        header he = new header();
-        he.theme = theme;
-        tr.header = he;
-
-        return Multi.createFrom().item(tr).onItem().call(item -> Panache.withTransaction(tr::persist));
-    }
-    @POST
     @Path("/2")
     public Multi<ThemeResponse> postTheme2(Layout layout) {
         ThemeResponse tr = new ThemeResponse();
         System.out.println(layout.getClass());
 
         return Multi.createFrom().item(tr).onItem().call(item -> Panache.withTransaction(tr::persist));
+    }
+    @POST
+    @Path("/employerToCandidate")
+    public Multi<ThemeResponse> postTheme(ThemeResponse theme) {
+        return Multi.createFrom().item(theme).onItem().call(item -> Panache.withTransaction(theme::persist));
+    }
+    @GET
+    @Path("/candidateWant")
+    @Blocking
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    public Multi<List<PanacheEntityBase>> getThemeCandidate() {
+        Multi<List<PanacheEntityBase>> theme = ThemeResponse.listAll(Sort.by("timestamp").descending()).toMulti();
+        return theme
+                .onItem().call(i ->
+                        // Delay the emission until the returned uni emits its item
+                        Uni.createFrom().nullItem().onItem().delayIt().by(Duration.ofSeconds(2)))
+                .onFailure().invoke(e -> System.out.println( "Erreur inconnu : "+e))
+                .onCompletion().invoke(theme::onCompletion);
     }
 
 }

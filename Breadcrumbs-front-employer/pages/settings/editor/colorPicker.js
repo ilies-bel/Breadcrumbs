@@ -27,14 +27,16 @@ export default function ColorPicker(props) {
                 <HexColorInput color={color}
                                onChange={(newColor) => {
                                    setColor(newColor);
-                                   dispatch({ type: selectedLayout , payload: { bgColor: newColor } })
+                                   dispatch({ type: selectedLayout , payload: { bgColor: newColor} } )
                                }  }
                                className="focus:ring-royalblue focus:border-royalblue w-32 border-2 border-gray-300 rounded-md text-2xl text-center font-roboto"
                                prefixed/>
                 <select defaultValue={color} onChange={(e) => {
-                                const newColor = e.target.value
+                                const inputValue = e.target.value
+                                const newColor = colorsMap.find(o => o.name===inputValue ).value
                                 console.log(newColor)
-                                setColor(colorsMap.find(o => o.name===newColor).value);
+                                console.log(newColor)
+                                setColor(newColor);
                                 dispatch({ type: selectedLayout , payload: { bgColor: newColor } })
                         }}
                     >
@@ -57,7 +59,8 @@ export default function ColorPicker(props) {
                     setFontColor(newColor);
                     dispatch({ type: selectedLayout , payload: { fontColor: newColor } })
                 }  }
-                               className="focus:ring-royalblue focus:border-royalblue w-32 border-2 border-gray-300 rounded-md text-2xl text-center font-roboto"
+                               className="focus:ring-royalblue focus:border-royalblue w-32 border-2 
+                                        border-gray-300 rounded-md text-2xl text-center font-roboto"
                                prefixed/>
 
                 <SelectDropdown onChange={(e) => console.log(e.target.value) } currentColor={color}
