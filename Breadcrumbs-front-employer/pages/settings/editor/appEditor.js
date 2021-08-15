@@ -4,16 +4,18 @@ import {HexColorPicker, HexColorInput} from "react-colorful";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { usePostTheme } from "utils/axios";
+import { initialColorPickerState } from './editor/initialColorPickerState';
 
 const Stage = dynamic(() => import('react-konva').then((module) => module.Stage), {ssr: false});
 const Layer = dynamic(() => import('react-konva').then((module) => module.Layer), {ssr: false});
 const Rect = dynamic(() => import('react-konva').then((module) => module.Rect), {ssr: false});
 const Text = dynamic(() => import('react-konva').then((module) => module.Text), {ssr: false});
 const Line = dynamic(() => import('react-konva').then((module) => module.Line), {ssr: false});
+const Circle = dynamic(() => import('react-konva').then((module) => module.Circle), {ssr: false});
 
 import {ArrowBackUp} from "tabler-icons-react";
-import {drawerReducer} from "../../../utils/themeReducer";
-import Dialog from "../../../components/Dialog";
+import {drawerReducer} from "utils/themeReducer";
+import Dialog from "components/Dialog";
 import ColorPicker from './colorPicker';
 
 
@@ -23,36 +25,28 @@ export default function AppEditor(props) {
     const [stageSize] = useState({width: 375, height: 800});
     const [color, setColor] = useState("#aabbcc");
     const [fontColor, setFontColor] = useState("#aabbcc");
-    const [selectedLayout, setSelected] = useState("")
+    const [selectedLayout, setSelected] = useState("header")
 
     const [checked, setChecked] = useState(false);
     const [toggling, setToggling] = useState(false);
     const [ pointer, setPointer] = useState(false);
 
     const [ openDialog, setDialog ] = React.useState(false)
+    const [ openPicker, setPicker ] = React.useState(false)
     const [ cancelDialog, setCancelDialog ] = React.useState(false)
 
     const [ { loading }, execute ] = usePostTheme()
 
-    const colorPickerState = {
-        header: {
-            bgColor: "royalblue", fontColor: false
-        },
-        sidebar: {
-            bgColor: "red", fontColor: false
-        },
-        mainBody: {
-            bgColor: "white", fontColor: false
-        }
-    }
-    const [state, dispatch ] = drawerReducer(colorPickerState);
+    //TODO: l'état initial doit être les données récupéreés depuis le back
+    
+    const [state, dispatch ] = drawerReducer(initialColorPickerState);
 
 
     //Si le switch est activé, on active les événements passés en props
-    const mouseEventsProps = (layout) => checked && {
-        onMouseOver:  ()=> setPointer(true),
-        onMouseLeave: () => setPointer(false),
-        onClick: () => setSelected(layout)
+    const mouseEventsProps = (event) => checked && {
+        onMouseOver:  (event)=> setPointer(true),
+        onMouseLeave: (event) => setPointer(false),
+        onClick: (event) => selectAnother(event.target?.attrs?.layoutName)
     }
 
     const toggleChecked = async () => {
@@ -64,6 +58,16 @@ export default function AppEditor(props) {
 
     function onConfirm(data) {
         execute({data: state}).then(res => console.log(res.data)).catch(e => console.error(e))
+    }
+
+    async function selectAnother(layout) {
+        await setPicker(false)
+        
+        setSelected(layout)
+        setColor( state?.[layout]?.bgColor )
+        setFontColor( state?.[layout]?.fontColor);
+
+        setPicker(true)
     }
 
     return (
@@ -96,17 +100,27 @@ export default function AppEditor(props) {
                             <Rect x={0} y={0} width={stageSize.width} height={stageSize.height} stroke="black"
                                   strokeWidth={4}/>
 
-                            <Rect className="Header"  {...mouseEventsProps("header") }
-                                  x={4} y={30} width={300} height={100} fill={ state.header.bgColor ?? "royalblue"}
-                                  />
-                            <Text {...mouseEventsProps} text="Welcome" x={30} y={50} fontFamily="Roboto" fontSize={50} fill={ state.header.fontColor ?? "white"}/>
-
-                            <Rect className="MainBody"  {...mouseEventsProps("mainBody") }
-                                  x={4} y={140} width={stageSize.width-8} height={550} fill={ state.mainBody.bgColor ?? "white"}
+                            <Rect layoutName="header"  {...mouseEventsProps("header") }
+                                  x={4} y={30} width={stageSize.width-8} height={100} fill={ state.header.bgColor ?? "royalblue"}
                                   />
                             <Text {...mouseEventsProps}
-                                  text="some text" x={30} y={250}
-                                  fontFamily="Roboto" fontSize={50}
+                                  text="Welcome" x={60} y={60} 
+                                  fontFamily="Roboto" fontSize={40} fill={ state.header.fontColor ?? "white"}
+                                  layoutName="header"/>
+
+                            <Rect layoutName="mainBody"  {...mouseEventsProps("mainBody") }
+                                  x={4} y={140} width={stageSize.width-8} height={550} fill={ "white"}
+                                  />
+
+                            <Rect layoutName="mainBody"  {...mouseEventsProps("header") }
+                                  cornerRadius={15}
+                                  x={60} y={250} width={250} height={100} fill={ state.mainBody.bgColor ?? "royalblue"}
+                                  />
+                            <Circle  x={40} y={300} width={20} fill={ "white"} stroke={ state.mainBody.bgColor ?? "royalblue"} strokeWidth={4} />
+                            <Text {...mouseEventsProps}
+                                  layoutName="mainBody"
+                                  text="Milestone" x={80} y={280}
+                                  fontFamily="Roboto" fontSize={40}
                                   fill={ state.mainBody.fontColor ?? "black"}/>
                         
                         </Layer>
@@ -115,15 +129,17 @@ export default function AppEditor(props) {
                             <Line points={[ 4, 0, stageSize.width-4, 0 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
                             
                             <Rect x={35} y={25} width={15} height={30} fill="white"
+                                  layoutName="sidebar"
                                   stroke={ state.sidebar.fontColor ?? "black"} strokeWidth={2}
                                   { ...mouseEventsProps("sidebar")}/>
-                            <Line points={ [35, 30, 47, 38, 59, 45, 60, 50]} stroke={ state.sidebar.fontColor ?? "black"} strokeWidth={2} />
+                            <Line points={ [35, 30, 47, 38, 59, 45, 60, 50]} stroke={ state.sidebar?.fontColor ?? "black"} strokeWidth={2} />
                                   
-                            <Text {...mouseEventsProps("sidebar") }                 
+                            <Text {...mouseEventsProps("sidebar") }
+                                  layoutName="sidebar"        
                                   text="Application" x={20} y={70} width={100}
                                   fontFamily="Roboto" fontSize={15}
                                   fill={ state.sidebar.fontColor ?? "black"}/>
-                            <Line points={[ 110, 5, 110, 90 ]} stroke={ state.sidebar.bgColor ?? 'red'}/>
+                            <Line points={[ 110, 5, 110, 90 ]} stroke={ state.sidebar.bgColor }/>
                             </Layer>
 
 
@@ -131,8 +147,10 @@ export default function AppEditor(props) {
                     </Stage>
                 </div>
 
-                { (checked && selectedLayout) &&
-                <ColorPicker theme={theme}  selectedLayout={selectedLayout} dispatch={dispatch} />
+                { (checked && openPicker) &&
+                <ColorPicker theme={theme}
+                            initialBgColor={color} initialFontColor={fontColor}
+                            selectedLayout={selectedLayout} dispatch={dispatch} />
                 }
 
                 <Dialog title="Changement de thème" open={openDialog} onClose={() => setDialog(false)} 

@@ -79,5 +79,5 @@ export const fetchCalendarData = async (changedData, url, token="", onChange=() 
 }
 
 export const usePostTheme = (theme) => {
-  return useSecureAPI({ path: '/themer/2', data: theme, manual: true, baseURL: theme_url });
+  return useSecureAPI({ path: '/themer/employerToCandidate', data: theme, manual: true, baseURL: theme_url });
 }

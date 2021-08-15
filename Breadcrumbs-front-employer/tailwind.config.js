@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "royalblue": "#3572F1"
+        "royalblue": "#3572F1",
+        "royalblue-500": "#3572F1"
       }   
     },
     fontFamily: {

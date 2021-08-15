@@ -37,7 +37,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "components/Formulaire/Select.js", "components/Formulaire/Select/Option.js"  ],
   "exclude": [
     "node_modules"
   ]
