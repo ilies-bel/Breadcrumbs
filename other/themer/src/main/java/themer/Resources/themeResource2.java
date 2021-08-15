@@ -74,11 +74,24 @@ public class themeResource2 {
 
         return Multi.createFrom().item(tr).onItem().call(item -> Panache.withTransaction(tr::persist));
     }
+
+
+    /**
+     * Permet à l'employer de poster le thème de l'app candidate
+     * @param theme
+     * @return
+     */
     @POST
     @Path("/employerToCandidate")
     public Multi<ThemeResponse> postTheme(ThemeResponse theme) {
         return Multi.createFrom().item(theme).onItem().call(item -> Panache.withTransaction(theme::persist));
     }
+
+
+    /**
+     * Envoie le thème au navigateur du candidat.
+     * @return une server-sent-request qui s'envoie toute les minutes
+     */
     @GET
     @Path("/candidateWant")
     @Blocking

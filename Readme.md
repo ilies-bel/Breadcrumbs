@@ -12,7 +12,7 @@ Prérequis :
 2. Vérifier que JAVA_HOME est bien configuré et point bien vers un JDK
 3. Dans le fichier application.properties (.\src\main\resources\application.properties) :
     - Commenter cette configuration pour que le dev server utilise sa propre base de données.
-        - > #quarkus.datasource.jdbc.url=jdbc\:postgresql\://breadcrumbs-api-core-database\:5432/Breadcrumbs_api_core_development
+        - > quarkus.datasource.jdbc.url=jdbc\:postgresql\://breadcrumbs-api-core-database\:5432/Breadcrumbs_api_core_development
 3. Lancer :
     - > ./mvnw compile quarkus:dev
 4. Dans un navigateur, aller à l'adresse : [http://localhost:8080/api/tips]() pour tester que tout fonctionne
@@ -47,7 +47,13 @@ Le dev server de l'app candidate devrait être lancé.
     - password: password
    
 ---
-Si ces 3 dev server se sont lancé correctement, et qu'on peut les voir via un navigateur avec les liens suggérés, cela signifie qu'ils sont opérationnels **et qu'ils peuvent communiquer entre eux**.
+
+### API Quarkus du thème
+1. Se placer dans le répertoire ./other/themer.
+2. Lancer la commande
+   - > ./mvnw compile quarkus:dev
+3. Dans un navigateur, aller sur [http://localhost:8081/theme]()
+Si ces dev server se sont lancé correctement, et qu'on peut les voir via un navigateur avec les liens suggérés, cela signifie qu'ils sont opérationnels **et qu'ils peuvent communiquer entre eux**.
 
 # Environnement de production
 L'environnement de développement est gérer par le sous-projet breadcrumbs-traefik, dans lequel sont indiquées les étapes à suivre pour la mise en place de cet environnement.

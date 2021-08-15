@@ -34,6 +34,12 @@ Il faut faire un build du projet quarkus avant de son image docker.
 2. Se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
 - >./mvnw package -DskipTests
 
+### API Quarkus thème
+Il faut faire un build du projet quarkus avant de son image docker.
+1. Dans le fichier application.properties (.\src\main\resources\application.properties) :
+2. Se placer à la racine du projet breadcrumbs-quarkus et lancer la commande :
+- >./mvnw package -DskipTests
+
 
 ## Lancer le projet traefik
 1. Modifier les variables d'environnements comme indiqués ci-dessus
@@ -42,6 +48,4 @@ Il faut faire un build du projet quarkus avant de son image docker.
         - > docker-compose up --build
 3. Se rendre à l'adresse de la PWA définit dans le fichier .env.
     - Dans cet exemple, ce rendre à [breadcrumb.pwa.fr](https://breadcrumb.pwa.fr)
-
-## Issues
-*Pour le moment, on ne peut pas se connecter avec des credential sur l'APP Employer.
+    
