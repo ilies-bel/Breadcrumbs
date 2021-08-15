@@ -88,7 +88,7 @@ public class themeResource2 {
         return theme
                 .onItem().call(i ->
                         // Delay the emission until the returned uni emits its item
-                        Uni.createFrom().nullItem().onItem().delayIt().by(Duration.ofSeconds(2)))
+                        Uni.createFrom().nullItem().onItem().delayIt().by(Duration.ofSeconds(60)))
                 .onFailure().invoke(e -> System.out.println( "Erreur inconnu : "+e))
                 .onCompletion().invoke(theme::onCompletion);
     }
