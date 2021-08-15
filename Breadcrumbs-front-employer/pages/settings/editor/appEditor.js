@@ -4,7 +4,7 @@ import {HexColorPicker, HexColorInput} from "react-colorful";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { usePostTheme } from "utils/axios";
-import { initialColorPickerState } from './editor/initialColorPickerState';
+import { initialColorPickerState } from '../../../utils/initialColorPickerState';
 
 const Stage = dynamic(() => import('react-konva').then((module) => module.Stage), {ssr: false});
 const Layer = dynamic(() => import('react-konva').then((module) => module.Layer), {ssr: false});
@@ -14,7 +14,7 @@ const Line = dynamic(() => import('react-konva').then((module) => module.Line), 
 const Circle = dynamic(() => import('react-konva').then((module) => module.Circle), {ssr: false});
 
 import {ArrowBackUp} from "tabler-icons-react";
-import {drawerReducer} from "utils/themeReducer";
+import {drawerReducer} from "utils/colorPickerReducer";
 import Dialog from "components/Dialog";
 import ColorPicker from './colorPicker';
 

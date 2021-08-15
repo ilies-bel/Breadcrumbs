@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {HexColorInput, HexColorPicker} from "react-colorful";
-import { colorsMap } from './editor/initialColorPickerState';
+import { colorsMap } from '../../../utils/initialColorPickerState';
 
 import SelectDropdown from 'components/Formulaire/Select'
 import OptionDropdown from 'components/Formulaire/Select/Option'
