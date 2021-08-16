@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
 import * as ROUTES from 'constants/routes';
@@ -38,52 +38,64 @@ const BottomNav = () => {
     const onHomePage = location.search(/hiring/) > 0;
 
     const handleChange = (event, newValue) => {
-        onHomePage ? history.push(newValue) : history.replace(newValue);
-        newValue.search(/hiring/) > 0 && history.goBack()
         setValue(newValue);
+
+        if(newValue.search(/hiring/)) {
+            history.goBack()
+            //history.replace(`${HIRING_PROCESS}/hiring`)
+        }
+        else {
+            onHomePage ? history.push(newValue) : history.replace(newValue);
+        }
     };
 
     if(!context.token && !context.linkedinCode) return ( <p>No access</p>)
     if(context.token || context.linkedinCode) return (
         <React.Suspense fallback={<span className={classes.BottomNavigation} >Wait ...</span> } >
-            <BottomNavigation
+            {
+                <BottomNavigation
                 className={classes.BottomNavigation}
                 value={value}
                 onChange={handleChange}
                 showLabels
             >
-                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.HIRING_PROCESS} label={ROUTES.HIRING_LABEL}
+                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.HIRING_PROCESS}
+                                        label={ROUTES.HIRING_LABEL}
                                         icon={<ClipboardList
-                                                    size={30}
-                                                    strokeWidth={1}
-                                                    color={'royalblue'}
-                                                />}/>
-                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.TIPS} label={ROUTES.TIPS_LABEL}
+                                            size={30}
+                                            strokeWidth={1}
+                                            color={'royalblue'}
+                                        />}/>
+                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.TIPS}
+                                        label={ROUTES.TIPS_LABEL}
                                         icon={<InfoCircle
-                                                    size={30}
-                                                    strokeWidth={1}
-                                                    color={'royalblue'}
-                                                />}/>
-                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.OFFICE} label={ROUTES.OFFICE_LABEL}
+                                            size={30}
+                                            strokeWidth={1}
+                                            color={'royalblue'}
+                                        />}/>
+                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.OFFICE}
+                                        label={ROUTES.OFFICE_LABEL}
                                         icon={<Building
-                                                    size={30}
-                                                    strokeWidth={1}
-                                                    color={'royalblue'}
-                                                />}/>
-                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.AMBASSADORS} label={ROUTES.AMBASSADORS_LABEL}
+                                            size={30}
+                                            strokeWidth={1}
+                                            color={'royalblue'}
+                                        />}/>
+                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.AMBASSADORS}
+                                        label={ROUTES.AMBASSADORS_LABEL}
                                         icon={<School
-                                                    size={30}
-                                                    strokeWidth={1}
-                                                    color={'royalblue'}
-                                                />}/>
-                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.SOCIAL} label={ROUTES.SOCIAL_LABEL}
+                                            size={30}
+                                            strokeWidth={1}
+                                            color={'royalblue'}
+                                        />}/>
+                <BottomNavigationAction className={classes.BottomNavigationAction} value={ROUTES.SOCIAL}
+                                        label={ROUTES.SOCIAL_LABEL}
                                         icon={<Social
-                                                    size={30}
-                                                    strokeWidth={1}
-                                                    color={'royalblue'}
-                                                />}/>
+                                            size={30}
+                                            strokeWidth={1}
+                                            color={'royalblue'}
+                                        />}/>
 
-            </BottomNavigation>
+            </BottomNavigation>}
             </React.Suspense>
 
     );

@@ -39,9 +39,16 @@ const TopNav = () => {
     const context = useAuthContext();
     const history = useHistory();
 
+    const location = history.location.pathname;
+    // On considère la page ROUTES.HIRING_PROCESS comme étant la page d'accuil
+    const onHomePage = location.search(/hiring/) > 0;
+
+    const handleChange = (event) => {
+        onHomePage ? history.push("/user/account") : history.replace("/user/account");
+    };
 
     return (
-        <React.Suspense fallback={<p>Wait ...</p>}>
+        <React.Suspense fallback={<header>Wait ...</header>}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
 
@@ -56,7 +63,7 @@ const TopNav = () => {
                                 aria-haspopup="true"
                                 color="inherit"
                                 title={ !context.token ? "Sign in" : `signed in as ${context.userFirstName} ${context.userLastName}` }
-                                onClick={() => history.push("/user/account")}
+                                onClick={() => handleChange()}
                             >
                                 { !context.profilePicture ? <AccountCircle/> : <Avatar alt="Photo de profil" src={ context.profilePicture } /> }
                             </IconButton>
