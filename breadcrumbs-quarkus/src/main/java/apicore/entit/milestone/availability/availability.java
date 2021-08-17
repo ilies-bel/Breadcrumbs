@@ -11,8 +11,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
+@Cacheable
 public class availability extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("id") @JsonAlias("id")
@@ -30,7 +31,7 @@ public class availability extends PanacheEntityBase {
     @JsonAlias({"type", "typeSlot"})
     public String type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Users interlocutor;
 
     public availability() {}

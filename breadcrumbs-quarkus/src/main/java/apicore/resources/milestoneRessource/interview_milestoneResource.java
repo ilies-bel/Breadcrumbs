@@ -12,8 +12,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Path("/milestone")
 public class interview_milestoneResource {
@@ -21,8 +23,7 @@ public class interview_milestoneResource {
     @GET
     public List<interview_milestones> getAll() {
         interview_process process = interview_process.findById(1);
-        Collections.sort(process.milestones);
-        return process.milestones;
+        return process.getAllMilestones();
     }
 
     @POST
@@ -33,8 +34,9 @@ public class interview_milestoneResource {
         Entreprise e = Entreprise.findById("Breadcrumbs");
         try {
             interview_process process = interview_process.findProcess(candidate, e);
-            Collections.sort(process.milestones);
-            return Response.ok(process.milestones).build();
+            List<interview_milestones> milestones = new ArrayList<>(process.milestones);
+            Collections.sort(milestones);
+            return Response.ok(milestones).build();
         }
         catch (BadRequestException exce) {
             return Response.ok("Aucun process correspondant " + candidate.email ).status(404).build();
@@ -52,8 +54,9 @@ public class interview_milestoneResource {
         interview_process process = interview_process.findProcess(candidate, e);
         process.incrementCurrentMilestone();
         process.persist();
-        Collections.sort(process.milestones);
-        return Response.ok(process.milestones).build();
+        List<interview_milestones> milestones = new ArrayList<>(process.milestones);
+        Collections.sort(milestones);
+        return Response.ok(milestones).build();
 
     }
 }

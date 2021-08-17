@@ -22,26 +22,6 @@ const style = {
 
 const URL_SOURCE = process.env.NEXT_PUBLIC_SOURCE_URL
 
-const useEventSource = (url) => {
-    let [data, updateData] = useState([]);
-
-    useEffect(() => {
-        let source = new EventSource(url);
-        
-        source.onerror = function logError(e) {    
-            updateData(e)
-        }
-        source.onmessage = function logEvents(event) {      
-            updateData(JSON.parse(event.data));
-        }
-        return () => {
-            source.close();
-        }
-
-    }, [])
-    return data;
-}
-
 const fetchData = async (token) => { 
     const axios_url = process.env.NEXT_PUBLIC_AXIOS_URL
     return await axios.get(`${axios_url}/availability/andAppointments`, {
@@ -65,8 +45,6 @@ export default function Hiring() {
 
     const context = useAuthContext();
 
-    const data = useEventSource(URL_SOURCE);
-    console.log(data);console.log("/use event");
 
     const toggleChecked = async() => {
         await setToggling(true);

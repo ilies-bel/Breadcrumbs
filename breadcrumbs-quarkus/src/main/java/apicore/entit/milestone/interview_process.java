@@ -5,7 +5,8 @@ import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cache;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
@@ -17,12 +18,12 @@ public class interview_process extends PanacheEntityBase {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id_process;
 
-    @ManyToOne
+    @ManyToOne @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Users candidate;
-    @ManyToOne
+    @ManyToOne @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Entreprise entreprise;
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<interview_milestones> milestones = new ArrayList<>();
+    public Set<interview_milestones> milestones = new TreeSet<>();
 
     public interview_process() {}
     public interview_process(Entreprise e, Users candidates, interview_milestones milestone) {
@@ -41,7 +42,9 @@ public class interview_process extends PanacheEntityBase {
     public interview_process(Entreprise e, Users candidates, List<interview_milestones> milestones) {
         this.entreprise = e;
         this.candidate = candidates;
-        //Collections.sort(milestones);
+        List<interview_milestones> m = new ArrayList<>();
+        m.addAll(milestones);
+        Collections.sort(m);
         if(!milestones.isEmpty()) {
             this.milestones.addAll(milestones);
         }
@@ -62,7 +65,7 @@ public class interview_process extends PanacheEntityBase {
 
     @JsonIgnore
     public interview_milestones getCurrentMilestone() {
-        ListIterator<interview_milestones> iterator = milestones.listIterator();
+        Iterator<interview_milestones> iterator = milestones.iterator();
         interview_milestones res = new interview_milestones();
         while ( iterator.hasNext() && (res.status!= interview_milestones.STATUS.IN_PROGRESS && res.status!= interview_milestones.STATUS.ON_APPROVAL ) ) {
             res = iterator.next();
@@ -81,11 +84,21 @@ public class interview_process extends PanacheEntityBase {
     }
 
     /**
+     *
+     * @return Les milestones du process sous form de ArrayList triée
+     */
+    public List<interview_milestones> getAllMilestones() {
+        ArrayList<interview_milestones> milestones = new ArrayList<>(this.milestones);
+        Collections.sort(milestones);
+        return milestones;
+    }
+
+    /**
      * Vérifie si tous les milestone ont le statut COMPLETED. Le process sera alors considéré comme terminé.
      * @return <em>true</em> si tous les milestones sont COMPLETED.
      */
     public boolean isOver() {
-        ListIterator<interview_milestones> iterator = milestones.listIterator();
+        Iterator<interview_milestones> iterator = milestones.iterator();
         boolean isOver = true;
         while (iterator.hasNext()) {
             isOver = isOver && iterator.next().status == interview_milestones.STATUS.COMPLETED;

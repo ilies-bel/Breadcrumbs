@@ -46,7 +46,7 @@ public class interview_milestones extends PanacheEntityBase implements Comparabl
 
     @ManyToOne
     public interview_type type;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public interview_milestones next;
 
     public String milestone_name;

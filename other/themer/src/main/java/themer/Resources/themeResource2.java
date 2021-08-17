@@ -5,6 +5,7 @@ import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Sort;
 import io.smallrye.common.annotation.Blocking;
+import io.smallrye.common.annotation.NonBlocking;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import themer.ThemeResponse;
@@ -94,7 +95,7 @@ public class themeResource2 {
      */
     @GET
     @Path("/candidateWant")
-    @Blocking
+    @NonBlocking
     @Produces(MediaType.SERVER_SENT_EVENTS)
     public Multi<List<PanacheEntityBase>> getThemeCandidate() {
         Multi<List<PanacheEntityBase>> theme = ThemeResponse.listAll(Sort.by("timestamp").descending()).toMulti();

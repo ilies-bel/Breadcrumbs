@@ -12,10 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.enterprise.event.Observes;
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import org.hibernate.annotations.Cache;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -37,12 +39,13 @@ public class Users extends PanacheEntityBase {
     public String phone;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private List<Appointment> appointments;
-    @OneToMany @JsonIgnore
+    @OneToMany(mappedBy = "candidate") @JsonIgnore @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private List<interview_process> processes;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Entreprise entreprise;
-    @ManyToOne(cascade = CascadeType.ALL) @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JsonIgnore
     private SubscriptionService pushSubscription;
 
     @Transactional

@@ -15,7 +15,7 @@ public class Appointment extends availability {
 
     public String candidate_email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Users candidate;
 
     @ManyToOne

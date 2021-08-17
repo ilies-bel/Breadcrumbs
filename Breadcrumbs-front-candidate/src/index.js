@@ -88,7 +88,7 @@ ReactDOM.render(
   <React.Suspense fallback={<div>Wait ...</div>} >
     <ThemeProvider>
       <App />
-      </ThemeProvider>
+    </ThemeProvider>
     </React.Suspense>,
   document.getElementById('root'),
 );

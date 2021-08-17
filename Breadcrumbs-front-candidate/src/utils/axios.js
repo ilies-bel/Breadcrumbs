@@ -86,3 +86,12 @@ export const useMoveAppointment = (id, data={}) => {
 export const useCancelAppointment = (token, data) => {
     return useAppointmentAPI({path: `cancel`, token: token, data: data, method: 'delete', manual: true})
 }
+
+const gate_url = process.env.GATE_API
+export const useSendStatus = (path='', data={}, manual=false) => {
+    return useAxios({
+        baseURL: gate_url,
+        url: path,
+        data: data
+    })
+}

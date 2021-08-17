@@ -13,6 +13,7 @@ import {TitleTarget} from "./titleContext";
 import { AuthContext } from "utils/context";
 import { useAuthContext } from "utils/context";
 import {useHistory} from "react-router-dom";
+import {usePostEvent} from "../../utils/eventSource";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +39,8 @@ const TopNav = () => {
     const classes = useStyles();
     const context = useAuthContext();
     const history = useHistory();
+
+    const { data, error } = usePostEvent("http://localhost:8082/gate/rere/2", true, "/rere/receiveStatus", {"ddl": "dldd"})
 
     const location = history.location.pathname;
     // On considère la page ROUTES.HIRING_PROCESS comme étant la page d'accuil

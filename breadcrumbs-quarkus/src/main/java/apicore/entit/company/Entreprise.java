@@ -4,9 +4,7 @@ import apicore.entit.user.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import apicore.entit.milestone.interview_process;
 
@@ -21,10 +19,10 @@ public class Entreprise extends PanacheEntityBase {
     @Id
     public String raisonSocial;
 
-    @OneToMany @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY) @JsonIgnore
     public List<interview_process> processes;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Users> employees;
 }

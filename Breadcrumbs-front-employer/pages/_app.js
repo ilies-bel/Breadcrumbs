@@ -7,7 +7,7 @@ import { Provider, getSession } from 'next-auth/client';
 import RestrictedPages from "./pagesAuthentified";
 
 import 'tailwindcss/tailwind.css'
-import {AuthProvider, useAuthContext} from "../utils/context";
+import {AuthProvider, useAuthContext} from "utils/context";
 import LoginPage from "./Authentification/login";
 
 function MyApp({ Component, pageProps }) {
